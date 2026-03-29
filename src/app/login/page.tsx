@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { LoginForm } from "@/components/login-form";
 import { BackendUnavailable } from "@/components/backend-unavailable";
 import { getAuthSession } from "@/lib/auth";
@@ -40,6 +41,14 @@ export default async function LoginPage() {
 
             <div className="mt-8 max-w-xl">
               <LoginForm />
+              <div className="mobile-stack mt-5">
+                <Link href="/register" className="btn-secondary w-full sm:w-auto">
+                  Ke halaman register
+                </Link>
+                <Link href="/" className="btn-secondary w-full sm:w-auto">
+                  Kembali ke beranda
+                </Link>
+              </div>
             </div>
           </section>
 

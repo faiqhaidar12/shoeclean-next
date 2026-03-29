@@ -79,6 +79,9 @@ export function DashboardShell({ data, legacyDashboardUrl }: Props) {
                 <Link href="/dashboard/orders" className="btn-accent w-full sm:w-auto">
                   Buka order
                 </Link>
+                <Link href="/logout" className="btn-secondary w-full sm:w-auto">
+                  Halaman logout
+                </Link>
                 <a
                   href={legacyDashboardUrl}
                   className="btn-secondary w-full sm:w-auto"

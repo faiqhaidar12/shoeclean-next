@@ -36,6 +36,12 @@ export default async function Home() {
               </p>
             </div>
             <div className="mobile-stack w-full sm:w-auto">
+              <Link href="/login" className="btn-secondary w-full sm:w-auto">
+                Login
+              </Link>
+              <Link href="/register" className="btn-secondary w-full sm:w-auto">
+                Register
+              </Link>
               <Link href="/track" className="btn-secondary w-full sm:w-auto">
                 Lacak pesanan
               </Link>
