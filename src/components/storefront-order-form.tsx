@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import type { StorefrontOutletResponse } from "@/lib/api";
@@ -190,10 +191,10 @@ export function StorefrontOrderForm({ data }: Props) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {data.ui.show_branch_selection ? (
-        <section className="section-block p-4 sm:p-5">
+        <section className="section-block hero-card p-4 sm:p-5">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="text-xs uppercase tracking-[0.22em] text-muted">
+              <p className="section-label">
                 Cabang lain
               </p>
               <h2 className="mt-2 text-xl font-semibold">
@@ -209,7 +210,7 @@ export function StorefrontOrderForm({ data }: Props) {
                 onClick={() => router.push(`/order/${branch.slug}?skipBranch=1`)}
                 className={`rounded-[1.35rem] border px-4 py-4 text-left transition ${
                   branch.slug === data.outlet.slug
-                    ? "border-brand bg-[#fff3eb]"
+                    ? "border-brand bg-[#fff3eb] shadow-[0_18px_40px_-32px_rgba(191,93,48,0.45)]"
                     : "border-line bg-surface hover:bg-white"
                 }`}
               >
@@ -229,10 +230,10 @@ export function StorefrontOrderForm({ data }: Props) {
         </section>
       ) : null}
 
-      <section className="section-block p-4 sm:p-5">
+      <section className="section-block hero-card p-4 sm:p-5">
         <div className="flex items-center justify-between gap-3">
           <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-muted">
+            <p className="section-label">
               Langkah 1
             </p>
             <h2 className="mt-2 text-xl font-semibold">Pilih layanan</h2>
@@ -242,7 +243,7 @@ export function StorefrontOrderForm({ data }: Props) {
           </button>
         </div>
 
-        <div className="mt-4 space-y-3">
+        <div className="info-list mt-4">
           {items.map((item, index) => (
             <div key={`${index}-${item.service_id}`} className="soft-panel p-4">
               <div className="grid gap-3">
@@ -288,7 +289,7 @@ export function StorefrontOrderForm({ data }: Props) {
       </section>
 
       <section className="section-block p-4 sm:p-5">
-        <p className="text-xs uppercase tracking-[0.22em] text-muted">
+        <p className="section-label">
           Langkah 2
         </p>
         <h2 className="mt-2 text-xl font-semibold">Data customer</h2>
@@ -311,7 +312,7 @@ export function StorefrontOrderForm({ data }: Props) {
       </section>
 
       <section className="section-block p-4 sm:p-5">
-        <p className="text-xs uppercase tracking-[0.22em] text-muted">
+        <p className="section-label">
           Langkah 3
         </p>
         <h2 className="mt-2 text-xl font-semibold">Pengambilan & pembayaran</h2>
@@ -361,11 +362,16 @@ export function StorefrontOrderForm({ data }: Props) {
 
         {paymentMethod === "qris" && data.outlet.qris_image_url ? (
           <div className="soft-panel mt-4 p-4">
-            <img
-              src={data.outlet.qris_image_url}
-              alt={`QRIS ${data.outlet.name}`}
-              className="mx-auto max-h-80 rounded-[1.35rem] bg-white object-contain"
-            />
+            <div className="overflow-hidden rounded-[1.35rem] bg-white p-2">
+              <Image
+                src={data.outlet.qris_image_url}
+                alt={`QRIS ${data.outlet.name}`}
+                width={960}
+                height={960}
+                unoptimized
+                className="mx-auto max-h-80 rounded-[1rem] bg-white object-contain"
+              />
+            </div>
             <p className="mt-3 text-sm leading-6 text-muted">
               {data.outlet.qris_notes || "Scan QRIS outlet ini sesuai total estimasi."}
             </p>
@@ -390,7 +396,7 @@ export function StorefrontOrderForm({ data }: Props) {
       </section>
 
       <section className="section-block p-4 sm:p-5">
-        <p className="text-xs uppercase tracking-[0.22em] text-muted">
+        <p className="section-label">
           Opsional
         </p>
         <h2 className="mt-2 text-xl font-semibold">Promo & catatan order</h2>
@@ -422,8 +428,8 @@ export function StorefrontOrderForm({ data }: Props) {
         />
       </section>
 
-      <section className="section-block bg-[#183a34] p-5 text-white sm:p-6">
-        <p className="text-xs uppercase tracking-[0.22em] text-white/65">
+      <section className="section-dark hero-card p-5 sm:p-6">
+        <p className="section-label-dark">
           Ringkasan
         </p>
         <div className="mt-5 space-y-3 text-sm">

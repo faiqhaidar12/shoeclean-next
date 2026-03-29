@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fraunces, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const bodySans = Manrope({
+  variable: "--font-body-sans",
   subsets: ["latin"],
 });
 
@@ -12,9 +12,14 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const displaySerif = Fraunces({
+  variable: "--font-display-serif",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
-  title: "Shoeclean Next",
-  description: "Frontend Next.js baru untuk migrasi bertahap Shoeclean.",
+  title: "ShoeClean Storefront",
+  description: "Storefront modern ShoeClean untuk order, tracking, dan pricing yang mobile-first.",
 };
 
 export default function RootLayout({
@@ -24,8 +29,8 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      lang="id"
+      className={`${bodySans.variable} ${geistMono.variable} ${displaySerif.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

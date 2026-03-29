@@ -26,7 +26,7 @@ export default async function Home() {
     <main className="app-shell">
       <section className="page-frame px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
         <div className="relative z-10 space-y-4">
-          <header className="mobile-stack items-start justify-between rounded-[1.6rem] border border-line bg-white/70 p-3 backdrop-blur-sm sm:items-center">
+          <header className="mobile-stack items-start justify-between rounded-[1.6rem] border border-line bg-white/72 p-3 shadow-[0_18px_44px_-34px_rgba(31,23,18,0.26)] backdrop-blur-sm sm:items-center">
             <div>
               <p className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
                 ShoeClean
@@ -45,13 +45,19 @@ export default async function Home() {
             </div>
           </header>
 
-          <div className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
-            <section className="section-block p-5 sm:p-7 lg:p-8">
+          <div className="hero-grid">
+            <section className="section-block hero-card p-5 sm:p-7 lg:p-8">
               <span className="eyebrow">{data.hero.badge}</span>
               <h1 className="headline mt-4 max-w-4xl">
                 {data.hero.title}
               </h1>
               <p className="subcopy mt-4 max-w-2xl">{data.hero.description}</p>
+
+              <div className="hero-badge-row mt-5">
+                <span className="highlight-chip">Responsif di smartphone</span>
+                <span className="highlight-chip">Tracking real-time</span>
+                <span className="highlight-chip">Order langsung ke outlet</span>
+              </div>
 
               <div className="mobile-stack mt-6">
                 <Link href="/order" className="btn-accent w-full sm:w-auto">
@@ -68,25 +74,25 @@ export default async function Home() {
                 </a>
               </div>
 
-              <div className="stats-grid mt-7">
-                <article className="stat-card">
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted">
+              <div className="kpi-strip mt-7">
+                <article className="kpi-pill">
+                  <p className="section-label">
                     Outlet tampil
                   </p>
                   <p className="mt-2 text-2xl font-semibold text-foreground">
                     {data.outlets.length}
                   </p>
                 </article>
-                <article className="stat-card">
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted">
+                <article className="kpi-pill">
+                  <p className="section-label">
                     Layanan unggulan
                   </p>
                   <p className="mt-2 text-2xl font-semibold text-foreground">
                     {data.services.length}
                   </p>
                 </article>
-                <article className="stat-card">
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted">
+                <article className="kpi-pill">
+                  <p className="section-label">
                     Order flow
                   </p>
                   <p className="mt-2 text-2xl font-semibold text-foreground">
@@ -96,21 +102,27 @@ export default async function Home() {
               </div>
             </section>
 
-            <section className="section-block overflow-hidden bg-[#183a34] text-white">
+            <section className="section-dark hero-card overflow-hidden">
               <div className="relative h-full px-5 py-6 sm:px-7 sm:py-7">
                 <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-white/8 blur-2xl" />
                 <div className="absolute -bottom-10 left-0 h-24 w-24 rounded-full bg-[#ffcfb7]/20 blur-2xl" />
                 <div className="relative">
-                  <span className="inline-flex rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/72">
+                  <span className="inline-flex rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/78">
                     Quick tracking
                   </span>
                   <h2 className="mt-4 text-2xl font-semibold leading-tight sm:text-3xl">
                     Tracking invoice yang cepat dan jelas untuk customer HP.
                   </h2>
-                  <p className="mt-3 text-sm leading-7 text-white/78">
+                  <p className="subcopy-dark mt-3">
                     Buka progres order, status pembayaran, dan detail outlet
                     tanpa perlu tanya admin berkali-kali.
                   </p>
+
+                  <div className="hero-badge-row mt-5">
+                    <span className="highlight-chip-dark">Invoice sekali input</span>
+                    <span className="highlight-chip-dark">Status mudah dibaca</span>
+                    <span className="highlight-chip-dark">Aman untuk layar kecil</span>
+                  </div>
 
                   <form action="/track" className="mt-6 space-y-3">
                     <input
@@ -124,12 +136,9 @@ export default async function Home() {
                     </button>
                   </form>
 
-                  <div className="mt-6 grid gap-3">
+                  <div className="info-list mt-6">
                     {data.features.map((feature) => (
-                      <div
-                        key={feature.title}
-                        className="rounded-[1.25rem] border border-white/10 bg-white/8 px-4 py-3"
-                      >
+                      <div key={feature.title} className="kpi-pill-dark">
                         <p className="text-sm font-semibold">{feature.title}</p>
                         <p className="mt-1 text-sm leading-6 text-white/70">
                           {feature.description}
@@ -158,12 +167,12 @@ export default async function Home() {
                 </Link>
               </div>
 
-              <div className="mt-6 grid gap-3">
+              <div className="info-list mt-6">
                 {data.outlets.map((outlet) => (
                   <Link
                     key={outlet.id}
                     href={`/order/${outlet.slug}?skipBranch=1`}
-                    className="soft-panel block p-4 transition hover:-translate-y-0.5 hover:bg-white"
+                    className="soft-panel touch-card p-4"
                   >
                     <div className="flex items-start justify-between gap-4">
                       <div className="min-w-0">
@@ -185,6 +194,10 @@ export default async function Home() {
                         ) : null}
                       </div>
                     </div>
+                    <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
+                      <p className="section-label">Siap dipilih</p>
+                      <span className="text-sm font-semibold text-brand">Masuk outlet</span>
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -202,7 +215,7 @@ export default async function Home() {
                 Harga dan layanan yang mudah dipahami customer.
               </h2>
 
-              <div className="mt-6 grid gap-3">
+              <div className="info-list mt-6">
                 {data.services.map((service) => (
                   <article key={service.id} className="soft-panel p-4">
                     <div className="flex items-start justify-between gap-3">

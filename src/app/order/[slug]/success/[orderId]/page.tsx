@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { BackendUnavailable } from "@/components/backend-unavailable";
 import {
@@ -45,14 +46,14 @@ export default async function OrderSuccessPage({
     <main className="app-shell">
       <section className="page-frame px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
         <div className="relative z-10 space-y-4">
-          <header className="section-block bg-[#183a34] p-5 text-white sm:p-7">
+          <header className="section-dark hero-card p-5 sm:p-7">
             <span className="inline-flex rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/72">
               Pesanan terkirim
             </span>
             <h1 className="mt-4 text-[2rem] font-semibold tracking-tight sm:text-5xl">
               Order berhasil masuk ke outlet.
             </h1>
-            <p className="mt-4 text-sm leading-7 text-white/78 sm:text-base">
+            <p className="subcopy-dark mt-4 sm:text-base">
               Simpan nomor invoice ini. Customer bisa pakai invoice yang sama
               untuk tracking progres dari smartphone kapan saja.
             </p>
@@ -60,27 +61,21 @@ export default async function OrderSuccessPage({
 
           <div className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
             <section className="section-block p-5 sm:p-6">
-              <p className="text-xs uppercase tracking-[0.22em] text-muted">
-                Nomor invoice
-              </p>
+              <p className="section-label">Nomor invoice</p>
               <h2 className="mt-2 break-all text-2xl font-semibold text-foreground">
                 {data.order.invoice_number}
               </h2>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
                 <div className="soft-panel p-4">
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted">
-                    Outlet
-                  </p>
+                  <p className="section-label">Outlet</p>
                   <p className="mt-2 text-lg font-semibold">{data.outlet.name}</p>
                   <p className="mt-2 text-sm leading-6 text-muted">
                     {data.outlet.address || "Alamat outlet belum tersedia."}
                   </p>
                 </div>
                 <div className="soft-panel bg-surface-soft/55 p-4">
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted">
-                    Total tagihan
-                  </p>
+                  <p className="section-label">Total tagihan</p>
                   <p className="mt-2 text-3xl font-semibold text-accent">
                     {formatRupiah(data.order.total_price)}
                   </p>
@@ -98,7 +93,7 @@ export default async function OrderSuccessPage({
                     {data.order.items.length} item
                   </span>
                 </div>
-                <div className="mt-4 space-y-3">
+                <div className="info-list mt-4">
                   {data.order.items.map((item) => (
                     <div key={item.id} className="soft-panel p-4">
                       <div className="flex items-start justify-between gap-4">
@@ -122,10 +117,8 @@ export default async function OrderSuccessPage({
 
             <div className="space-y-4">
               <section className="section-block p-5 sm:p-6">
-                <p className="text-xs uppercase tracking-[0.22em] text-muted">
-                  Langkah berikutnya
-                </p>
-                <div className="mt-4 space-y-3">
+                <p className="section-label">Langkah berikutnya</p>
+                <div className="info-list mt-4">
                   <div className="soft-panel p-4">Simpan invoice untuk tracking</div>
                   <div className="soft-panel p-4">
                     Hubungi outlet jika perlu konfirmasi tambahan
@@ -139,14 +132,17 @@ export default async function OrderSuccessPage({
               {data.outlet.qris_image_url &&
               data.order.payment_status !== "waiting_confirmation" ? (
                 <section className="section-block p-5 sm:p-6">
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted">
-                    QRIS outlet
-                  </p>
-                  <img
-                    src={data.outlet.qris_image_url}
-                    alt={`QRIS ${data.outlet.name}`}
-                    className="mt-4 max-h-80 w-full rounded-[1.5rem] bg-surface object-contain"
-                  />
+                  <p className="section-label">QRIS outlet</p>
+                  <div className="soft-panel mt-4 overflow-hidden p-3">
+                    <Image
+                      src={data.outlet.qris_image_url}
+                      alt={`QRIS ${data.outlet.name}`}
+                      width={960}
+                      height={960}
+                      unoptimized
+                      className="max-h-80 w-full rounded-[1.25rem] bg-surface object-contain"
+                    />
+                  </div>
                   <p className="mt-4 text-sm leading-6 text-muted">
                     {data.outlet.qris_notes || "Scan QRIS ini sesuai total invoice."}
                   </p>

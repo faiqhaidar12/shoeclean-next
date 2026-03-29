@@ -14,7 +14,7 @@ type OrderListPageProps = {
 
 export default async function OrderListPage({
   searchParams,
-: OrderListPageProps) {
+}: OrderListPageProps) {
   let data: StorefrontListResponse | null = null;
   let message = "";
 
@@ -52,8 +52,13 @@ export default async function OrderListPage({
                   Flow ini dirancang agar customer bisa cari cabang, pilih layanan,
                   lalu order langsung dari smartphone dengan langkah yang sederhana.
                 </p>
+                <div className="hero-badge-row mt-5">
+                  <span className="highlight-chip">Cari cabang lebih cepat</span>
+                  <span className="highlight-chip">Filter wilayah</span>
+                  <span className="highlight-chip">Checkout ringkas</span>
+                </div>
               </div>
-              <div className="mobile-stack">
+              <div className="mobile-stack lg:self-start">
                 <Link href="/" className="btn-secondary w-full sm:w-auto">
                   Beranda
                 </Link>
@@ -64,7 +69,7 @@ export default async function OrderListPage({
             </div>
           </header>
 
-          <form className="section-block p-4 sm:p-5" action="/order">
+          <form className="section-block hero-card p-4 sm:p-5" action="/order">
             <div className="grid gap-3 lg:grid-cols-[1fr_210px_210px_auto]">
               <input
                 type="text"
@@ -108,7 +113,7 @@ export default async function OrderListPage({
               <Link
                 key={outlet.id}
                 href={`/order/${outlet.slug}?skipBranch=1`}
-                className="section-block block p-5 transition hover:-translate-y-1 hover:bg-white"
+                className="section-block hero-card touch-card p-5"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-accent text-lg font-semibold text-white">
@@ -143,7 +148,7 @@ export default async function OrderListPage({
                 </div>
 
                 <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
-                  <p className="text-xs uppercase tracking-[0.2em] text-muted">
+                  <p className="section-label">
                     Mulai order
                   </p>
                   <span className="text-sm font-semibold text-brand">

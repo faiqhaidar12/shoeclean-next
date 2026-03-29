@@ -11,7 +11,7 @@ export function BackendUnavailable({
     <main className="app-shell">
       <section className="page-frame px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
         <div className="relative z-10 grid gap-4 lg:grid-cols-[1fr_0.9fr]">
-          <section className="section-block p-5 sm:p-7">
+          <section className="section-block hero-card p-5 sm:p-7">
             <span className="eyebrow">Koneksi backend</span>
             <h1 className="headline mt-4">{title}</h1>
             <p className="subcopy mt-4">{message}</p>
@@ -28,18 +28,18 @@ export function BackendUnavailable({
             </div>
           </section>
 
-          <aside className="section-block bg-[#183a34] p-5 text-white sm:p-7">
-            <p className="text-xs uppercase tracking-[0.22em] text-white/65">
+          <aside className="section-dark hero-card p-5 sm:p-7">
+            <p className="section-label-dark">
               Checklist
             </p>
-            <div className="mt-4 space-y-3">
-              <div className="rounded-[1.35rem] border border-white/10 bg-white/8 px-4 py-3">
+            <div className="info-list mt-4">
+              <div className="kpi-pill-dark">
                 Laravel aktif di port `8000`
               </div>
-              <div className="rounded-[1.35rem] border border-white/10 bg-white/8 px-4 py-3">
+              <div className="kpi-pill-dark">
                 Env Next mengarah ke `http://127.0.0.1:8000`
               </div>
-              <div className="rounded-[1.35rem] border border-white/10 bg-white/8 px-4 py-3">
+              <div className="kpi-pill-dark">
                 Halaman di-refresh setelah backend siap
               </div>
             </div>

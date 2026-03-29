@@ -33,8 +33,13 @@ export default async function PricingPage() {
                 <span className="eyebrow">{data.hero.badge}</span>
                 <h1 className="headline mt-4">{data.hero.title}</h1>
                 <p className="subcopy mt-4">{data.hero.description}</p>
+                <div className="hero-badge-row mt-5">
+                  <span className="highlight-chip">Tanpa bingung pilih paket</span>
+                  <span className="highlight-chip">Harga lebih jelas</span>
+                  <span className="highlight-chip">Cocok untuk outlet bertumbuh</span>
+                </div>
               </div>
-              <div className="mobile-stack">
+              <div className="mobile-stack lg:self-start">
                 <Link href="/" className="btn-secondary w-full sm:w-auto">
                   Kembali
                 </Link>
@@ -53,10 +58,10 @@ export default async function PricingPage() {
               return (
                 <article
                   key={plan.name}
-                  className={`relative overflow-hidden rounded-[1.75rem] border p-5 sm:p-6 ${
+                  className={`hero-card relative overflow-hidden rounded-[1.75rem] border p-5 sm:p-6 ${
                     highlighted
                       ? "border-brand bg-[linear-gradient(180deg,#fff4ec,#fffdf9)] shadow-[0_24px_60px_-34px_var(--glow)]"
-                      : "border-line bg-white/88"
+                      : "border-line bg-white/88 shadow-[0_18px_44px_-34px_rgba(31,23,18,0.3)]"
                   }`}
                 >
                   {highlighted ? (
@@ -74,7 +79,7 @@ export default async function PricingPage() {
                   <p className="mt-4 text-sm leading-7 text-muted">
                     {plan.description}
                   </p>
-                  <div className="mt-6 space-y-3">
+                  <div className="info-list mt-6">
                     {plan.features.map((feature) => (
                       <div
                         key={feature}
@@ -95,17 +100,21 @@ export default async function PricingPage() {
           </section>
 
           <section className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-            <article className="section-block bg-[#183a34] p-5 text-white sm:p-6">
-              <p className="text-xs uppercase tracking-[0.22em] text-white/65">
+            <article className="section-dark hero-card p-5 sm:p-6">
+              <p className="section-label-dark">
                 Top-up Free Plan
               </p>
               <h2 className="mt-3 text-2xl font-semibold">
                 {data.plans.topup.name} {data.plans.topup.price_label}
               </h2>
-              <p className="mt-3 text-sm leading-7 text-white/78">
+              <p className="subcopy-dark mt-3">
                 {data.plans.topup.description}
               </p>
-              <div className="mt-5 rounded-[1.35rem] border border-white/10 bg-white/8 p-4">
+              <div className="hero-badge-row mt-5">
+                <span className="highlight-chip-dark">Tetap fleksibel</span>
+                <span className="highlight-chip-dark">Bayar saat perlu</span>
+              </div>
+              <div className="kpi-pill-dark mt-5">
                 <p className="text-xs uppercase tracking-[0.2em] text-white/60">
                   Tambahan kuota
                 </p>
@@ -119,7 +128,7 @@ export default async function PricingPage() {
               <p className="text-xs uppercase tracking-[0.22em] text-muted">
                 Cocok untuk
               </p>
-              <div className="mt-5 space-y-3">
+              <div className="info-list mt-5">
                 <div className="soft-panel p-4">
                   <p className="font-semibold">Free</p>
                   <p className="mt-1 text-sm leading-6 text-muted">

@@ -32,7 +32,7 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
     <main className="app-shell">
       <section className="page-frame px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
         <div className="relative z-10 space-y-4">
-          <header className="section-block bg-[#183a34] p-5 text-white sm:p-7">
+          <header className="section-dark p-5 sm:p-7">
             <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
               <div className="max-w-3xl">
                 <span className="inline-flex rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/72">
@@ -41,10 +41,15 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
                 <h1 className="mt-4 text-[2rem] font-semibold tracking-tight sm:text-5xl">
                   Cek progres pesanan langsung dari invoice.
                 </h1>
-                <p className="mt-4 text-sm leading-7 text-white/78 sm:text-base">
+                <p className="subcopy-dark mt-4 sm:text-base">
                   Halaman ini dibuat singkat dan nyaman untuk customer mobile:
                   cukup masukkan invoice, lalu progres order akan tampil rapi.
                 </p>
+                <div className="hero-badge-row mt-5">
+                  <span className="highlight-chip-dark">Satu invoice</span>
+                  <span className="highlight-chip-dark">Progress transparan</span>
+                  <span className="highlight-chip-dark">Nyaman di HP</span>
+                </div>
               </div>
               <Link href="/" className="btn-secondary w-full sm:w-auto">
                 Kembali
@@ -99,13 +104,13 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
                   </div>
                 </div>
 
-                <div className="mt-6 space-y-3">
+                <div className="info-list mt-6">
                   {data.order.timeline.map((step, index) => (
                     <article
                       key={step.key}
                       className={`rounded-[1.35rem] border px-4 py-4 ${
                         step.is_active
-                          ? "border-line bg-surface"
+                          ? "border-line bg-surface shadow-[0_18px_40px_-32px_rgba(31,75,67,0.38)]"
                           : "border-dashed border-line bg-white"
                       }`}
                     >
@@ -151,14 +156,14 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
                   ) : null}
                 </section>
 
-                <section className="section-block bg-[#183a34] p-5 text-white sm:p-6">
-                  <p className="text-xs uppercase tracking-[0.22em] text-white/65">
+                <section className="section-dark p-5 sm:p-6">
+                  <p className="section-label-dark">
                     Total tagihan
                   </p>
                   <p className="mt-3 text-3xl font-semibold">
                     {formatRupiah(data.order.total_price)}
                   </p>
-                  <p className="mt-3 text-sm leading-6 text-white/78">
+                  <p className="subcopy-dark mt-3">
                     Status pembayaran: {data.order.payment_status_label}
                   </p>
                 </section>

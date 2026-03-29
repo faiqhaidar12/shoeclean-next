@@ -67,7 +67,7 @@ button {
 }
 
 .app-shell {
-  @apply mx-auto min-h-screen w-full max-w-7xl px-4 py-4 sm:px-6 sm:py-6 lg:px-8;
+  @apply min-h-screen w-full px-4 py-4 sm:px-6 sm:py-6 lg:px-8;
 }
 
 .page-frame {
@@ -85,12 +85,32 @@ button {
   pointer-events: none;
 }
 
+.page-frame::after {
+  content: "";
+  position: absolute;
+  right: -5rem;
+  top: 6rem;
+  width: 14rem;
+  height: 14rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(31, 75, 67, 0.12), transparent 72%);
+  pointer-events: none;
+}
+
 .section-block {
-  @apply rounded-[1.75rem] border border-line bg-white/88 backdrop-blur-sm;
+  @apply rounded-[1.75rem] border border-line bg-white/88 shadow-[0_18px_45px_-34px_rgba(31,23,18,0.35)] backdrop-blur-sm;
+}
+
+.section-dark {
+  @apply rounded-[1.75rem] border border-white/10 bg-[linear-gradient(180deg,#204942,#183a34)] text-white shadow-[0_30px_70px_-38px_rgba(24,58,52,0.95)] backdrop-blur-sm;
 }
 
 .soft-panel {
-  @apply rounded-[1.5rem] border border-line bg-surface;
+  @apply rounded-[1.5rem] border border-line bg-surface shadow-[0_14px_32px_-28px_rgba(31,23,18,0.28)];
+}
+
+.soft-panel-dark {
+  @apply rounded-[1.5rem] border border-white/10 bg-white/8 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08)];
 }
 
 .eyebrow {
@@ -103,6 +123,10 @@ button {
 
 .subcopy {
   @apply text-sm leading-7 text-muted sm:text-base;
+}
+
+.subcopy-dark {
+  @apply text-sm leading-7 text-white/78 sm:text-base;
 }
 
 .btn-primary {
@@ -135,4 +159,51 @@ button {
 
 .mobile-stack {
   @apply flex flex-col gap-3 sm:flex-row;
+}
+
+.hero-grid {
+  @apply grid gap-4 lg:grid-cols-[1.12fr_0.88fr];
+}
+
+.hero-card {
+  @apply relative overflow-hidden;
+}
+
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: auto -2rem -3rem auto;
+  width: 9rem;
+  height: 9rem;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(191, 93, 48, 0.16), transparent 70%);
+  pointer-events: none;
+}
+
+.kpi-strip {
+  @apply grid gap-3 sm:grid-cols-3;
+}
+
+.kpi-pill {
+  @apply rounded-[1.35rem] border border-line bg-white/82 px-4 py-4;
+}
+
+.kpi-pill-dark {
+  @apply rounded-[1.35rem] border border-white/10 bg-white/8 px-4 py-4;
+}
+
+.info-list {
+  @apply grid gap-3;
+}
+
+.touch-card {
+  @apply block transition duration-200 hover:-translate-y-1 hover:bg-white active:scale-[0.99];
+}
+
+.section-label {
+  @apply text-[11px] font-semibold uppercase tracking-[0.24em] text-muted;
+}
+
+.section-label-dark {
+  @apply text-[11px] font-semibold uppercase tracking-[0.24em] text-white/65;
 }

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { BackendUnavailable } from "@/components/backend-unavailable";
 import {
@@ -48,30 +49,35 @@ export default async function OrderDetailPage({
     <main className="app-shell">
       <section className="page-frame px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
         <div className="relative z-10 space-y-4">
-          <header className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="section-block p-5 sm:p-7">
+          <header className="hero-grid">
+            <div className="section-block hero-card p-5 sm:p-7">
               <span className="eyebrow">Storefront Outlet</span>
               <h1 className="headline mt-4">{data.outlet.name}</h1>
               <p className="subcopy mt-4">
                 {data.outlet.address || "Alamat outlet belum tersedia."}
               </p>
+              <div className="hero-badge-row mt-5">
+                <span className="highlight-chip">Form ramah smartphone</span>
+                <span className="highlight-chip">Pembayaran fleksibel</span>
+                <span className="highlight-chip">Proses lebih singkat</span>
+              </div>
               {data.outlet.phone ? (
                 <p className="mt-3 text-sm font-medium text-accent">
                   {data.outlet.phone}
                 </p>
               ) : null}
 
-              <div className="stats-grid mt-6">
-                <article className="stat-card">
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted">
+              <div className="kpi-strip mt-6">
+                <article className="kpi-pill">
+                  <p className="section-label">
                     Layanan
                   </p>
                   <p className="mt-2 text-2xl font-semibold">
                     {data.services.length}
                   </p>
                 </article>
-                <article className="stat-card">
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted">
+                <article className="kpi-pill">
+                  <p className="section-label">
                     Pickup fee
                   </p>
                   <p className="mt-2 text-lg font-semibold">
@@ -80,8 +86,8 @@ export default async function OrderDetailPage({
                       : "Tidak ada"}
                   </p>
                 </article>
-                <article className="stat-card">
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted">
+                <article className="kpi-pill">
+                  <p className="section-label">
                     QRIS
                   </p>
                   <p className="mt-2 text-lg font-semibold">
@@ -100,21 +106,26 @@ export default async function OrderDetailPage({
               </div>
             </div>
 
-            <aside className="section-block bg-[#183a34] p-5 text-white sm:p-7">
-              <p className="text-xs uppercase tracking-[0.22em] text-white/65">
+            <aside className="section-dark hero-card p-5 sm:p-7">
+              <p className="section-label-dark">
                 Ringkas untuk mobile
               </p>
               <h2 className="mt-3 text-2xl font-semibold">
                 Flow order dibuat singkat agar customer nyaman isi dari smartphone.
               </h2>
-              <div className="mt-5 grid gap-3">
-                <div className="rounded-[1.35rem] border border-white/10 bg-white/8 px-4 py-3">
+              <div className="hero-badge-row mt-5">
+                <span className="highlight-chip-dark">Pilih layanan</span>
+                <span className="highlight-chip-dark">Isi data</span>
+                <span className="highlight-chip-dark">Kirim order</span>
+              </div>
+              <div className="info-list mt-5">
+                <div className="kpi-pill-dark">
                   Pilih layanan dan jumlah
                 </div>
-                <div className="rounded-[1.35rem] border border-white/10 bg-white/8 px-4 py-3">
+                <div className="kpi-pill-dark">
                   Isi data customer
                 </div>
-                <div className="rounded-[1.35rem] border border-white/10 bg-white/8 px-4 py-3">
+                <div className="kpi-pill-dark">
                   Tentukan pickup, delivery, atau bayar di outlet
                 </div>
               </div>
@@ -138,7 +149,7 @@ export default async function OrderDetailPage({
                     </h2>
                   </div>
                 </div>
-                <div className="mt-5 space-y-3">
+                <div className="info-list mt-5">
                   {data.services.map((service) => (
                     <div key={service.id} className="soft-panel p-4">
                       <div className="flex items-start justify-between gap-4">
@@ -167,11 +178,16 @@ export default async function OrderDetailPage({
                   <h2 className="mt-2 text-2xl font-semibold">
                     Customer bisa bayar lebih cepat.
                   </h2>
-                  <img
+                  <div className="soft-panel mt-5 overflow-hidden p-3">
+                    <Image
                     src={data.outlet.qris_image_url}
                     alt={`QRIS ${data.outlet.name}`}
-                    className="mt-5 max-h-80 w-full rounded-[1.5rem] bg-surface object-contain"
+                    width={960}
+                    height={960}
+                    unoptimized
+                    className="max-h-80 w-full rounded-[1.25rem] bg-surface object-contain"
                   />
+                  </div>
                   <p className="mt-4 text-sm leading-6 text-muted">
                     {data.outlet.qris_notes ||
                       "QRIS outlet tersedia untuk mempermudah pembayaran customer."}
