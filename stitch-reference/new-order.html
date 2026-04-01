@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#f7f9fb",
+              "inverse-primary": "#adc7f7",
+              "on-tertiary": "#ffffff",
+              "on-secondary-fixed-variant": "#00504d",
+              "secondary-container": "#81f2eb",
+              "tertiary-fixed": "#cfe8e3",
+              "surface-container-high": "#e6e8ea",
+              "primary-fixed": "#d6e3ff",
+              "on-tertiary-container": "#8ca4a0",
+              "secondary": "#006a66",
+              "surface-dim": "#d8dadc",
+              "surface-variant": "#e0e3e5",
+              "on-secondary-fixed": "#00201e",
+              "error": "#ba1a1a",
+              "on-secondary-container": "#006f6a",
+              "on-background": "#191c1e",
+              "surface-bright": "#f7f9fb",
+              "error-container": "#ffdad6",
+              "primary": "#002045",
+              "outline": "#74777f",
+              "tertiary-fixed-dim": "#b3ccc7",
+              "on-tertiary-fixed": "#081f1d",
+              "secondary-fixed-dim": "#66d8d2",
+              "surface-container-highest": "#e0e3e5",
+              "on-error": "#ffffff",
+              "on-surface": "#191c1e",
+              "surface-tint": "#455f88",
+              "on-primary": "#ffffff",
+              "on-primary-container": "#86a0cd",
+              "inverse-surface": "#2d3133",
+              "primary-fixed-dim": "#adc7f7",
+              "outline-variant": "#c4c6cf",
+              "on-surface-variant": "#43474e",
+              "on-primary-fixed-variant": "#2d476f",
+              "primary-container": "#1a365d",
+              "surface-container-low": "#f2f4f6",
+              "on-tertiary-fixed-variant": "#354b48",
+              "background": "#f7f9fb",
+              "surface-container": "#eceef0",
+              "tertiary-container": "#243a37",
+              "tertiary": "#0e2422",
+              "surface-container-lowest": "#ffffff",
+              "on-secondary": "#ffffff",
+              "inverse-on-surface": "#eff1f3",
+              "secondary-fixed": "#84f5ee",
+              "on-primary-fixed": "#001b3c",
+              "on-error-container": "#93000a"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-background min-h-screen">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-slate-100 dark:bg-slate-950 flex flex-col gap-2 p-4 border-r-0 z-40 hidden md:flex">
+<div class="mb-8 px-2">
+<h2 class="font-['Manrope'] font-bold text-lg text-blue-950 dark:text-white">Pristine Pro</h2>
+<p class="text-xs text-on-surface-variant opacity-70">Clinical Artisan Portal</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:translate-x-1 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-white dark:bg-slate-800 text-blue-900 dark:text-cyan-400 rounded-lg shadow-sm border-l-4 border-cyan-400 font-bold transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-medium">Orders</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:translate-x-1 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-medium">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:translate-x-1 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-medium">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:translate-x-1 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="clean_hands">clean_hands</span>
+<span class="font-medium">Services</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:translate-x-1 hover:bg-slate-200 dark:hover:bg-slate-800 transition-all rounded-lg group" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-medium">Settings</span>
+</a>
+</nav>
+<div class="mt-auto pt-4 space-y-1 border-t border-outline-variant/20">
+<a class="flex items-center gap-3 px-3 py-2 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Help Center</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-error hover:bg-error-container/20 rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="md:ml-64 min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl docked full-width top-0 z-50 shadow-sm dark:shadow-none flex justify-between items-center w-full px-6 py-3 sticky">
+<div class="flex items-center gap-4">
+<span class="md:hidden material-symbols-outlined text-primary" data-icon="menu">menu</span>
+<h1 class="text-xl font-extrabold text-blue-900 dark:text-blue-100 tracking-tighter">Pristine Admin</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center bg-slate-100 dark:bg-slate-800 rounded-full px-4 py-1.5 gap-2">
+<span class="material-symbols-outlined text-slate-400 text-sm" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48" placeholder="Cari pesanan..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 text-slate-500 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-200/50 dark:hover:bg-slate-700/50 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<section class="p-6 lg:p-10 max-w-7xl mx-auto w-full">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+<div>
+<span class="text-sm font-semibold text-secondary tracking-widest uppercase mb-2 block">Pendaftaran Unit</span>
+<h2 class="text-4xl font-extrabold text-primary tracking-tight">Buat Pesanan Baru</h2>
+</div>
+<div class="flex gap-2">
+<button class="px-6 py-2.5 rounded-full border border-outline-variant/30 text-primary font-semibold hover:bg-surface-container-low transition-colors">Batal</button>
+<button class="px-8 py-2.5 rounded-full bg-gradient-to-br from-primary to-primary-container text-white font-semibold shadow-lg shadow-primary/20 hover:opacity-90 transition-opacity">Draft</button>
+</div>
+</div>
+<!-- Bento Layout Content -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Left Column: Forms -->
+<div class="lg:col-span-8 space-y-6">
+<!-- Section 1: Customer Info -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl shadow-sm border border-outline-variant/10">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+</div>
+<h3 class="text-xl font-bold text-primary">Informasi Pelanggan</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="text-xs font-bold text-on-surface-variant/80 uppercase tracking-wider ml-1">Nama Lengkap</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/10 focus:bg-white transition-all" placeholder="Contoh: Budi Santoso" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold text-on-surface-variant/80 uppercase tracking-wider ml-1">Nomor WhatsApp</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/10 focus:bg-white transition-all" placeholder="0812-xxxx-xxxx" type="tel"/>
+</div>
+<div class="md:col-span-2 space-y-2">
+<label class="text-xs font-bold text-on-surface-variant/80 uppercase tracking-wider ml-1">Email (Opsional)</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/10 focus:bg-white transition-all" placeholder="budi@example.com" type="email"/>
+</div>
+</div>
+</div>
+<!-- Section 2: Shoe Details -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl shadow-sm border border-outline-variant/10">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="steps">steps</span>
+</div>
+<h3 class="text-xl font-bold text-primary">Detail Sepatu</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="space-y-2">
+<label class="text-xs font-bold text-on-surface-variant/80 uppercase tracking-wider ml-1">Merek</label>
+<select class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/10 focus:bg-white transition-all">
+<option>Nike</option>
+<option>Adidas</option>
+<option>New Balance</option>
+<option>Vans</option>
+<option>Lainnya</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold text-on-surface-variant/80 uppercase tracking-wider ml-1">Model / Seri</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/10 focus:bg-white transition-all" placeholder="Contoh: AJ1 Low" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs font-bold text-on-surface-variant/80 uppercase tracking-wider ml-1">Warna Dominan</label>
+<input class="w-full bg-surface-container-low border-none rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/10 focus:bg-white transition-all" placeholder="Putih/Biru" type="text"/>
+</div>
+</div>
+<div class="space-y-3">
+<label class="text-xs font-bold text-on-surface-variant/80 uppercase tracking-wider ml-1">Kondisi Awal</label>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+<label class="flex items-center gap-3 p-4 rounded-2xl bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors group">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20" type="checkbox"/>
+<span class="text-sm font-medium">Noda Lumpur</span>
+</label>
+<label class="flex items-center gap-3 p-4 rounded-2xl bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20" type="checkbox"/>
+<span class="text-sm font-medium">Menguning</span>
+</label>
+<label class="flex items-center gap-3 p-4 rounded-2xl bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20" type="checkbox"/>
+<span class="text-sm font-medium">Lem Terkelupas</span>
+</label>
+<label class="flex items-center gap-3 p-4 rounded-2xl bg-surface-container-low cursor-pointer hover:bg-surface-container-high transition-colors">
+<input class="w-5 h-5 rounded border-outline-variant text-primary focus:ring-primary/20" type="checkbox"/>
+<span class="text-sm font-medium">Lecet/Scuff</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Section 3: Services -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl shadow-sm border border-outline-variant/10">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed">
+<span class="material-symbols-outlined" data-icon="auto_fix_high">auto_fix_high</span>
+</div>
+<h3 class="text-xl font-bold text-primary">Pilih Layanan</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Service Item -->
+<div class="relative group cursor-pointer border-2 border-transparent hover:border-secondary/30 rounded-2xl transition-all">
+<input checked="" class="absolute top-4 right-4 w-6 h-6 rounded-full border-outline-variant text-secondary focus:ring-secondary/20 z-10" type="checkbox"/>
+<div class="p-6 bg-surface-container-low rounded-2xl group-hover:bg-white transition-colors">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-white rounded-xl shadow-sm text-secondary">
+<span class="material-symbols-outlined" data-icon="dry_cleaning">dry_cleaning</span>
+</div>
+<span class="text-lg font-bold text-primary">Rp 75.000</span>
+</div>
+<h4 class="font-bold text-primary mb-1">Deep Clean</h4>
+<p class="text-xs text-on-surface-variant mb-4">Pembersihan menyeluruh luar dan dalam. Termasuk insole &amp; tali.</p>
+<div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-secondary">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+                                        2-3 Hari Kerja
+                                    </div>
+</div>
+</div>
+<!-- Service Item -->
+<div class="relative group cursor-pointer border-2 border-transparent hover:border-secondary/30 rounded-2xl transition-all">
+<input class="absolute top-4 right-4 w-6 h-6 rounded-full border-outline-variant text-secondary focus:ring-secondary/20 z-10" type="checkbox"/>
+<div class="p-6 bg-surface-container-low rounded-2xl group-hover:bg-white transition-colors">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-white rounded-xl shadow-sm text-secondary">
+<span class="material-symbols-outlined" data-icon="flare">flare</span>
+</div>
+<span class="text-lg font-bold text-primary">Rp 120.000</span>
+</div>
+<h4 class="font-bold text-primary mb-1">Unyellowing</h4>
+<p class="text-xs text-on-surface-variant mb-4">Menghilangkan oksidasi kuning pada midsole karet.</p>
+<div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-secondary">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+                                        4-5 Hari Kerja
+                                    </div>
+</div>
+</div>
+<!-- Service Item -->
+<div class="relative group cursor-pointer border-2 border-transparent hover:border-secondary/30 rounded-2xl transition-all">
+<input class="absolute top-4 right-4 w-6 h-6 rounded-full border-outline-variant text-secondary focus:ring-secondary/20 z-10" type="checkbox"/>
+<div class="p-6 bg-surface-container-low rounded-2xl group-hover:bg-white transition-colors">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-white rounded-xl shadow-sm text-secondary">
+<span class="material-symbols-outlined" data-icon="handyman">handyman</span>
+</div>
+<span class="text-lg font-bold text-primary">Rp 50.000</span>
+</div>
+<h4 class="font-bold text-primary mb-1">Regluing</h4>
+<p class="text-xs text-on-surface-variant mb-4">Pengeleman ulang bagian yang terbuka dengan lem industri.</p>
+<div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-secondary">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+                                        3-4 Hari Kerja
+                                    </div>
+</div>
+</div>
+<!-- Service Item -->
+<div class="relative group cursor-pointer border-2 border-transparent hover:border-secondary/30 rounded-2xl transition-all">
+<input class="absolute top-4 right-4 w-6 h-6 rounded-full border-outline-variant text-secondary focus:ring-secondary/20 z-10" type="checkbox"/>
+<div class="p-6 bg-surface-container-low rounded-2xl group-hover:bg-white transition-colors">
+<div class="flex justify-between items-start mb-4">
+<div class="p-3 bg-white rounded-xl shadow-sm text-secondary">
+<span class="material-symbols-outlined" data-icon="shield_heart">shield_with_heart</span>
+</div>
+<span class="text-lg font-bold text-primary">Rp 40.000</span>
+</div>
+<h4 class="font-bold text-primary mb-1">Protection Spray</h4>
+<p class="text-xs text-on-surface-variant mb-4">Lapisan nano-technology penolak air dan debu.</p>
+<div class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-secondary">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+                                        Instan
+                                    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Summary & Delivery -->
+<div class="lg:col-span-4 space-y-6">
+<!-- Section 4: Delivery Method -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl shadow-sm border border-outline-variant/10">
+<h3 class="text-lg font-bold text-primary mb-6">Metode Penyerahan</h3>
+<div class="space-y-3">
+<label class="flex items-center justify-between p-4 rounded-2xl bg-white border-2 border-secondary cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary" data-icon="store">store</span>
+<div>
+<p class="font-bold text-primary">Drop-off</p>
+<p class="text-xs text-on-surface-variant">Bawa langsung ke outlet</p>
+</div>
+</div>
+<input checked="" class="text-secondary focus:ring-secondary/20" name="delivery" type="radio"/>
+</label>
+<label class="flex items-center justify-between p-4 rounded-2xl bg-surface-container-low hover:bg-white border-2 border-transparent hover:border-outline-variant/30 cursor-pointer transition-all">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="moped">moped</span>
+<div>
+<p class="font-bold text-primary">Pickup</p>
+<p class="text-xs text-on-surface-variant">Kurir menjemput ke lokasi</p>
+</div>
+</div>
+<input class="text-secondary focus:ring-secondary/20" name="delivery" type="radio"/>
+</label>
+</div>
+</div>
+<!-- Section 5: Payment Summary -->
+<div class="bg-primary-container p-8 rounded-3xl shadow-2xl shadow-primary/30 text-white sticky top-24">
+<h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                            Ringkasan Pesanan
+                        </h3>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between text-sm opacity-80">
+<span>Layanan (1 Item)</span>
+<span>Rp 75.000</span>
+</div>
+<div class="flex justify-between text-sm opacity-80">
+<span>Pajak (11%)</span>
+<span>Rp 8.250</span>
+</div>
+<div class="flex justify-between text-sm opacity-80">
+<span>Layanan Pickup</span>
+<span>Rp 0</span>
+</div>
+<div class="h-px bg-white/10 my-2"></div>
+<div class="flex justify-between items-end">
+<span class="text-sm font-medium opacity-80 uppercase tracking-widest">Total Bayar</span>
+<span class="text-2xl font-black">Rp 83.250</span>
+</div>
+</div>
+<div class="space-y-3">
+<button class="w-full bg-secondary-container text-on-secondary-container py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-secondary-fixed transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+                                Konfirmasi Pesanan
+                            </button>
+<p class="text-[10px] text-center opacity-50 px-4">Dengan menekan tombol di atas, Anda menyetujui syarat &amp; ketentuan layanan cuci sepatu Pristine Pro.</p>
+</div>
+</div>
+<!-- Visual Accent Card -->
+<div class="rounded-3xl overflow-hidden relative h-48 group">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" data-alt="close-up of a high-end leather sneaker being meticulously cleaned with a soft brush in a bright clinical workshop environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCs9WBCklFLpkEUyiWGPvTttFOi-2jfxTTPNPzpmWSw5fANFe5gDA_kTz52QMxI8OMs29xV92FEk8O-DKDiZ2EInJzopHiJzktiT5Mf3g2GycS1NC8IW_Eb9MziBYxMAA5z0i-dzB_YzH40B552gWawqPoDqfG7yP0U16gYvKJ-j6yLyjarXV8yAA944tcaF9MNLKYJRWRhTtlTIo0ZN8am0WDtRewtE2o5MsJm7O0pywuyIaZ2212neJFXZTZLRj_aMJi3leRd9bkm"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent flex items-end p-6">
+<p class="text-white text-xs font-medium italic">"Setiap pasang sepatu menceritakan sebuah perjalanan. Kami memastikan ceritanya tetap bersih."</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Spacer for mobile scroll -->
+<div class="h-20 md:hidden"></div>
+</main>
+<!-- BottomNavBar for Mobile -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg flex justify-around items-center py-3 px-2 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-medium">Dashboard</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined" data-icon="receipt_long" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span class="text-[10px] font-bold">Orders</span>
+</button>
+<div class="relative -top-6">
+<button class="w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-lg shadow-primary/30">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+</div>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="text-[10px] font-medium">Customers</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[10px] font-medium">Settings</span>
+</button>
+</nav>
+</body></html>

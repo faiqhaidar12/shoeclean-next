@@ -196,6 +196,31 @@ export type StorefrontSuccessResponse = {
   };
 };
 
+export type PublicSurveyResponse = {
+  survey: {
+    id: number;
+    title: string;
+    slug: string;
+    description: string | null;
+    type: string;
+    is_active: boolean;
+    outlet: {
+      id: number;
+      name: string;
+      slug: string;
+      address: string | null;
+      phone: string | null;
+    } | null;
+    questions: Array<{
+      id: number;
+      question: string;
+      type: "rating" | "text" | "choice";
+      options: string[];
+      sort_order: number;
+    }>;
+  };
+};
+
 export class ApiError extends Error {
   constructor(
     message: string,
@@ -287,5 +312,11 @@ export function getStorefrontOutlet(
 export function getStorefrontSuccess(slug: string, orderId: string) {
   return request<StorefrontSuccessResponse>(
     `/api/public/outlets/${encodeURIComponent(slug)}/orders/${encodeURIComponent(orderId)}/success`,
+  );
+}
+
+export function getPublicSurvey(slug: string) {
+  return request<PublicSurveyResponse>(
+    `/api/public/surveys/${encodeURIComponent(slug)}`,
   );
 }

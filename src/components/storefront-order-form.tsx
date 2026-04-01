@@ -8,7 +8,7 @@ import { formatRupiah } from "@/lib/format";
 
 type OrderItem = {
   service_id: string;
-  quantity: number;
+  quantity: string;
 };
 
 type PromoState = {
@@ -23,7 +23,7 @@ type Props = {
 
 export function StorefrontOrderForm({ data }: Props) {
   const router = useRouter();
-  const [items, setItems] = useState<OrderItem[]>([{ service_id: "", quantity: 1 }]);
+  const [items, setItems] = useState<OrderItem[]>([{ service_id: "", quantity: "1" }]);
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [orderType, setOrderType] = useState("regular");
@@ -44,8 +44,9 @@ export function StorefrontOrderForm({ data }: Props) {
     const service = data.services.find(
       (currentService) => String(currentService.id) === item.service_id,
     );
+    const quantity = Math.max(1, Number(item.quantity || "1"));
 
-    return total + (service ? service.price * item.quantity : 0);
+    return total + (service ? service.price * quantity : 0);
   }, 0);
 
   const pickupFee = orderType === "pickup" ? data.outlet.pickup_fee : 0;
@@ -64,13 +65,13 @@ export function StorefrontOrderForm({ data }: Props) {
   }
 
   function addItem() {
-    setItems((current) => [...current, { service_id: "", quantity: 1 }]);
+    setItems((current) => [...current, { service_id: "", quantity: "1" }]);
   }
 
   function removeItem(index: number) {
     setItems((current) =>
       current.length === 1
-        ? [{ service_id: "", quantity: 1 }]
+        ? [{ service_id: "", quantity: "1" }]
         : current.filter((_, itemIndex) => itemIndex !== index),
     );
     setPromo(null);
@@ -141,7 +142,7 @@ export function StorefrontOrderForm({ data }: Props) {
         .filter((item) => item.service_id)
         .map((item) => ({
           service_id: Number(item.service_id),
-          quantity: item.quantity,
+          quantity: Math.max(1, Number(item.quantity || "1")),
         }));
 
       const formData = new FormData();
@@ -194,12 +195,8 @@ export function StorefrontOrderForm({ data }: Props) {
         <section className="section-block hero-card p-4 sm:p-5">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="section-label">
-                Cabang lain
-              </p>
-              <h2 className="mt-2 text-xl font-semibold">
-                Ganti cabang dengan sekali tap.
-              </h2>
+              <p className="section-label">Cabang lain</p>
+              <h2 className="mt-2 text-xl font-semibold">Ganti cabang dengan sekali tap.</h2>
             </div>
           </div>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
@@ -231,22 +228,35 @@ export function StorefrontOrderForm({ data }: Props) {
       ) : null}
 
       <section className="section-block hero-card p-4 sm:p-5">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="section-label">
-              Langkah 1
-            </p>
+            <p className="section-label">Langkah 1</p>
             <h2 className="mt-2 text-xl font-semibold">Pilih layanan</h2>
+            <p className="mt-2 text-sm leading-6 text-muted">
+              Pilih layanan yang ingin dikerjakan lalu atur jumlahnya.
+            </p>
           </div>
-          <button type="button" onClick={addItem} className="btn-secondary">
+          <button type="button" onClick={addItem} className="btn-secondary w-full sm:w-auto">
             Tambah item
           </button>
         </div>
 
         <div className="info-list mt-4">
           {items.map((item, index) => (
-            <div key={`${index}-${item.service_id}`} className="soft-panel p-4">
+            <div key={`${index}-${item.service_id}`} className="soft-panel p-4 sm:p-5">
               <div className="grid gap-3">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-sm font-semibold text-brand">Item {index + 1}</p>
+                  {items.length > 1 ? (
+                    <button
+                      type="button"
+                      onClick={() => removeItem(index)}
+                      className="text-sm font-semibold text-muted transition hover:text-brand"
+                    >
+                      Hapus
+                    </button>
+                  ) : null}
+                </div>
                 <select
                   value={item.service_id}
                   onChange={(event) =>
@@ -266,21 +276,23 @@ export function StorefrontOrderForm({ data }: Props) {
                   <input
                     type="number"
                     min={1}
+                    inputMode="numeric"
                     value={item.quantity}
                     onChange={(event) =>
                       updateItem(index, {
-                        quantity: Math.max(1, Number(event.target.value || 1)),
+                        quantity: event.target.value,
+                      })
+                    }
+                    onBlur={() =>
+                      updateItem(index, {
+                        quantity: String(Math.max(1, Number(item.quantity || "1"))),
                       })
                     }
                     className="field-soft"
                   />
-                  <button
-                    type="button"
-                    onClick={() => removeItem(index)}
-                    className="btn-secondary"
-                  >
-                    Hapus
-                  </button>
+                  <div className="rounded-[1.2rem] bg-white px-4 py-3 text-sm text-muted shadow-[inset_0_0_0_1px_rgba(0,32,69,0.06)]">
+                    Qty layanan
+                  </div>
                 </div>
               </div>
             </div>
@@ -289,10 +301,11 @@ export function StorefrontOrderForm({ data }: Props) {
       </section>
 
       <section className="section-block p-4 sm:p-5">
-        <p className="section-label">
-          Langkah 2
-        </p>
+        <p className="section-label">Langkah 2</p>
         <h2 className="mt-2 text-xl font-semibold">Data customer</h2>
+        <p className="mt-2 text-sm leading-6 text-muted">
+          Pastikan nama dan nomor aktif agar outlet mudah menghubungi customer.
+        </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <input
             required
@@ -312,10 +325,11 @@ export function StorefrontOrderForm({ data }: Props) {
       </section>
 
       <section className="section-block p-4 sm:p-5">
-        <p className="section-label">
-          Langkah 3
-        </p>
+        <p className="section-label">Langkah 3</p>
         <h2 className="mt-2 text-xl font-semibold">Pengambilan & pembayaran</h2>
+        <p className="mt-2 text-sm leading-6 text-muted">
+          Pilih regular, pickup, atau delivery, lalu tentukan cara pembayarannya.
+        </p>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <select
@@ -396,10 +410,11 @@ export function StorefrontOrderForm({ data }: Props) {
       </section>
 
       <section className="section-block p-4 sm:p-5">
-        <p className="section-label">
-          Opsional
-        </p>
+        <p className="section-label">Opsional</p>
         <h2 className="mt-2 text-xl font-semibold">Promo & catatan order</h2>
+        <p className="mt-2 text-sm leading-6 text-muted">
+          Tambahkan kode promo atau catatan khusus bila diperlukan.
+        </p>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
           <input
@@ -429,8 +444,12 @@ export function StorefrontOrderForm({ data }: Props) {
       </section>
 
       <section className="section-dark hero-card p-5 sm:p-6">
-        <p className="section-label-dark">
-          Ringkasan
+        <p className="section-label-dark">Ringkasan</p>
+        <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em]">
+          Total estimasi order
+        </h2>
+        <p className="mt-2 text-sm leading-6 text-white/72">
+          Setelah semua data benar, lanjutkan dengan tombol utama di bawah ini.
         </p>
         <div className="mt-5 space-y-3 text-sm">
           <div className="flex items-center justify-between gap-4">
@@ -470,13 +489,15 @@ export function StorefrontOrderForm({ data }: Props) {
           </div>
         ) : null}
 
-        <button
-          type="submit"
-          disabled={isSubmitting || data.ui.order_limit_reached}
-          className="btn-primary mt-5 w-full justify-center bg-white text-accent hover:bg-[#f2eee7] disabled:opacity-60"
-        >
-          {isSubmitting ? "Memproses pesanan..." : "Kirim pesanan ke outlet"}
-        </button>
+        <div className="mt-6 rounded-[1.5rem] bg-white/8 p-3">
+          <button
+            type="submit"
+            disabled={isSubmitting || data.ui.order_limit_reached}
+            className="inline-flex w-full items-center justify-center rounded-[1.2rem] bg-[linear-gradient(135deg,#81f2eb,#d8fffb)] px-5 py-4 text-base font-extrabold tracking-[-0.02em] text-[#003734] shadow-[0_18px_34px_rgba(129,242,235,0.18)] transition hover:brightness-[0.98] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isSubmitting ? "Memproses pesanan..." : "Kirim pesanan ke outlet"}
+          </button>
+        </div>
       </section>
     </form>
   );

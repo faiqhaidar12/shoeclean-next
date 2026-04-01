@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pristine Pro | Ahli Restorasi Klinis Perawatan Sepatu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary-fixed-dim": "#adc7f7",
+              "outline-variant": "#c4c6cf",
+              "secondary-fixed": "#84f5ee",
+              "secondary-fixed-dim": "#66d8d2",
+              "on-secondary-container": "#006f6a",
+              "on-tertiary-container": "#8ca4a0",
+              "inverse-primary": "#adc7f7",
+              "error-container": "#ffdad6",
+              "on-primary": "#ffffff",
+              "primary-fixed": "#d6e3ff",
+              "on-primary-container": "#86a0cd",
+              "inverse-surface": "#2d3133",
+              "surface-bright": "#f7f9fb",
+              "error": "#ba1a1a",
+              "on-surface-variant": "#43474e",
+              "surface-container-high": "#e6e8ea",
+              "surface-container": "#eceef0",
+              "on-primary-fixed-variant": "#2d476f",
+              "on-primary-fixed": "#001b3c",
+              "tertiary-container": "#243a37",
+              "background": "#f7f9fb",
+              "surface": "#f7f9fb",
+              "tertiary": "#0e2422",
+              "on-error": "#ffffff",
+              "surface-variant": "#e0e3e5",
+              "tertiary-fixed": "#cfe8e3",
+              "surface-container-low": "#f2f4f6",
+              "on-tertiary": "#ffffff",
+              "on-background": "#191c1e",
+              "on-secondary-fixed": "#00201e",
+              "on-error-container": "#93000a",
+              "on-secondary-fixed-variant": "#00504d",
+              "secondary": "#006a66",
+              "surface-tint": "#455f88",
+              "surface-dim": "#d8dadc",
+              "tertiary-fixed-dim": "#b3ccc7",
+              "on-tertiary-fixed": "#081f1d",
+              "surface-container-lowest": "#ffffff",
+              "inverse-on-surface": "#eff1f3",
+              "primary-container": "#1a365d",
+              "secondary-container": "#81f2eb",
+              "on-secondary": "#ffffff",
+              "on-tertiary-fixed-variant": "#354b48",
+              "surface-container-highest": "#e0e3e5",
+              "primary": "#002045",
+              "outline": "#74777f",
+              "on-surface": "#191c1e"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #002045 0%, #1a365d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-primary-gradient {
+            background: linear-gradient(135deg, #002045 0%, #1a365d 100%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/20 dark:border-slate-800/20 shadow-sm dark:shadow-none duration-300 ease-in-out">
+<div class="flex justify-between items-center px-8 h-16 max-w-full mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-blue-900 dark:text-white font-headline">Pristine Pro</div>
+<div class="hidden md:flex space-x-8 items-center">
+<a class="font-manrope text-sm font-bold tracking-tight text-blue-900 dark:text-white border-b-2 border-blue-600 px-1 py-1" href="#">Harga</a>
+<a class="font-manrope text-sm font-medium tracking-tight text-slate-500 dark:text-slate-400 hover:text-blue-700 transition-colors" href="#">Lacak Pesanan</a>
+<a class="font-manrope text-sm font-medium tracking-tight text-slate-500 dark:text-slate-400 hover:text-blue-700 transition-colors" href="#">Dukungan</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="font-manrope text-sm font-medium text-blue-900 hover:bg-slate-50 px-4 py-2 rounded-lg transition-colors">Masuk</button>
+<button class="font-manrope text-sm font-bold bg-primary text-white px-6 py-2 rounded-full hover:shadow-lg transition-all">Daftar</button>
+</div>
+</div>
+</nav>
+<main class="pt-16">
+<!-- Hero Section -->
+<section class="relative overflow-hidden py-24 md:py-32">
+<div class="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+<div class="lg:col-span-7">
+<div class="inline-flex items-center space-x-2 bg-secondary-container px-4 py-1.5 rounded-full mb-8">
+<span class="material-symbols-outlined text-on-secondary-container text-sm">cleaning</span>
+<span class="text-xs font-bold text-on-secondary-container tracking-wider uppercase">Operasional Masa Depan</span>
+</div>
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter text-primary leading-[1.1] mb-8">
+                        Otomatiskan <span class="text-gradient">Kerajaan Cuci Sepatu</span> Anda dengan Presisi Klinis.
+                    </h1>
+<p class="text-lg text-on-surface-variant max-w-xl mb-12 leading-relaxed">
+                        Platform manajemen all-in-one yang dirancang untuk cabang perawatan sepatu modern. Lacak pesanan, kelola staf, dan tingkatkan pendapatan Anda dengan alur kerja otomatis.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="btn-primary-gradient text-white px-8 py-4 rounded-full font-bold text-lg shadow-xl shadow-primary/20 hover:scale-105 transition-transform">Mulai Sekarang</button>
+<button class="bg-surface-container-low text-primary px-8 py-4 rounded-full font-bold text-lg hover:bg-surface-container transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">play_circle</span>
+                            Lihat Demo
+                        </button>
+</div>
+</div>
+<div class="lg:col-span-5 relative">
+<div class="bg-surface-container-lowest p-6 rounded-[2rem] shadow-2xl relative z-10">
+<img alt="Sneaker premium sedang dibersihkan dengan teliti" class="rounded-2xl w-full h-[450px] object-cover" data-alt="Close-up of a high-end designer sneaker being cleaned with a soft brush by a professional in a bright minimalist studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChC3umSBoMQu1TyZT6mfSt_3id4TWJzAGVwYTHiE5Il4ina0zgSMvhD7J9zLH_mIAwMMSiX3VCUoJZxJcDBZCaYcsj6vJmznrYTXLWnlHVWJILFSl4U5TcZoIXT9meLe8X71hO2_3vITsomjefd4rXZ2Nny5y1wKcn6E5gGItixYUa-6mUnQgi8WpymbuN2jvHVy02NzI1maRi_R07J5oag8zkoee6FyrFUCDQpgbBNy3RnIzhOU18ysUoyqrsQ8uJiJXATiRpZ5m3"/>
+<div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl flex items-center gap-4 border border-outline-variant/10">
+<div class="bg-secondary-container p-3 rounded-full">
+<span class="material-symbols-outlined text-on-secondary-container">trending_up</span>
+</div>
+<div>
+<div class="text-sm font-bold text-primary">Pendapatan Naik 42%</div>
+<div class="text-xs text-on-surface-variant">Rata-rata pertumbuhan pelanggan</div>
+</div>
+</div>
+</div>
+<div class="absolute -top-12 -right-12 w-64 h-64 bg-secondary-fixed/20 rounded-full blur-3xl -z-0"></div>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="py-24 bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-8">
+<div class="mb-20 text-center max-w-3xl mx-auto">
+<h2 class="font-headline text-3xl md:text-4xl font-extrabold text-primary mb-6">Kuasai setiap aspek bisnis Anda.</h2>
+<p class="text-on-surface-variant text-lg">Kami telah membangun alat yang menyelesaikan masalah spesifik dalam restorasi sepatu dan logistik.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Feature 1: Order Tracking -->
+<div class="md:col-span-2 bg-surface-container-lowest p-10 rounded-[2rem] flex flex-col justify-between group">
+<div class="max-w-md">
+<div class="w-12 h-12 bg-primary-container rounded-xl flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-white">location_on</span>
+</div>
+<h3 class="text-2xl font-bold text-primary mb-4">Pelacakan Pesanan Presisi</h3>
+<p class="text-on-surface-variant">Pelacakan GPS real-time untuk penjemputan dan pengantaran, dikombinasikan dengan Dasbor status restorasi 12 langkah untuk pelanggan Anda.</p>
+</div>
+<div class="mt-12 bg-surface-container-low rounded-xl p-4 border border-outline-variant/10">
+<div class="flex items-center justify-between mb-4">
+<span class="text-xs font-bold text-primary">PESANAN #9942</span>
+<span class="text-xs px-2 py-0.5 bg-secondary-container text-on-secondary-container rounded-full font-bold">RESTORASI</span>
+</div>
+<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-2/3"></div>
+</div>
+</div>
+</div>
+<!-- Feature 2: Staff -->
+<div class="bg-primary-container p-10 rounded-[2rem] text-white flex flex-col justify-between">
+<div>
+<div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-white">groups</span>
+</div>
+<h3 class="text-2xl font-bold mb-4">Optimalisasi Staf</h3>
+<p class="text-white/70">Tugaskan tugas khusus kepada artisan atau ahli restorasi Anda berdasarkan bahan sepatu dan kompleksitas restorasi.</p>
+</div>
+<div class="flex -space-x-3 mt-8">
+<img alt="staf" class="w-12 h-12 rounded-full border-2 border-primary-container" data-alt="portrait of a male employee" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVAv8P7DcfHq3wnef7qjxUYqWbdb529y4maHTVOgY1HisT4RofRqxllRe2qdVvt5Bguxbg8agBwL5bkSDMwKmpzsaQmNpWo5kUPEhFVI9tSO9t2cJEbBDMt1Q7OJGcdqZAk4YvHm5uJfsBU4-HhbM1BTekgJov_HPs-qFpKcKGJ923BFH5MHfNA3OMUuerJggs5nsPwxl5xMNv21DgZFi-i6vcM0S_dlTLiHU_vDtV9qnrR0d0nOGwtS7F1812-itp69aJAlLjB4fb"/>
+<img alt="staf" class="w-12 h-12 rounded-full border-2 border-primary-container" data-alt="portrait of a female employee" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsfJEPbSo6PyEPg5tva0jpSCRmKIF7ur8LsF1Hw1yZiBBsSfqXyi8yRIzL2Cnu00NQhuFKNYnFGPBxaVfyDIpxDDLgjSdSXfWtaywFRRtd5j9axhgGXndYfNYf-Wk5zJAo9fr6ONBNxpubfmGBK8gjJ-2mDq1HNXDaKYDJf-MUz3IGFf9pAnyYbBzaA1JVsGiRyrN_WZUofANPveMB5F14CtG40dBTv3uN-W4SXZdWu4BnZ23XEEq_3l7Wf1ni4Q65atCd0F_O5a6-"/>
+<img alt="staf" class="w-12 h-12 rounded-full border-2 border-primary-container" data-alt="portrait of a male employee" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBn8Qq1OUTT6o5s6tkeJI_lwhpP-Gp81SXVQ76fJKgtRpAYNybuQr6AWnD-WMPOsbCvONABmQCpKi73s5DsLZVkvJuwklPtRD8w73XrpDV3logTYY19xQXLgZQ83ikdyHTS8cTwOxsAIZMi6_hFp374eJM5vRCRoSa5d5zGTU9u7i1tW-Pv2D9X_8W3lVuiUhJT54aFNbrslStm6N6KAfL7l1FLQGDPArPrULyuW2z5NWV5nrE6HL7jupaskbJynKsP19gVdE_Nv5LB"/>
+<div class="w-12 h-12 rounded-full bg-secondary text-on-secondary flex items-center justify-center text-xs font-bold border-2 border-primary-container">+12</div>
+</div>
+</div>
+<!-- Feature 3: Finance -->
+<div class="bg-surface-container-lowest p-10 rounded-[2rem] flex flex-col justify-between border border-outline-variant/10">
+<div>
+<div class="w-12 h-12 bg-secondary-container rounded-xl flex items-center justify-center mb-8">
+<span class="material-symbols-outlined text-on-secondary-container">payments</span>
+</div>
+<h3 class="text-2xl font-bold text-primary mb-4">Kejelasan Keuangan</h3>
+<p class="text-on-surface-variant">Faktur otomatis dan laporan laba/rugi yang disesuaikan untuk bisnis cuci sepatu bervolume tinggi.</p>
+</div>
+</div>
+<!-- Feature 4: Custom Stats -->
+<div class="md:col-span-2 bg-gradient-to-br from-secondary to-on-secondary-fixed-variant p-10 rounded-[2rem] text-white">
+<div class="flex flex-col md:flex-row gap-12 items-center">
+<div class="flex-1">
+<h3 class="text-2xl font-bold mb-4">Analitik Real-time</h3>
+<p class="text-white/80 mb-8">Pantau waktu pengerjaan cuci sepatu, retensi pelanggan, dan penggunaan bahan dalam satu dasbor yang indah.</p>
+<button class="bg-white text-secondary font-bold px-6 py-2 rounded-full text-sm">Lihat Modul Analitik</button>
+</div>
+<div class="flex-1 w-full flex items-end justify-around h-32 gap-2">
+<div class="w-full bg-white/20 rounded-t-lg h-[40%]"></div>
+<div class="w-full bg-white/40 rounded-t-lg h-[60%]"></div>
+<div class="w-full bg-white/60 rounded-t-lg h-[90%]"></div>
+<div class="w-full bg-white rounded-t-lg h-[75%]"></div>
+<div class="w-full bg-white/80 rounded-t-lg h-[100%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonials -->
+<section class="py-24 bg-surface overflow-hidden">
+<div class="max-w-7xl mx-auto px-8">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16">
+<div class="max-w-xl">
+<h2 class="font-headline text-3xl md:text-4xl font-extrabold text-primary mb-6">Dipercaya oleh ahli restorasi terbaik dunia.</h2>
+</div>
+<div class="hidden md:flex gap-4 mb-2">
+<button class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<button class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Testimonial 1 -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl shadow-sm border border-outline-variant/5">
+<div class="flex text-secondary mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface-variant italic mb-8 leading-relaxed">"Pristine Pro mengubah kekacauan kami menjadi operasional klinis. Kami menggandakan jumlah cabang dalam 6 bulan tanpa menambah satu pun staf admin."</p>
+<div class="flex items-center gap-4">
+<img alt="Peninjau" class="w-12 h-12 rounded-full object-cover" data-alt="portrait of a professional man in business casual" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaA8Sv_AMsgFZfWYIdrlShY2enEcOqJfkzwp9vYuDjF8lXIwi-i-bGubGn4JbrNN8EZsRvMDesfJj4LtqsPMdgaAZWdzpzFwSLupILzF-3Uqn3H4PbRaQbCCFAVRC78sj5oarhLU2toWlVv4Kl1u2ecHUBpy3FmNyitpVbVzdLOXxNT8etChZjULsQwul1hxeFy5vduNehtGc0WJUjZnKkwxoyTjDxJbztYw8i7aKyo1i1pzTrCxDvokNvuIGz-aaFZWZ38iHHPnUc"/>
+<div>
+<div class="font-bold text-primary">Marcus Thorne</div>
+<div class="text-xs text-on-surface-variant">Pemilik, The Sole Sanctuary</div>
+</div>
+</div>
+</div>
+<!-- Testimonial 2 -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl shadow-sm border border-outline-variant/5">
+<div class="flex text-secondary mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface-variant italic mb-8 leading-relaxed">"Fitur pelacakannya luar biasa. Pelanggan kami sangat menyukai pembaruan foto otomatis saat sepatu mereka sedang direstorasi. Sangat merekomendasikan ini."</p>
+<div class="flex items-center gap-4">
+<img alt="Peninjau" class="w-12 h-12 rounded-full object-cover" data-alt="portrait of a confident female entrepreneur" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4grwGTLOPynp2SEOSpwp--UeHfD9dP8LkRrYx286JVp3HA7bYEEPEw13JcdgmfeHsKE6ji6SmLIjrJ1HLTzk_aCDGBXiJXMNHckLPVIDAncT0XPJtGELoAo7goW8F3GC2fiEQONnD2SzwW_qjREd7ahQKR7M7k_aJ0YZCH0frkZjF98bb5OBGvDo1Pz1Qjslwq2VibJyBgKsofokU1LbS0_fOZfzHx5jH-uZ9WuC0STeUIeNd_vh6frjRkzGxQxWG7izbf9TogTsi"/>
+<div>
+<div class="font-bold text-primary">Elena Rodriguez</div>
+<div class="text-xs text-on-surface-variant">CEO, Velvet &amp; Leather</div>
+</div>
+</div>
+</div>
+<!-- Testimonial 3 -->
+<div class="bg-surface-container-lowest p-8 rounded-3xl shadow-sm border border-outline-variant/5">
+<div class="flex text-secondary mb-6">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface-variant italic mb-8 leading-relaxed">"Akhirnya, perangkat lunak yang memahami kompleksitas bahan sepatu. Modul manajemen staf sangat intuitif untuk digunakan."</p>
+<div class="flex items-center gap-4">
+<img alt="Peninjau" class="w-12 h-12 rounded-full object-cover" data-alt="portrait of a professional male business owner" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8EY9E3lik2l4XNTIRDC-XcnSYTLGu1elitDO6ZC6cP_ops5MO1rBb40oaLWNzPMBD39FNtDq8HVqN5VgzQOEyZUGSlz3yZqg9lfkuB74LXo2CtU_e4LmbybN_L3q8RAM1bfUQC2Qf6JJGjMfP36rbn8n8omG1JZBXhHQGuJTWJSVKhkiiNDnpLpXJ2b9j3F7hTy7EuxkC7elRF_o-Lt5IHKy6mqwr314KhaHuJbEDuKOmfgydbizwoVVd5Oln7jRxl2Q3ppEnvYJQ"/>
+<div>
+<div class="font-bold text-primary">James Whitaker</div>
+<div class="text-xs text-on-surface-variant">Founder, Pristine Kicks</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA -->
+<section class="py-24">
+<div class="max-w-5xl mx-auto px-8">
+<div class="bg-primary-container rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden">
+<div class="relative z-10">
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-white mb-8">Siap merevitalisasi bisnis Anda?</h2>
+<p class="text-white/70 text-lg mb-12 max-w-2xl mx-auto">Bergabunglah dengan 500+ spesialis perawatan sepatu yang telah mengoptimalkan operasional mereka dengan Pristine Pro.</p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<button class="bg-secondary text-on-secondary px-10 py-4 rounded-full font-bold text-lg hover:bg-secondary-fixed transition-colors">Mulai Uji Coba Gratis</button>
+<button class="bg-white/10 text-white border border-white/20 px-10 py-4 rounded-full font-bold text-lg hover:bg-white/20 transition-colors">Jadwalkan Panggilan</button>
+</div>
+</div>
+<!-- Decorative background element -->
+<div class="absolute top-0 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-0 left-0 w-96 h-96 bg-primary-fixed-dim/5 rounded-full blur-[100px]"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 py-12 max-w-7xl mx-auto">
+<div class="mb-6 md:mb-0">
+<div class="text-xl font-black text-blue-900 dark:text-white mb-2 font-headline">Pristine Pro</div>
+<p class="font-inter text-xs text-slate-400">© 2024 Pristine Pro Shoe Care. Hak cipta dilindungi undang-undang.</p>
+</div>
+<div class="flex space-x-8">
+<a class="font-inter text-xs text-slate-400 hover:text-blue-600 transition-colors" href="#">Ketentuan</a>
+<a class="font-inter text-xs text-slate-400 hover:text-blue-600 transition-colors" href="#">Privasi</a>
+<a class="font-inter text-xs text-slate-400 hover:text-blue-600 transition-colors" href="#">Cookie</a>
+<a class="font-inter text-xs text-slate-400 hover:text-blue-600 transition-colors" href="#">Kontak</a>
+</div>
+</div>
+</footer>
+</body></html>

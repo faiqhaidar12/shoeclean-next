@@ -2,15 +2,26 @@ import { redirect } from "next/navigation";
 import { BackendUnavailable } from "@/components/backend-unavailable";
 import { DashboardShell } from "@/components/dashboard-shell";
 import { getDashboardSummary } from "@/lib/auth";
-import { ApiError, API_BASE_URL } from "@/lib/api";
+import { ApiError } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
 
-export default async function DashboardPage() {
+type DashboardPageProps = {
+  searchParams?: Promise<{
+    month?: string;
+    year?: string;
+  }>;
+};
+
+export default async function DashboardPage({ searchParams }: DashboardPageProps) {
   let data: Awaited<ReturnType<typeof getDashboardSummary>>;
+  const params = (await searchParams) ?? {};
 
   try {
-    data = await getDashboardSummary();
+    data = await getDashboardSummary({
+      month: params.month,
+      year: params.year,
+    });
   } catch (error) {
     if (error instanceof ApiError && error.status === 401) {
       redirect("/login");
@@ -28,10 +39,5 @@ export default async function DashboardPage() {
     throw error;
   }
 
-  return (
-    <DashboardShell
-      data={data}
-      legacyDashboardUrl={`${API_BASE_URL}/dashboard`}
-    />
-  );
+  return <DashboardShell data={data} />;
 }

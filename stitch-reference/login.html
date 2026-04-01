@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Masuk Admin | Pristine Professional Shoe Care</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary": "#006a66",
+              "on-surface": "#191c1e",
+              "background": "#f7f9fb",
+              "on-primary-container": "#86a0cd",
+              "tertiary-fixed-dim": "#b3ccc7",
+              "surface-tint": "#455f88",
+              "on-tertiary": "#ffffff",
+              "surface-container-low": "#f2f4f6",
+              "secondary-fixed-dim": "#66d8d2",
+              "secondary-fixed": "#84f5ee",
+              "on-surface-variant": "#43474e",
+              "on-secondary": "#ffffff",
+              "primary-fixed-dim": "#adc7f7",
+              "on-error": "#ffffff",
+              "on-error-container": "#93000a",
+              "on-secondary-container": "#006f6a",
+              "on-tertiary-container": "#8ca4a0",
+              "inverse-surface": "#2d3133",
+              "surface-variant": "#e0e3e5",
+              "primary-fixed": "#d6e3ff",
+              "tertiary": "#0e2422",
+              "surface-bright": "#f7f9fb",
+              "secondary-container": "#81f2eb",
+              "on-background": "#191c1e",
+              "tertiary-container": "#243a37",
+              "surface-container-lowest": "#ffffff",
+              "surface-dim": "#d8dadc",
+              "on-secondary-fixed": "#00201e",
+              "surface-container": "#eceef0",
+              "outline": "#74777f",
+              "inverse-primary": "#adc7f7",
+              "on-tertiary-fixed": "#081f1d",
+              "surface": "#f7f9fb",
+              "error-container": "#ffdad6",
+              "error": "#ba1a1a",
+              "surface-container-high": "#e6e8ea",
+              "on-tertiary-fixed-variant": "#354b48",
+              "on-primary-fixed-variant": "#2d476f",
+              "on-primary": "#ffffff",
+              "primary-container": "#1a365d",
+              "outline-variant": "#c4c6cf",
+              "on-primary-fixed": "#001b3c",
+              "tertiary-fixed": "#cfe8e3",
+              "inverse-on-surface": "#eff1f3",
+              "on-secondary-fixed-variant": "#00504d",
+              "primary": "#002045"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface antialiased min-h-screen flex flex-col">
+<!-- TopAppBar Suppressed for Login Focus - Logic: Task-Focused / Transactional -->
+<main class="flex-grow flex items-center justify-center px-6 py-12 relative overflow-hidden">
+<!-- Background Artistic Elements -->
+<div class="absolute top-[-10%] left-[-5%] w-[40%] h-[40%] bg-secondary-fixed/20 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] bg-primary-fixed/30 rounded-full blur-[120px]"></div>
+<div class="w-full max-w-md z-10">
+<!-- Brand Anchor -->
+<div class="text-center mb-10">
+<h1 class="font-headline text-3xl font-extrabold text-primary tracking-tighter mb-2">Pristine</h1>
+<p class="text-on-surface-variant font-medium tracking-tight">Manajemen Perawatan Sepatu Profesional</p>
+</div>
+<!-- Login Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-[0_20px_40px_rgba(25,28,30,0.06)] p-8 md:p-10 relative overflow-hidden group">
+<!-- Condition-style Accent Bar -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-secondary rounded-l-xl"></div>
+<header class="mb-8">
+<h2 class="font-headline text-2xl font-bold text-primary mb-1">Portal Admin</h2>
+<p class="text-on-surface-variant text-sm">Silakan masuk untuk mengakses dasbor Anda.</p>
+</header>
+<form class="space-y-6">
+<!-- Email Field -->
+<div class="space-y-2">
+<label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-widest ml-1" for="email">Alamat Email</label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">mail</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/10 focus:bg-surface-container-lowest transition-all duration-300 placeholder:text-outline-variant text-on-surface" id="email" name="email" placeholder="admin@pristinepro.com" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-2">
+<div class="flex justify-between items-center px-1">
+<label class="text-xs font-semibold text-on-surface-variant uppercase tracking-widest" for="password">Kata Sandi</label>
+<a class="text-xs font-semibold text-primary hover:text-secondary transition-colors" href="#">Lupa Kata Sandi?</a>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">lock</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/10 focus:bg-surface-container-lowest transition-all duration-300 placeholder:text-outline-variant text-on-surface" id="password" name="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<!-- Options -->
+<div class="flex items-center px-1">
+<input class="w-4 h-4 text-secondary border-outline-variant rounded focus:ring-secondary/20 transition-all cursor-pointer" id="remember" name="remember" type="checkbox"/>
+<label class="ml-2 text-sm text-on-surface-variant font-medium select-none cursor-pointer" for="remember">Ingat saya selama 30 hari</label>
+</div>
+<!-- CTA Button -->
+<button class="w-full py-4 bg-gradient-to-br from-primary to-primary-container text-white font-bold rounded-full shadow-lg hover:shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all duration-300 flex items-center justify-center gap-2 group" type="submit">
+<span>Masuk</span>
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</form>
+<footer class="mt-10 pt-8 border-t border-surface-variant/30 text-center">
+<p class="text-sm text-on-surface-variant">
+                        Baru di Pristine? 
+                        <a class="text-primary font-bold hover:underline decoration-secondary decoration-2 underline-offset-4 ml-1 transition-all" href="#">Buat Akun</a>
+</p>
+</footer>
+</div>
+<!-- Footer Details (Subtle) -->
+<div class="mt-8 text-center">
+<div class="inline-flex items-center gap-4 px-4 py-2 bg-surface-container-low/50 rounded-full">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">Sistem Aman</span>
+</div>
+<div class="w-[1px] h-3 bg-outline-variant/50"></div>
+<span class="text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">V2.4.0</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Shared Footer Component -->
+<footer class="w-full py-12 border-t border-slate-200 bg-slate-50">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-7xl mx-auto gap-4">
+<div class="text-slate-500 font-inter text-sm antialiased text-center md:text-left">
+                © 2024 Pristine Professional Shoe Care. Dibuat dengan Teliti.
+            </div>
+<nav class="flex flex-wrap justify-center gap-6">
+<a class="text-slate-500 hover:text-blue-900 transition-all duration-200 font-inter text-sm" href="#">Ketentuan Layanan</a>
+<a class="text-slate-500 hover:text-blue-900 transition-all duration-200 font-inter text-sm" href="#">Kebijakan Privasi</a>
+<a class="text-slate-500 hover:text-blue-900 transition-all duration-200 font-inter text-sm" href="#">Keamanan</a>
+<a class="text-slate-500 hover:text-blue-900 transition-all duration-200 font-inter text-sm" href="#">Hubungi Admin</a>
+</nav>
+</div>
+</footer>
+</body></html>

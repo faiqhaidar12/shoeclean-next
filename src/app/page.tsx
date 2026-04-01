@@ -1,11 +1,70 @@
+﻿import Image from "next/image";
 import Link from "next/link";
+import { PublicBottomNav } from "@/components/public-bottom-nav";
+import { PublicTopNav } from "@/components/public-top-nav";
+import { getOptionalAuthSession } from "@/lib/auth";
 import { BackendUnavailable } from "@/components/backend-unavailable";
 import { ApiError, getPublicHome, type HomeResponse } from "@/lib/api";
-import { formatRupiah } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
+const heroImage =
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuChC3umSBoMQu1TyZT6mfSt_3id4TWJzAGVwYTHiE5Il4ina0zgSMvhD7J9zLH_mIAwMMSiX3VCUoJZxJcDBZCaYcsj6vJmznrYTXLWnlHVWJILFSl4U5TcZoIXT9meLe8X71hO2_3vITsomjefd4rXZ2Nny5y1wKcn6E5gGItixYUa-6mUnQgi8WpymbuN2jvHVy02NzI1maRi_R07J5oag8zkoee6FyrFUCDQpgbBNy3RnIzhOU18ysUoyqrsQ8uJiJXATiRpZ5m3";
+
+const reviewerAvatars = [
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuCaA8Sv_AMsgFZfWYIdrlShY2enEcOqJfkzwp9vYuDjF8lXIwi-i-bGubGn4JbrNN8EZsRvMDesfJj4LtqsPMdgaAZWdzpzFwSLupILzF-3Uqn3H4PbRaQbCCFAVRC78sj5oarhLU2toWlVv4Kl1u2ecHUBpy3FmNyitpVbVzdLOXxNT8etChZjULsQwul1hxeFy5vduNehtGc0WJUjZnKkwxoyTjDxJbztYw8i7aKyo1i1pzTrCxDvokNvuIGz-aaFZWZ38iHHPnUc",
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuD4grwGTLOPynp2SEOSpwp--UeHfD9dP8LkRrYx286JVp3HA7bYEEPEw13JcdgmfeHsKE6ji6SmLIjrJ1HLTzk_aCDGBXiJXMNHckLPVIDAncT0XPJtGELoAo7goW8F3GC2fiEQONnD2SzwW_qjREd7ahQKR7M7k_aJ0YZCH0frkZjF98bb5OBGvDo1Pz1Qjslwq2VibJyBgKsofokU1LbS0_fOZfzHx5jH-uZ9WuC0STeUIeNd_vh6frjRkzGxQxWG7izbf9TogTsi",
+  "https://lh3.googleusercontent.com/aida-public/AB6AXuB8EY9E3lik2l4XNTIRDC-XcnSYTLGu1elitDO6ZC6cP_ops5MO1rBb40oaLWNzPMBD39FNtDq8HVqN5VgzQOEyZUGSlz3yZqg9lfkuB74LXo2CtU_e4LmbybN_L3q8RAM1bfUQC2Qf6JJGjMfP36rbn8n8omG1JZBXhHQGuJTWJSVKhkiiNDnpLpXJ2b9j3F7hTy7EuxkC7elRF_o-Lt5IHKy6mqwr314KhaHuJbEDuKOmfgydbizwoVVd5Oln7jRxl2Q3ppEnvYJQ",
+];
+
+function SparkleIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+      <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" fill="currentColor" />
+    </svg>
+  );
+}
+
+function TrendIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+      <path d="M5 16l5-5 3 3 6-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M14 7h5v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function TeamIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+      <path d="M16 19v-1a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v1" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="10" cy="8" r="3" stroke="currentColor" strokeWidth="2" />
+      <path d="M20 19v-1a3 3 0 0 0-2-2.82" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="M15 5.2a3 3 0 0 1 0 5.6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function BarsIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+      <path d="M5 19V11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="M12 19V7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="M19 19V4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function StarIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M12 3.6l2.6 5.26 5.8.85-4.2 4.1.99 5.79L12 16.88 6.81 19.6l.99-5.79-4.2-4.1 5.8-.85L12 3.6Z" />
+    </svg>
+  );
+}
+
 export default async function Home() {
+  const session = await getOptionalAuthSession();
   let data: HomeResponse | null = null;
   let message = "";
 
@@ -22,233 +81,287 @@ export default async function Home() {
     return <BackendUnavailable message={message} />;
   }
 
+  const testimonials = [
+    {
+      name: "Owner Laundry Sepatu",
+      role: "Pengguna awal ShoeClean",
+      text:
+        "Tracking order dan alur customer sekarang terasa jauh lebih rapi. Tim frontdesk jadi tidak perlu menjelaskan progres berkali-kali.",
+    },
+    {
+      name: "Admin Cabang",
+      role: "Tim operasional",
+      text:
+        "Pelanggan bisa langsung order dari HP dan melihat status invoice dengan jelas. Ini sangat membantu saat jam sibuk.",
+    },
+    {
+      name: "ShoeClean Admin",
+      role: "Pengelola sistem",
+      text:
+        "Frontend baru tetap memakai backend Laravel lama, jadi migrasinya aman sambil desain dan flow terus dirapikan.",
+    },
+  ];
+
   return (
-    <main className="app-shell">
-      <section className="page-frame px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-        <div className="relative z-10 space-y-4">
-          <header className="mobile-stack items-start justify-between rounded-[1.6rem] border border-line bg-white/72 p-3 shadow-[0_18px_44px_-34px_rgba(31,23,18,0.26)] backdrop-blur-sm sm:items-center">
-            <div>
-              <p className="text-lg font-semibold tracking-tight text-foreground sm:text-xl">
-                ShoeClean
-              </p>
-              <p className="text-xs uppercase tracking-[0.24em] text-muted">
-                Smart storefront
-              </p>
-            </div>
-            <div className="mobile-stack w-full sm:w-auto">
-              <Link href="/login" className="btn-secondary w-full sm:w-auto">
-                Login
-              </Link>
-              <Link href="/register" className="btn-secondary w-full sm:w-auto">
-                Register
-              </Link>
-              <Link href="/track" className="btn-secondary w-full sm:w-auto">
-                Lacak pesanan
-              </Link>
-              <Link href="/pricing" className="btn-secondary w-full sm:w-auto">
-                Lihat paket
-              </Link>
-            </div>
-          </header>
+    <main className="public-home-shell">
+      <PublicTopNav current="home" authenticated={session?.authenticated} />
 
-          <div className="hero-grid">
-            <section className="section-block hero-card p-5 sm:p-7 lg:p-8">
-              <span className="eyebrow">{data.hero.badge}</span>
-              <h1 className="headline mt-4 max-w-4xl">
-                {data.hero.title}
+      <div className="public-content-offset">
+        <section className="public-hero-intro motion-enter relative overflow-hidden py-16 sm:py-20 md:py-24">
+          <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+            <div className="motion-enter motion-delay-1 lg:col-span-7">
+              <div className="motion-enter-fast mb-8 inline-flex items-center gap-2 rounded-full bg-accent-soft px-4 py-1.5" style={{ animationDelay: "0.08s" }}>
+                <SparkleIcon className="h-4 w-4 text-accent-ink" />
+                <span className="text-xs font-bold uppercase tracking-[0.18em] text-accent-ink">
+                  Software operasional untuk bisnis cuci sepatu
+                </span>
+              </div>
+
+              <h1 className="motion-enter-fast max-w-4xl font-[var(--font-display-sans)] text-5xl font-extrabold leading-[1.08] tracking-[-0.05em] text-brand md:text-7xl" style={{ animationDelay: "0.14s" }}>
+                Bangun pengalaman{" "}
+                <span className="bg-[linear-gradient(135deg,#002045_0%,#1a365d_100%)] bg-clip-text text-transparent">
+                  order, tracking, dan operasional
+                </span>{" "}
+                dalam satu web app yang terasa premium.
               </h1>
-              <p className="subcopy mt-4 max-w-2xl">{data.hero.description}</p>
 
-              <div className="hero-badge-row mt-5">
-                <span className="highlight-chip">Responsif di smartphone</span>
-                <span className="highlight-chip">Tracking real-time</span>
-                <span className="highlight-chip">Order langsung ke outlet</span>
-              </div>
+              <p className="motion-enter-fast mt-8 max-w-xl text-lg leading-relaxed text-muted" style={{ animationDelay: "0.2s" }}>
+                ShoeClean membantu bisnis cuci sepatu menjual layanan lebih rapi, melayani customer lebih cepat, dan mengelola outlet dengan dashboard yang lebih modern.
+              </p>
 
-              <div className="mobile-stack mt-6">
-                <Link href="/order" className="btn-accent w-full sm:w-auto">
-                  Pilih outlet
+              <div className="motion-enter-fast mt-10 flex flex-col gap-4 sm:flex-row" style={{ animationDelay: "0.26s" }}>
+                <Link href="/register" className="rounded-full bg-[linear-gradient(135deg,#002045_0%,#1a365d_100%)] px-8 py-4 text-center text-lg font-bold text-white shadow-xl shadow-brand/20 transition-transform duration-300 hover:scale-[1.02]">
+                  Mulai Gunakan ShoeClean
                 </Link>
-                <Link href="/pricing" className="btn-primary w-full sm:w-auto">
-                  {data.hero.secondary_cta.label}
+                <Link href="/pricing" className="flex items-center justify-center gap-2 rounded-full bg-surface-soft px-8 py-4 text-center text-lg font-bold text-brand transition-colors hover:bg-surface-muted">
+                  Lihat Paket
                 </Link>
-                <a
-                  href={`${process.env.API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000"}${data.hero.primary_cta.href}`}
-                  className="btn-secondary w-full sm:w-auto"
-                >
-                  {data.hero.primary_cta.label}
-                </a>
               </div>
+            </div>
 
-              <div className="kpi-strip mt-7">
-                <article className="kpi-pill">
-                  <p className="section-label">
-                    Outlet tampil
-                  </p>
-                  <p className="mt-2 text-2xl font-semibold text-foreground">
-                    {data.outlets.length}
-                  </p>
-                </article>
-                <article className="kpi-pill">
-                  <p className="section-label">
-                    Layanan unggulan
-                  </p>
-                  <p className="mt-2 text-2xl font-semibold text-foreground">
-                    {data.services.length}
-                  </p>
-                </article>
-                <article className="kpi-pill">
-                  <p className="section-label">
-                    Order flow
-                  </p>
-                  <p className="mt-2 text-2xl font-semibold text-foreground">
-                    Mobile-ready
-                  </p>
-                </article>
-              </div>
-            </section>
+            <div className="motion-enter motion-delay-2 relative lg:col-span-5">
+              <div className="relative z-10 rounded-[2rem] bg-white p-6 shadow-2xl">
+                <Image
+                  src={heroImage}
+                  alt="Sneaker premium sedang dibersihkan dengan teliti"
+                  width={1200}
+                  height={900}
+                  sizes="(min-width: 1024px) 36vw, 100vw"
+                  priority
+                  className="h-[450px] w-full rounded-2xl object-cover"
+                />
 
-            <section className="section-dark hero-card overflow-hidden">
-              <div className="relative h-full px-5 py-6 sm:px-7 sm:py-7">
-                <div className="absolute -right-8 -top-8 h-28 w-28 rounded-full bg-white/8 blur-2xl" />
-                <div className="absolute -bottom-10 left-0 h-24 w-24 rounded-full bg-[#ffcfb7]/20 blur-2xl" />
-                <div className="relative">
-                  <span className="inline-flex rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-white/78">
-                    Quick tracking
-                  </span>
-                  <h2 className="mt-4 text-2xl font-semibold leading-tight sm:text-3xl">
-                    Tracking invoice yang cepat dan jelas untuk customer HP.
-                  </h2>
-                  <p className="subcopy-dark mt-3">
-                    Buka progres order, status pembayaran, dan detail outlet
-                    tanpa perlu tanya admin berkali-kali.
-                  </p>
-
-                  <div className="hero-badge-row mt-5">
-                    <span className="highlight-chip-dark">Invoice sekali input</span>
-                    <span className="highlight-chip-dark">Status mudah dibaca</span>
-                    <span className="highlight-chip-dark">Aman untuk layar kecil</span>
+                <div className="motion-enter-fast motion-float absolute -bottom-6 -left-4 flex items-center gap-4 rounded-2xl border border-line bg-white p-5 shadow-xl" style={{ animationDelay: "0.35s" }}>
+                  <div className="rounded-full bg-accent-soft p-3">
+                    <TrendIcon className="h-4 w-4 text-accent" />
                   </div>
+                  <div>
+                    <div className="text-sm font-bold text-brand">Pendapatan Naik 42%</div>
+                    <div className="text-xs text-muted">Rata-rata pertumbuhan pelanggan</div>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-accent-soft/20 blur-3xl" />
+            </div>
+          </div>
+        </section>
 
-                  <form action="/track" className="mt-6 space-y-3">
-                    <input
-                      type="text"
-                      name="invoice"
-                      placeholder="Contoh: INV/20260326/5/0004"
-                      className="field border-white/10 bg-white text-foreground"
+        <section className="motion-enter motion-delay-2 bg-surface-soft py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mx-auto mb-20 max-w-3xl text-center">
+              <h2 className="font-[var(--font-display-sans)] text-3xl font-extrabold text-brand md:text-4xl">
+                Satu produk untuk menjual, mengelola, dan menumbuhkan bisnis Anda.
+              </h2>
+              <p className="mt-6 text-lg text-muted">
+                ShoeClean bukan sekadar halaman order. Ini adalah web app operasional yang membantu owner, admin, dan customer bekerja dalam alur yang sama.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+              <div className="motion-enter-fast flex flex-col justify-between rounded-[2rem] bg-white p-10 md:col-span-2" style={{ animationDelay: "0.08s" }}>
+                <div className="max-w-md">
+                  <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-strong">
+                    <TrendIcon className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 className="mb-4 text-2xl font-bold text-brand">Pelacakan Pesanan Presisi</h3>
+                  <p className="text-muted">
+                    Jadikan tracking invoice sebagai pengalaman customer yang meyakinkan, bukan sekadar fitur tambahan di belakang dashboard.
+                  </p>
+                </div>
+                <div className="mt-12 rounded-xl border border-line bg-surface-soft p-4">
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="text-xs font-bold uppercase tracking-[0.18em] text-brand">
+                      Customer experience
+                    </span>
+                    <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs font-bold text-accent-ink">
+                      Tracking
+                    </span>
+                  </div>
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-surface-muted">
+                    <div className="h-full w-2/3 bg-accent" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="motion-enter-fast flex flex-col justify-between rounded-[2rem] bg-brand-strong p-10 text-white" style={{ animationDelay: "0.16s" }}>
+                <div>
+                  <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-xl bg-white/10">
+                    <TeamIcon className="h-5 w-5 text-white" />
+                  </div>
+                  <h3 className="mb-4 text-2xl font-bold">Optimalisasi Tim Outlet</h3>
+                  <p className="text-white/70">
+                    Kelola order, layanan, tim, promo, expenses, outlet, dan laporan dari satu dashboard yang konsisten.
+                  </p>
+                </div>
+                <div className="mt-8 flex -space-x-3">
+                  {[0, 1, 2].map((index) => (
+                    <Image
+                      key={index}
+                      src={reviewerAvatars[index]}
+                      alt="staf"
+                      width={48}
+                      height={48}
+                      className="h-12 w-12 rounded-full border-2 border-brand-strong object-cover"
                     />
-                    <button type="submit" className="btn-primary w-full">
-                      Cek progress sekarang
-                    </button>
-                  </form>
+                  ))}
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-brand-strong bg-accent text-xs font-bold text-white">
+                    +12
+                  </div>
+                </div>
+              </div>
 
-                  <div className="info-list mt-6">
-                    {data.features.map((feature) => (
-                      <div key={feature.title} className="kpi-pill-dark">
-                        <p className="text-sm font-semibold">{feature.title}</p>
-                        <p className="mt-1 text-sm leading-6 text-white/70">
-                          {feature.description}
-                        </p>
-                      </div>
+              <div className="motion-enter-fast rounded-[2rem] bg-white p-10" style={{ animationDelay: "0.24s" }}>
+                <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-xl bg-accent-soft">
+                  <BarsIcon className="h-5 w-5 text-accent" />
+                </div>
+                <h3 className="mb-4 text-2xl font-bold text-brand">Harga yang Mudah Dibaca</h3>
+                <p className="text-muted">
+                  Tampilkan paket langganan dan layanan utama dengan visual yang lebih meyakinkan untuk membantu proses closing.
+                </p>
+              </div>
+
+              <div className="motion-enter-fast rounded-[2rem] bg-[linear-gradient(135deg,#006a66_0%,#00504d_100%)] p-10 text-white md:col-span-2" style={{ animationDelay: "0.32s" }}>
+                <div className="flex flex-col gap-12 md:flex-row md:items-center">
+                  <div className="flex-1">
+                    <h3 className="mb-4 text-2xl font-bold">Analitik Real-time</h3>
+                    <p className="mb-8 text-white/80">
+                      Owner bisa melihat performa order, revenue, customer, dan aktivitas tim dalam tampilan yang terasa seperti produk modern, bukan admin lama yang berat.
+                    </p>
+                    <Link href="/dashboard" className="rounded-full bg-white px-6 py-2 text-sm font-bold text-accent">
+                      Lihat Dashboard
+                    </Link>
+                  </div>
+                  <div className="flex h-32 flex-1 items-end justify-around gap-2">
+                    <div className="h-[40%] w-full rounded-t-lg bg-white/20" />
+                    <div className="h-[60%] w-full rounded-t-lg bg-white/40" />
+                    <div className="h-[90%] w-full rounded-t-lg bg-white/60" />
+                    <div className="h-[75%] w-full rounded-t-lg bg-white" />
+                    <div className="h-[100%] w-full rounded-t-lg bg-white/80" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="motion-enter motion-delay-3 overflow-hidden py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="mb-16 flex flex-col justify-between md:flex-row md:items-end">
+              <div className="max-w-xl">
+                <h2 className="font-[var(--font-display-sans)] text-3xl font-extrabold text-brand md:text-4xl">
+                  Dibangun untuk bisnis yang ingin terlihat lebih profesional di mata customer.
+                </h2>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {testimonials.map((item, index) => (
+                <div key={item.name} className="motion-enter-fast rounded-3xl border border-line/30 bg-white p-8 shadow-sm" style={{ animationDelay: `${0.08 * (index + 1)}s` }}>
+                  <div className="mb-6 flex gap-1 text-accent">
+                    {Array.from({ length: 5 }).map((_, starIndex) => (
+                      <StarIcon key={starIndex} className="h-4 w-4" />
                     ))}
                   </div>
-                </div>
-              </div>
-            </section>
-          </div>
-
-          <div className="grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-            <section className="section-block p-5 sm:p-7">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.22em] text-muted">
-                    Outlet publik
+                  <p className="mb-8 leading-relaxed text-muted">
+                    &ldquo;{item.text}&rdquo;
                   </p>
-                  <h2 className="mt-2 text-2xl font-semibold">
-                    Cabang aktif yang siap menerima order.
-                  </h2>
+                  <div className="flex items-center gap-4">
+                    <Image
+                      src={reviewerAvatars[index]}
+                      alt={item.name}
+                      width={48}
+                      height={48}
+                      className="h-12 w-12 rounded-full object-cover"
+                    />
+                    <div>
+                      <div className="font-bold text-brand">{item.name}</div>
+                      <div className="text-xs text-muted">{item.role}</div>
+                    </div>
+                  </div>
                 </div>
-                <Link href="/order" className="btn-secondary hidden sm:inline-flex">
-                  Semua outlet
-                </Link>
-              </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-              <div className="info-list mt-6">
-                {data.outlets.map((outlet) => (
-                  <Link
-                    key={outlet.id}
-                    href={`/order/${outlet.slug}?skipBranch=1`}
-                    className="soft-panel touch-card p-4"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="min-w-0">
-                        <p className="text-lg font-semibold text-foreground">
-                          {outlet.name}
-                        </p>
-                        <p className="mt-1 text-sm leading-6 text-muted">
-                          {outlet.address || "Alamat outlet belum tersedia."}
-                        </p>
-                      </div>
-                      <div className="shrink-0 space-y-2 text-right">
-                        <span className="block rounded-full bg-[#edf4f1] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-                          {outlet.services_count} layanan
-                        </span>
-                        {outlet.has_qris ? (
-                          <span className="block rounded-full bg-[#fff0e7] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand">
-                            qris
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
-                    <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
-                      <p className="section-label">Siap dipilih</p>
-                      <span className="text-sm font-semibold text-brand">Masuk outlet</span>
-                    </div>
+        <section className="motion-enter motion-delay-4 py-24">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            <div className="relative overflow-hidden rounded-[3rem] bg-brand-strong p-12 text-center text-white md:p-20">
+              <div className="relative z-10">
+                <h2 className="motion-enter-fast mb-8 font-[var(--font-display-sans)] text-4xl font-extrabold tracking-[-0.04em] md:text-5xl" style={{ animationDelay: "0.1s" }}>
+                  Siap menjual ShoeClean sebagai pusat operasional bisnis Anda?
+                </h2>
+                <p className="motion-enter-fast mx-auto mb-12 max-w-2xl text-lg text-white/70" style={{ animationDelay: "0.18s" }}>
+                  Mulai dari storefront customer, tracking invoice, sampai dashboard internal tanpa harus memecah flow ke banyak aplikasi.
+                </p>
+                <div className="motion-enter-fast flex flex-col justify-center gap-4 sm:flex-row" style={{ animationDelay: "0.26s" }}>
+                  <Link href="/register" className="rounded-full bg-accent px-10 py-4 text-lg font-bold text-white transition-colors hover:bg-[#007b77]">
+                    Daftar Sekarang
                   </Link>
-                ))}
+                  <Link href="/order" className="rounded-full border border-white/20 bg-white/10 px-10 py-4 text-lg font-bold text-white transition-colors hover:bg-white/20">
+                    Lihat Use Case
+                  </Link>
+                </div>
               </div>
+              <div className="absolute right-0 top-0 h-96 w-96 rounded-full bg-accent/10 blur-[100px]" />
+              <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-[#adc7f7]/10 blur-[100px]" />
+            </div>
+          </div>
+        </section>
+      </div>
 
-              <Link href="/order" className="btn-secondary mt-5 w-full sm:hidden">
-                Lihat semua outlet
-              </Link>
-            </section>
-
-            <section className="section-block p-5 sm:p-7">
-              <p className="text-xs uppercase tracking-[0.22em] text-muted">
-                Layanan unggulan
-              </p>
-              <h2 className="mt-2 text-2xl font-semibold">
-                Harga dan layanan yang mudah dipahami customer.
-              </h2>
-
-              <div className="info-list mt-6">
-                {data.services.map((service) => (
-                  <article key={service.id} className="soft-panel p-4">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="font-semibold text-foreground">
-                          {service.name}
-                        </p>
-                        <p className="mt-1 text-sm text-muted">
-                          {service.outlet?.name ?? "Outlet belum tersedia"}
-                        </p>
-                      </div>
-                      <div className="shrink-0 text-right">
-                        <p className="font-semibold text-accent">
-                          {formatRupiah(service.price)}
-                        </p>
-                        <p className="mt-1 text-xs uppercase tracking-[0.18em] text-muted">
-                          per {service.unit}
-                        </p>
-                      </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
+      <footer className="w-full border-t border-slate-100 bg-white">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-4 py-12 sm:px-6 md:flex-row lg:px-8">
+          <div className="mb-0">
+            <div className="mb-2 font-[var(--font-display-sans)] text-xl font-black text-brand">
+              ShoeClean
+            </div>
+            <p className="text-xs text-slate-400">
+              {"© 2026 ShoeClean. Hak cipta dilindungi."}
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-8">
+            <Link href="/pricing" className="text-xs text-slate-400 transition-colors hover:text-brand">
+              Ketentuan
+            </Link>
+            <Link href="/pricing" className="text-xs text-slate-400 transition-colors hover:text-brand">
+              Privasi
+            </Link>
+            <Link href="/track" className="text-xs text-slate-400 transition-colors hover:text-brand">
+              Tracking
+            </Link>
+            <Link href="/order" className="text-xs text-slate-400 transition-colors hover:text-brand">
+              Outlet
+            </Link>
           </div>
         </div>
-      </section>
+      </footer>
+
+      <PublicBottomNav current="home" />
     </main>
   );
 }
+
+
+
+

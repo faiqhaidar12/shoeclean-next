@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manajemen Cabang | Pristine Pro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed-dim": "#adc7f7",
+                        "outline-variant": "#c4c6cf",
+                        "secondary-fixed": "#84f5ee",
+                        "secondary-fixed-dim": "#66d8d2",
+                        "on-secondary-container": "#006f6a",
+                        "on-tertiary-container": "#8ca4a0",
+                        "inverse-primary": "#adc7f7",
+                        "error-container": "#ffdad6",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#d6e3ff",
+                        "on-primary-container": "#86a0cd",
+                        "inverse-surface": "#2d3133",
+                        "surface-bright": "#f7f9fb",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#43474e",
+                        "surface-container-high": "#e6e8ea",
+                        "surface-container": "#eceef0",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "on-primary-fixed": "#001b3c",
+                        "tertiary-container": "#243a37",
+                        "background": "#f7f9fb",
+                        "surface": "#f7f9fb",
+                        "tertiary": "#0e2422",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e0e3e5",
+                        "tertiary-fixed": "#cfe8e3",
+                        "surface-container-low": "#f2f4f6",
+                        "on-tertiary": "#ffffff",
+                        "on-background": "#191c1e",
+                        "on-secondary-fixed": "#00201e",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#00504d",
+                        "secondary": "#006a66",
+                        "surface-tint": "#455f88",
+                        "surface-dim": "#d8dadc",
+                        "tertiary-fixed-dim": "#b3ccc7",
+                        "on-tertiary-fixed": "#081f1d",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-on-surface": "#eff1f3",
+                        "primary-container": "#1a365d",
+                        "secondary-container": "#81f2eb",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#354b48",
+                        "surface-container-highest": "#e0e3e5",
+                        "primary": "#002045",
+                        "outline": "#74777f",
+                        "on-surface": "#191c1e"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .tonal-shift {
+            background-color: #f2f4f6;
+        }
+        .no-border {
+            border: none !important;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e0e3e5;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- SideNavBar (Authority: JSON) -->
+<aside class="bg-slate-50 dark:bg-slate-950 font-inter text-[13px] font-semibold h-screen w-64 fixed left-0 top-0 flex flex-col py-6 no-border tonal-shift flat no shadows z-40">
+<div class="px-6">
+<h1 class="text-lg font-black text-blue-900 dark:text-white mb-6">Portal Admin</h1>
+<div class="flex items-center gap-3 mb-8 p-3 bg-white/50 dark:bg-slate-900/50 rounded-xl">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-white overflow-hidden">
+<img alt="Profil Pengguna Admin" class="w-full h-full object-cover" data-alt="Professional headshot of a male operations manager in a clean studio setting with soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD405xLKGJ9wjTRa5aYe8c9Ln63CyYdZN3C6XoUTTafVMaDduDKVwA_M4VXPxnc7aKBxv33XFLT8sTMam2DB8UhNjU0biFEfB0EnfWToW-gnhZM5LB1Io96Qg371KGSQcK2-bevWa251xQJc_-Jekd6l1UJ2pDytPxeygVXG0SLo66CtU03K6bqU5JZVHx1_pe14ioX1MkiBKNYNJ5tZhMn6hYcAO63l9zN5mDTxcdki6hIuG2MS_XDA8nQczLKMg83-cfwGi03QR7g"/>
+</div>
+<div>
+<p class="text-primary font-bold">Cabang Utama</p>
+<p class="text-[10px] text-slate-400 uppercase tracking-widest">Operasional</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1 custom-scrollbar overflow-y-auto">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/50 mx-2 my-1 rounded-lg transition-all duration-200 scale-95 active:scale-100" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dasbor</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-slate-900 text-blue-600 dark:text-teal-400 shadow-sm rounded-lg mx-2 my-1 transition-all duration-200 scale-95 active:scale-100" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">store</span>
+<span>Cabang</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/50 mx-2 my-1 rounded-lg transition-all duration-200 scale-95 active:scale-100" href="#">
+<span class="material-symbols-outlined">clean_hands</span>
+<span>Layanan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/50 mx-2 my-1 rounded-lg transition-all duration-200 scale-95 active:scale-100" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span>Staf</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/50 mx-2 my-1 rounded-lg transition-all duration-200 scale-95 active:scale-100" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span>Keuangan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/50 mx-2 my-1 rounded-lg transition-all duration-200 scale-95 active:scale-100" href="#">
+<span class="material-symbols-outlined">sell</span>
+<span>Promo</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/50 mx-2 my-1 rounded-lg transition-all duration-200 scale-95 active:scale-100" href="#">
+<span class="material-symbols-outlined">person</span>
+<span>Pelanggan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900/50 mx-2 my-1 rounded-lg transition-all duration-200 scale-95 active:scale-100" href="#">
+<span class="material-symbols-outlined">shopping_basket</span>
+<span>Pesanan</span>
+</a>
+</nav>
+<div class="mt-auto px-4 border-t border-slate-200/30 pt-4">
+<button class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-container text-white py-3 rounded-full font-bold mb-4 shadow-lg shadow-blue-900/20 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-sm">add</span>
+                Pesanan Baru
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 hover:text-blue-600 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Pengaturan</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-500 hover:text-error transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Keluar</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen p-8 lg:p-12">
+<!-- Header Section with Asymmetrical Spacing -->
+<header class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 mr-10">
+<div class="space-y-2">
+<h2 class="font-headline text-display-lg text-4xl font-extrabold tracking-tighter text-primary">Manajemen Cabang</h2>
+<p class="text-on-surface-variant font-medium">Kontrol dan pantau jaringan fasilitas perawatan sepatu Anda.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-6 py-3 bg-secondary-container text-on-secondary-container font-bold rounded-full hover:shadow-md transition-all active:scale-95">
+<span class="material-symbols-outlined">add_business</span>
+                    Tambah Cabang Baru
+                </button>
+</div>
+</header>
+<!-- Search and Filter Bar -->
+<div class="mb-8 flex flex-col sm:flex-row gap-4 items-center">
+<div class="relative w-full max-w-md group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline-variant" placeholder="Cari berdasarkan nama, alamat atau manajer..." type="text"/>
+</div>
+<div class="flex gap-2 ml-auto">
+<button class="p-3 bg-surface-container-low rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+<button class="p-3 bg-surface-container-low rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+<!-- Data Table (The "No-Line" Architecture) -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-[0_20px_40px_rgba(25,28,30,0.04)] overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-8 py-5 text-label-md font-bold text-on-surface-variant uppercase tracking-wider">Nama Cabang</th>
+<th class="px-8 py-5 text-label-md font-bold text-on-surface-variant uppercase tracking-wider">Alamat</th>
+<th class="px-8 py-5 text-label-md font-bold text-on-surface-variant uppercase tracking-wider">Detail Kontak</th>
+<th class="px-8 py-5 text-label-md font-bold text-on-surface-variant uppercase tracking-wider">Manajer</th>
+<th class="px-8 py-5 text-label-md font-bold text-on-surface-variant uppercase tracking-wider text-right">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-variant/20">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed-dim/20 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">storefront</span>
+</div>
+<div>
+<p class="font-bold text-primary">Downtown Flagship</p>
+<p class="text-xs text-secondary font-semibold">Buka • 24/7</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<p class="text-body-md text-on-surface">742 Evergreen Terrace</p>
+<p class="text-xs text-on-surface-variant">Lantai 4, Suite 201</p>
+</td>
+<td class="px-8 py-6">
+<p class="text-body-md">+1 (555) 0123-456</p>
+<p class="text-xs text-on-surface-variant">downtown@pristinepro.com</p>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-slate-200">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a male business manager with a friendly expression in a modern office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBS_16j8f4YRJt18pbC-6kk9bXGgjrGU14aj3z4gIyB5-E51w5d5KjdrQqFzLoHP57Uw1tWtUWVo__RQMUIeQ6Jwv6dKoyg4wbpg3FlrTs0CQjog3jQHYGnHIUvhXwC9GOausBllSRMs-7I_b8bLzUpGYVC97bjqftMoOCyI_ihi0oCjjMurzwszI8-vVF23kQoDDCqt5HQwCrEPnOdjZqqiPJRsm8sVcHC8ECTdpUY3_zOtY6FNkf-OiPL55aFAG5NJWdGak-ECdp8"/>
+</div>
+<span class="text-body-md font-medium">Marcus Sterling</span>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm">
+<span class="material-symbols-outlined text-[20px]">edit_note</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error hover:bg-error-container/30 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed/20 flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">cleaning_services</span>
+</div>
+<div>
+<p class="font-bold text-primary">Westside Express</p>
+<p class="text-xs text-on-surface-variant font-medium">Tutup pukul 20:00</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<p class="text-body-md text-on-surface">1200 West Olympic Blvd</p>
+<p class="text-xs text-on-surface-variant">Sayap Selatan, Stall B4</p>
+</td>
+<td class="px-8 py-6">
+<p class="text-body-md">+1 (555) 9876-543</p>
+<p class="text-xs text-on-surface-variant">westside@pristinepro.com</p>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-slate-200">
+<img class="w-full h-full object-cover" data-alt="Portrait of a female professional manager smiling confidently in a bright minimalist workplace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5qQsu8lsX8_A__K6Tu9OGmssl2MocdScgFzEDSksYLx1WOgo9YLTo78DrXv8WYa6DDoYj3J5zz7AsO_VC2Y7JT5U12Q8aSdh4pN6mka9eeGTV2GWtRkKrx_0q5mrySykrZU-ut2sMRG4nn7NvIN0XsB7eXAGbbE314widxQ4UuRTEexGusPdRMc1LbOyu9_Rct5jdA6hIKToFQZWeiT8leWWf0WRwSBHQpYtKvQNGG8tJ0idDVZCYxRzGeATolv8q0_b7m62vDszs"/>
+</div>
+<span class="text-body-md font-medium">Elena Rodriguez</span>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm">
+<span class="material-symbols-outlined text-[20px]">edit_note</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error hover:bg-error-container/30 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed/40 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">conveyor_belt</span>
+</div>
+<div>
+<p class="font-bold text-primary">North Tech Hub</p>
+<p class="text-xs text-error font-semibold">Mode Pemeliharaan</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<p class="text-body-md text-on-surface">45 Innovation Drive</p>
+<p class="text-xs text-on-surface-variant">Kawasan Industri Utara</p>
+</td>
+<td class="px-8 py-6">
+<p class="text-body-md">+1 (555) 4433-221</p>
+<p class="text-xs text-on-surface-variant">northhub@pristinepro.com</p>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-slate-200">
+<img class="w-full h-full object-cover" data-alt="Headshot of an experienced male manager with graying hair in a professional attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIrNcRtxUUJQO2BnIYe8aX_AXepci09tNHSNGNYKW9IfZKMxiEp9xsVpdlijoGYtYpwoMEZhTSc0Jbl0EjSpYZqJr5uoga95Cn-TyPDICqFYektpYyxdLl7qwF37lcx5-LsDg0TizU2CxFKrrM0J69W8dmsuaHW_Y6NrhNPxOAKadu1IbXG-Xya1AKetllSA07tNL0UYz6KEypQmwKoPIyUkBeGLaTY2XQ7urYymrO8xLM24XV3emqkmjHcHmc05QWQR2CFVx4bOwz"/>
+</div>
+<span class="text-body-md font-medium">Samuel Vimes</span>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm">
+<span class="material-symbols-outlined text-[20px]">edit_note</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error hover:bg-error-container/30 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed-dim/20 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined">checkroom</span>
+</div>
+<div>
+<p class="font-bold text-primary">Eastside Collection</p>
+<p class="text-xs text-secondary font-semibold">Buka</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<p class="text-body-md text-on-surface">322 Artisan Square</p>
+<p class="text-xs text-on-surface-variant">Retail Arcade</p>
+</td>
+<td class="px-8 py-6">
+<p class="text-body-md">+1 (555) 7766-554</p>
+<p class="text-xs text-on-surface-variant">eastside@pristinepro.com</p>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-slate-200">
+<img class="w-full h-full object-cover" data-alt="Portrait of a young female branch manager looking focused and professional in a light studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqnU_UVeTWKNGn0CEqJwxwUP8REuDmKmPJO-Oy5YTH5lmNUpDrNCAZP8r8FrcJ4-rOgBRYGN86-PHc55CAn6Uqdczk-FA43xaVZzSWAi4HSscwba45ZI68yK4KFPGDlXyUA_QJmJTpJOAxbTkJScVWZimadfMJxZgnUh-_VgzzzchDk1KTqid-IaeCF_DTLQ763BnVSXbfUV4Fx5Kp_EDxjFWERga6MVsqcaCc4DbS6wv3zadm7ZExidGSTABKETtQYy102i3unnxJ"/>
+</div>
+<span class="text-body-md font-medium">Lisa Cho</span>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm">
+<span class="material-symbols-outlined text-[20px]">edit_note</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-error hover:bg-error-container/30 rounded-lg transition-all">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Table Footer/Pagination -->
+<div class="px-8 py-4 bg-surface-container-low/30 flex items-center justify-between border-t border-surface-variant/10">
+<span class="text-label-md text-on-surface-variant">Menampilkan 1 sampai 4 dari 12 cabang</span>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg bg-primary text-white text-xs font-bold">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-high text-xs font-medium text-on-surface-variant">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-high text-xs font-medium text-on-surface-variant">3</button>
+<button class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-surface-container-high transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Asymmetrical Stats Section -->
+<section class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-primary p-8 rounded-3xl relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-primary-fixed-dim font-medium mb-1">Total Pendapatan Jaringan</p>
+<h3 class="text-3xl font-extrabold text-white tracking-tight">$248.500,00</h3>
+<div class="mt-4 inline-flex items-center gap-1 px-3 py-1 bg-white/10 rounded-full text-[11px] text-secondary-fixed font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+                        +12,5% vs Bulan Lalu
+                    </div>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-9xl">payments</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 rounded-3xl shadow-sm border border-surface-variant/10 md:col-span-2 flex flex-col md:flex-row gap-8 items-center">
+<div class="flex-1">
+<p class="text-on-surface-variant font-medium mb-1">Cabang Aktif</p>
+<h3 class="text-3xl font-extrabold text-primary tracking-tight">12/12 <span class="text-sm font-medium text-secondary">Operasional</span></h3>
+<div class="mt-6 flex items-center gap-4">
+<div class="h-2 flex-1 bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[92%]"></div>
+</div>
+<span class="text-xs font-bold text-primary">Kapasitas 92%</span>
+</div>
+</div>
+<div class="hidden lg:block w-px h-16 bg-surface-variant/20"></div>
+<div class="flex-1">
+<p class="text-on-surface-variant font-medium mb-1">Pemeliharaan Berikutnya</p>
+<h3 class="text-xl font-bold text-primary tracking-tight">14 Nov 2024</h3>
+<p class="text-xs text-error font-semibold mt-1">North Tech Hub (Downtime 4 jam)</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer (Authority: JSON) -->
+<footer class="ml-64 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 font-inter text-xs w-full border-t border-slate-100 dark:border-slate-800 flex flex-col md:flex-row justify-between items-center px-8 py-12 flat">
+<p>© 2024 Pristine Pro Shoe Care. Seluruh hak cipta dilindungi undang-undang.</p>
+<div class="flex gap-8 mt-4 md:mt-0">
+<a class="text-slate-400 hover:text-blue-600 hover:underline transition-colors" href="#">Syarat &amp; Ketentuan</a>
+<a class="text-slate-400 hover:text-blue-600 hover:underline transition-colors" href="#">Privasi</a>
+<a class="text-slate-400 hover:text-blue-600 hover:underline transition-colors" href="#">Cookie</a>
+<a class="text-slate-400 hover:text-blue-600 hover:underline transition-colors" href="#">Kontak</a>
+</div>
+</footer>
+</body></html>

@@ -23,63 +23,86 @@ export default async function LoginPage() {
   }
 
   return (
-    <main className="app-shell">
-      <section className="page-frame px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-        <div className="relative z-10 grid gap-4 lg:grid-cols-[1.05fr_0.95fr]">
-          <section className="section-block hero-card p-5 sm:p-7">
-            <span className="eyebrow">Staff Access</span>
-            <h1 className="headline mt-4">Masuk ke dashboard operasional.</h1>
-            <p className="subcopy mt-4 max-w-2xl">
-              Login ini memakai session Laravel yang sama dengan aplikasi lama,
-              jadi migrasi bisa berjalan bertahap tanpa memutus operasional.
+    <main className="flex min-h-screen flex-col bg-background text-foreground">
+      <section className="relative flex flex-1 items-center justify-center overflow-hidden px-6 py-12">
+        <div className="absolute left-[-5%] top-[-10%] h-[40%] w-[40%] rounded-full bg-accent-soft/20 blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-5%] h-[40%] w-[40%] rounded-full bg-[rgba(214,227,255,0.75)] blur-[120px]" />
+
+        <div className="relative z-10 w-full max-w-md">
+          <div className="mb-10 text-center">
+            <h1 className="font-[var(--font-display-sans)] text-3xl font-extrabold tracking-[-0.04em] text-brand">
+              ShoeClean
+            </h1>
+            <p className="mt-2 font-medium tracking-tight text-muted">
+              Manajemen operasional bisnis cuci sepatu profesional
             </p>
-            <div className="hero-badge-row mt-5">
-              <span className="highlight-chip">Session Laravel</span>
-              <span className="highlight-chip">Role-aware</span>
-              <span className="highlight-chip">Fondasi dashboard baru</span>
-            </div>
+          </div>
 
-            <div className="mt-8 max-w-xl">
-              <LoginForm />
-              <div className="mobile-stack mt-5">
-                <Link href="/register" className="btn-secondary w-full sm:w-auto">
-                  Ke halaman register
-                </Link>
-                <Link href="/" className="btn-secondary w-full sm:w-auto">
-                  Kembali ke beranda
-                </Link>
-              </div>
-            </div>
-          </section>
+          <div className="group relative overflow-hidden rounded-xl bg-white p-8 shadow-[0_20px_40px_rgba(25,28,30,0.06)] md:p-10">
+            <div className="absolute bottom-0 left-0 top-0 w-1 rounded-l-xl bg-accent" />
 
-          <aside className="section-dark hero-card p-5 sm:p-7">
-            <p className="section-label-dark">Tahap migrasi</p>
-            <h2 className="mt-3 text-2xl font-semibold">
-              Auth sudah dipindah ke storefront baru, tapi backend tetap Laravel.
-            </h2>
-            <div className="info-list mt-5">
-              <div className="kpi-pill-dark">
-                <p className="text-sm font-semibold">Login</p>
-                <p className="mt-1 text-sm text-white/72">
-                  Form Next mengirim kredensial ke backend Laravel.
-                </p>
+            <header className="mb-8">
+              <h2 className="font-[var(--font-display-sans)] text-2xl font-bold text-brand">
+                Portal Admin
+              </h2>
+              <p className="mt-1 text-sm text-muted">
+                Silakan masuk untuk mengakses dashboard operasional Anda.
+              </p>
+            </header>
+
+            <LoginForm />
+
+            <footer className="mt-10 border-t border-line/40 pt-8 text-center">
+              <p className="text-sm text-muted">
+                Baru di ShoeClean?
+                <Link
+                  href="/register"
+                  className="ml-1 font-bold text-brand underline-offset-4 transition-all hover:underline"
+                >
+                  Buat akun
+                </Link>
+              </p>
+            </footer>
+          </div>
+
+          <div className="mt-8 text-center">
+            <div className="inline-flex items-center gap-4 rounded-full bg-surface-soft/80 px-4 py-2">
+              <div className="flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-accent" />
+                <span className="text-[10px] font-bold uppercase tracking-tight text-muted">
+                  Sistem aman
+                </span>
               </div>
-              <div className="kpi-pill-dark">
-                <p className="text-sm font-semibold">Session</p>
-                <p className="mt-1 text-sm text-white/72">
-                  Cookie session Laravel dipakai ulang untuk route protected.
-                </p>
-              </div>
-              <div className="kpi-pill-dark">
-                <p className="text-sm font-semibold">Dashboard</p>
-                <p className="mt-1 text-sm text-white/72">
-                  Next sudah bisa menampilkan data ringkas operasional.
-                </p>
-              </div>
+              <div className="h-3 w-px bg-line" />
+              <span className="text-[10px] font-bold uppercase tracking-tight text-muted">
+                Session Laravel
+              </span>
             </div>
-          </aside>
+          </div>
         </div>
       </section>
+
+      <footer className="w-full border-t border-slate-200 bg-slate-50 py-12">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-8 md:flex-row">
+          <div className="text-center text-sm text-slate-500 md:text-left">
+            © 2026 ShoeClean. Dibuat untuk operasional yang lebih rapi.
+          </div>
+          <nav className="flex flex-wrap justify-center gap-6">
+            <Link href="/pricing" className="text-sm text-slate-500 transition-colors hover:text-brand">
+              Ketentuan Layanan
+            </Link>
+            <Link href="/pricing" className="text-sm text-slate-500 transition-colors hover:text-brand">
+              Kebijakan Privasi
+            </Link>
+            <Link href="/" className="text-sm text-slate-500 transition-colors hover:text-brand">
+              Beranda
+            </Link>
+            <Link href="/track" className="text-sm text-slate-500 transition-colors hover:text-brand">
+              Tracking
+            </Link>
+          </nav>
+        </div>
+      </footer>
     </main>
   );
 }

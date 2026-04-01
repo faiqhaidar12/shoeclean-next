@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pristine Pro | Pendaftaran Admin</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "secondary": "#006a66",
+              "on-surface": "#191c1e",
+              "background": "#f7f9fb",
+              "on-primary-container": "#86a0cd",
+              "tertiary-fixed-dim": "#b3ccc7",
+              "surface-tint": "#455f88",
+              "on-tertiary": "#ffffff",
+              "surface-container-low": "#f2f4f6",
+              "secondary-fixed-dim": "#66d8d2",
+              "secondary-fixed": "#84f5ee",
+              "on-surface-variant": "#43474e",
+              "on-secondary": "#ffffff",
+              "primary-fixed-dim": "#adc7f7",
+              "on-error": "#ffffff",
+              "on-error-container": "#93000a",
+              "on-secondary-container": "#006f6a",
+              "on-tertiary-container": "#8ca4a0",
+              "inverse-surface": "#2d3133",
+              "surface-variant": "#e0e3e5",
+              "primary-fixed": "#d6e3ff",
+              "tertiary": "#0e2422",
+              "surface-bright": "#f7f9fb",
+              "secondary-container": "#81f2eb",
+              "on-background": "#191c1e",
+              "tertiary-container": "#243a37",
+              "surface-container-lowest": "#ffffff",
+              "surface-dim": "#d8dadc",
+              "on-secondary-fixed": "#00201e",
+              "surface-container": "#eceef0",
+              "outline": "#74777f",
+              "inverse-primary": "#adc7f7",
+              "on-tertiary-fixed": "#081f1d",
+              "surface": "#f7f9fb",
+              "error-container": "#ffdad6",
+              "error": "#ba1a1a",
+              "surface-container-high": "#e6e8ea",
+              "on-tertiary-fixed-variant": "#354b48",
+              "on-primary-fixed-variant": "#2d476f",
+              "on-primary": "#ffffff",
+              "primary-container": "#1a365d",
+              "outline-variant": "#c4c6cf",
+              "on-primary-fixed": "#001b3c",
+              "tertiary-fixed": "#cfe8e3",
+              "inverse-on-surface": "#eff1f3",
+              "on-secondary-fixed-variant": "#00504d",
+              "primary": "#002045"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-effect {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .asymmetric-shape {
+        clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+      }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface min-h-screen flex flex-col">
+<!-- TopAppBar Fragment (Supressed Nav for Transactional focus) -->
+<header class="fixed top-0 w-full z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+<div class="text-2xl font-extrabold font-headline text-primary tracking-tighter">
+            Pristine
+        </div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-slate-600 font-medium hover:text-primary transition-colors duration-300" href="#">Fitur</a>
+<a class="text-slate-600 font-medium hover:text-primary transition-colors duration-300" href="#">Harga</a>
+<a class="text-slate-600 font-medium hover:text-primary transition-colors duration-300" href="#">Dukungan</a>
+<button class="bg-primary text-white px-6 py-2 rounded-full font-semibold hover:opacity-90 active:scale-95 transition-all">
+                Masuk
+            </button>
+</div>
+</div>
+</header>
+<main class="flex-grow flex flex-col md:flex-row pt-20">
+<!-- Visual Brand Side (Editorial Layout) -->
+<section class="hidden md:flex md:w-1/2 relative overflow-hidden bg-primary-container p-16 flex-col justify-end">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40 mix-blend-luminosity" data-alt="Close up of a premium designer sneaker being meticulously cleaned with a soft brush under focused clinical lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1iMZLHlWTCzTUoGjE0XhdD1SG19QaOXOOCkPSTA5mLeiJELMalbN4GMNk0yYer0o5TFPGM5S5hDoxgj_JXZXvCZ8LPsUNE6xbn34_TFAWPXirsKWYF4mRNxexPbFtBL0CHld1cdjRuXM6yieeZRNzOnkyivQFE-rpCivIDkhKEGmIFnNvxMS1xNvAKncFRByaofgmsMYzy068JTCC3ws3p7lVyTHr9u_MRyEnHa6sGBMWKdotAIy48dq9gq9PUw43HL1dxgiOdFkO"/>
+<div class="absolute inset-0 bg-gradient-to-tr from-primary via-primary/80 to-transparent"></div>
+</div>
+<div class="relative z-10 space-y-6">
+<span class="inline-block px-4 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold uppercase tracking-widest">
+                Artisan Klinis
+            </span>
+<h1 class="font-headline text-5xl font-extrabold text-white leading-tight tracking-tighter">
+                Perawatan presisi untuk <br/><span class="text-secondary-fixed">alas kaki</span> luar biasa.
+            </h1>
+<p class="text-primary-fixed-dim text-lg max-w-md font-light leading-relaxed">
+                Bergabunglah dengan lingkaran eksklusif profesional perawatan sepatu Pristine. Kelola keahlian Anda dengan presisi klinis dan efisiensi terukur.
+            </p>
+</div>
+<!-- Tonal Floating Card (Asymmetry) -->
+<div class="absolute top-24 right-[-5%] w-64 h-64 bg-secondary/10 rounded-full blur-3xl"></div>
+</section>
+<!-- Registration Form Side -->
+<section class="w-full md:w-1/2 flex items-center justify-center p-8 md:p-16 bg-surface">
+<div class="w-full max-w-md space-y-10">
+<div class="space-y-2">
+<h2 class="font-headline text-3xl font-bold text-on-surface tracking-tight">Pendaftaran Admin</h2>
+<p class="text-on-surface-variant font-medium">Buat akun manajemen profesional Anda.</p>
+</div>
+<form class="space-y-6">
+<!-- Name Field -->
+<div class="space-y-1.5">
+<label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider" for="full-name">Nama Lengkap</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">person</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline-variant text-on-surface" id="full-name" placeholder="Alexander Pierce" type="text"/>
+</div>
+</div>
+<!-- Email Field -->
+<div class="space-y-1.5">
+<label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider" for="email">Email Kerja</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">mail</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline-variant text-on-surface" id="email" placeholder="admin@pristine.pro" type="email"/>
+</div>
+</div>
+<!-- Password Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-1.5">
+<label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider" for="password">Kata Sandi</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">lock</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline-variant text-on-surface" id="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<div class="space-y-1.5">
+<label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-wider" for="confirm-password">Konfirmasi</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg">verified_user</span>
+<input class="w-full pl-12 pr-4 py-4 bg-surface-container-low border-none rounded-xl focus:ring-2 focus:ring-primary/20 focus:bg-surface-container-lowest transition-all placeholder:text-outline-variant text-on-surface" id="confirm-password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+</div>
+<!-- Terms -->
+<div class="flex items-center gap-3">
+<input class="w-5 h-5 rounded border-outline-variant text-secondary focus:ring-secondary/30 bg-surface-container-low transition-all" id="terms" type="checkbox"/>
+<label class="text-sm text-on-surface-variant font-medium" for="terms">
+                        Saya setuju dengan <a class="text-secondary font-bold hover:underline" href="#">Syarat dan Ketentuan</a>
+</label>
+</div>
+<!-- Action Button -->
+<button class="w-full py-4 bg-gradient-to-r from-primary to-primary-container text-white font-bold rounded-full shadow-lg hover:shadow-primary/20 hover:scale-[1.01] active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
+                    Daftar
+                    <span class="material-symbols-outlined text-xl">arrow_forward</span>
+</button>
+<!-- Sign In Link -->
+<div class="pt-4 text-center">
+<p class="text-on-surface-variant text-sm font-medium">
+                        Sudah punya akun? 
+                        <a class="text-primary font-bold hover:underline ml-1" href="#">Masuk</a>
+</p>
+</div>
+</form>
+<!-- Status Context (Shoe Cleaning Industry Specific) -->
+<div class="p-6 bg-surface-container-low rounded-xl border-l-4 border-secondary flex gap-4 items-start">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">info</span>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                    Pendaftaran untuk <span class="text-on-surface font-bold">Peran Admin</span> memerlukan verifikasi manual oleh direktur regional Pristine setelah pengiriman formulir.
+                </p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-50 dark:bg-slate-950 w-full py-12 border-t border-slate-200 dark:border-slate-800">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-7xl mx-auto gap-4">
+<p class="text-slate-500 dark:text-slate-400 font-inter text-sm antialiased">
+            © 2024 Pristine Professional Shoe Care. Dibuat dengan Teliti.
+        </p>
+<div class="flex gap-6">
+<a class="text-slate-500 dark:text-slate-400 hover:text-blue-900 transition-all duration-200 text-sm" href="#">Ketentuan Layanan</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-blue-900 transition-all duration-200 text-sm" href="#">Kebijakan Privasi</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-blue-900 transition-all duration-200 text-sm" href="#">Keamanan</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-blue-900 transition-all duration-200 text-sm" href="#">Hubungi Admin</a>
+</div>
+</div>
+</footer>
+</body></html>

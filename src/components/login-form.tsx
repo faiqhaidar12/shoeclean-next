@@ -3,6 +3,33 @@
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden="true">
+      <path d="M4 7h16v10H4z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <path d="m5 8 7 5 7-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden="true">
+      <rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" strokeWidth="2" />
+      <path d="M8 11V8a4 4 0 1 1 8 0v3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5" aria-hidden="true">
+      <path d="M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <path d="m13 6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
@@ -53,57 +80,75 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2">
-        <label htmlFor="email" className="section-label block">
-          Email
+        <label htmlFor="email" className="ml-1 block text-xs font-semibold uppercase tracking-widest text-muted">
+          Alamat Email
         </label>
-        <input
-          id="email"
-          type="email"
-          autoComplete="email"
-          required
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="nama@outlet.com"
-          className="field-soft"
-        />
+        <div className="relative">
+          <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted">
+            <MailIcon />
+          </span>
+          <input
+            id="email"
+            type="email"
+            autoComplete="email"
+            required
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            placeholder="admin@shoeclean.app"
+            className="w-full rounded-xl border-none bg-surface-soft py-3 pl-12 pr-4 text-foreground transition-all duration-300 placeholder:text-muted/55 focus:bg-white focus:ring-2 focus:ring-brand/10"
+          />
+        </div>
       </div>
 
       <div className="space-y-2">
-        <label htmlFor="password" className="section-label block">
-          Password
-        </label>
-        <input
-          id="password"
-          type="password"
-          autoComplete="current-password"
-          required
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          placeholder="Masukkan password"
-          className="field-soft"
-        />
+        <div className="flex items-center justify-between px-1">
+          <label htmlFor="password" className="text-xs font-semibold uppercase tracking-widest text-muted">
+            Kata Sandi
+          </label>
+          <span className="text-xs font-semibold text-brand">Lupa kata sandi?</span>
+        </div>
+        <div className="relative">
+          <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted">
+            <LockIcon />
+          </span>
+          <input
+            id="password"
+            type="password"
+            autoComplete="current-password"
+            required
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            placeholder="Masukkan password"
+            className="w-full rounded-xl border-none bg-surface-soft py-3 pl-12 pr-4 text-foreground transition-all duration-300 placeholder:text-muted/55 focus:bg-white focus:ring-2 focus:ring-brand/10"
+          />
+        </div>
       </div>
 
-      <label className="flex items-center gap-3 rounded-[1rem] border border-line bg-white/70 px-4 py-3 text-sm text-muted">
+      <label className="flex items-center px-1">
         <input
           type="checkbox"
           checked={remember}
           onChange={(event) => setRemember(event.target.checked)}
-          className="h-4 w-4 accent-[var(--brand)]"
+          className="h-4 w-4 cursor-pointer rounded border-line text-accent focus:ring-accent/20"
         />
-        Tetap login di perangkat ini
+        <span className="ml-2 text-sm font-medium text-muted">
+          Ingat saya selama 30 hari
+        </span>
       </label>
 
-      {error ? (
-        <div className="rounded-[1.25rem] border border-[#f7b9ab] bg-[#fff1ee] px-4 py-4 text-sm text-[#9a3b2b]">
-          {error}
-        </div>
-      ) : null}
+      {error ? <div className="alert-panel">{error}</div> : null}
 
-      <button type="submit" disabled={isSubmitting} className="btn-primary w-full">
-        {isSubmitting ? "Memeriksa akun..." : "Masuk ke dashboard"}
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="group flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#002045_0%,#1a365d_100%)] py-4 font-bold text-white shadow-lg shadow-brand/20 transition-all duration-300 hover:scale-[1.02] active:scale-95"
+      >
+        <span>{isSubmitting ? "Memeriksa akun..." : "Masuk"}</span>
+        <span className="transition-transform group-hover:translate-x-1" aria-hidden="true">
+          <ArrowRightIcon />
+        </span>
       </button>
     </form>
   );

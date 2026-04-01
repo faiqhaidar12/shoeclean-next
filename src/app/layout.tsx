@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Fraunces, Geist_Mono, Manrope } from "next/font/google";
+import { Geist_Mono, Inter, Manrope } from "next/font/google";
 import "./globals.css";
 
-const bodySans = Manrope({
+const bodySans = Inter({
   variable: "--font-body-sans",
   subsets: ["latin"],
 });
@@ -12,8 +12,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const displaySerif = Fraunces({
-  variable: "--font-display-serif",
+const displaySans = Manrope({
+  variable: "--font-display-sans",
   subsets: ["latin"],
 });
 
@@ -30,7 +30,8 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${bodySans.variable} ${geistMono.variable} ${displaySerif.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
+      className={`${bodySans.variable} ${geistMono.variable} ${displaySans.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

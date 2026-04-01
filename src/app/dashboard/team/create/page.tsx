@@ -1,0 +1,45 @@
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { BackendUnavailable } from "@/components/backend-unavailable";
+import { DashboardFrame } from "@/components/dashboard-frame";
+import { TeamMemberForm } from "@/components/team-member-form";
+import { getTeam } from "@/lib/auth";
+import { ApiError } from "@/lib/api";
+
+export const dynamic = "force-dynamic";
+
+export default async function DashboardTeamCreatePage() {
+  let data: Awaited<ReturnType<typeof getTeam>>;
+
+  try {
+    data = await getTeam();
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 401) redirect("/login");
+
+    if (error instanceof ApiError && error.status === 503) {
+      return <BackendUnavailable title="Form team belum terhubung" message={error.message} />;
+    }
+
+    throw error;
+  }
+
+  return (
+    <DashboardFrame
+      current="team"
+      eyebrow="Tambah personel"
+      title="Tambah admin atau staff."
+      description="Buat user team baru sesuai hak akses yang diizinkan oleh role Anda saat ini."
+    >
+      <div className="mx-auto max-w-4xl">
+        <Link
+          href="/dashboard/team"
+          className="mb-6 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-brand/40 transition hover:text-accent"
+        >
+          <span aria-hidden>{"<-"}</span>
+          Kembali ke personel
+        </Link>
+        <TeamMemberForm mode="create" outlets={data.outlets} roles={data.roles} />
+      </div>
+    </DashboardFrame>
+  );
+}

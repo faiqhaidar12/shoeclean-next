@@ -1,4 +1,7 @@
-import Link from "next/link";
+﻿import Link from "next/link";
+import { PublicBottomNav } from "@/components/public-bottom-nav";
+import { PublicTopNav } from "@/components/public-top-nav";
+import { getOptionalAuthSession } from "@/lib/auth";
 import { BackendUnavailable } from "@/components/backend-unavailable";
 import { ApiError, getPublicOutlets, type StorefrontListResponse } from "@/lib/api";
 
@@ -12,9 +15,75 @@ type OrderListPageProps = {
   }>;
 };
 
-export default async function OrderListPage({
-  searchParams,
-}: OrderListPageProps) {
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
+      <path
+        d="M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm8 3-3.8-3.8"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function StoreIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
+      <path
+        d="M5 9.5 6.3 5h11.4L19 9.5M6 9.5h12v8.75A1.75 1.75 0 0 1 16.25 20H7.75A1.75 1.75 0 0 1 6 18.25z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+      <path d="M9 13.5h6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function LocationIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
+      <path
+        d="M12 20s6-4.35 6-10a6 6 0 1 0-12 0c0 5.65 6 10 6 10Z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+      />
+      <circle cx="12" cy="10" r="2.25" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
+  );
+}
+
+function QrisIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="h-5 w-5">
+      <path
+        d="M5 5h5v5H5zM14 5h5v5h-5zM5 14h5v5H5z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+      />
+      <path d="M14 14h2v2h-2zM17 17h2v2h-2zM16 14v5" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
+  );
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4">
+      <path
+        d="M4.5 10h11m0 0-4-4m4 4-4 4"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export default async function OrderListPage({ searchParams }: OrderListPageProps) {
+  const session = await getOptionalAuthSession();
   let data: StorefrontListResponse | null = null;
   let message = "";
 
@@ -38,128 +107,190 @@ export default async function OrderListPage({
   }
 
   return (
-    <main className="app-shell">
-      <section className="page-frame px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-        <div className="relative z-10 space-y-4">
-          <header className="section-block p-5 sm:p-7">
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-              <div className="max-w-3xl">
-                <span className="eyebrow">Official Storefront</span>
-                <h1 className="headline mt-4">
-                  Pilih outlet yang paling nyaman untuk customer mobile.
-                </h1>
-                <p className="subcopy mt-4">
-                  Flow ini dirancang agar customer bisa cari cabang, pilih layanan,
-                  lalu order langsung dari smartphone dengan langkah yang sederhana.
-                </p>
-                <div className="hero-badge-row mt-5">
-                  <span className="highlight-chip">Cari cabang lebih cepat</span>
-                  <span className="highlight-chip">Filter wilayah</span>
-                  <span className="highlight-chip">Checkout ringkas</span>
-                </div>
+    <>
+      <PublicTopNav current="order" authenticated={session?.authenticated} />
+
+      <main className="public-main-shell">
+        <section className="public-hero-intro tablet-balance-grid motion-enter lg:grid-cols-[1.08fr_0.92fr] lg:items-end">
+          <div className="motion-enter motion-delay-1 max-w-4xl">
+            <p className="eyebrow">Storefront outlet</p>
+            <h1 className="mt-6 text-[2.5rem] font-semibold tracking-[-0.05em] text-brand sm:text-[4rem] sm:leading-[1.02]">
+              Pilih outlet yang paling nyaman untuk <span className="text-accent">customer mobile</span>
+            </h1>
+            <p className="mt-5 max-w-2xl text-base leading-8 text-muted sm:text-lg">
+              Halaman ini dibuat sebagai pintu masuk order customer: cari cabang, cek layanan aktif, lalu lanjutkan pemesanan dari smartphone tanpa langkah yang ribet.
+            </p>
+
+            <div className="mt-7 flex flex-wrap gap-3">
+              <span className="highlight-chip">Cari cabang lebih cepat</span>
+              <span className="highlight-chip">Filter wilayah</span>
+              <span className="highlight-chip">Lanjut order dalam beberapa tap</span>
+            </div>
+          </div>
+
+          <aside className="tablet-balance-card motion-enter motion-delay-2 bg-brand text-white shadow-[0_24px_54px_rgba(0,32,69,0.18)]">
+            <p className="section-label-dark">Ringkas untuk customer</p>
+            <h2 className="mt-3 text-2xl font-semibold tracking-[-0.04em]">
+              Alur dimulai dari pilih outlet, lalu langsung lanjut ke form order.
+            </h2>
+            <div className="mt-6 grid gap-3">
+              <div className="rounded-[1.25rem] bg-white/10 px-4 py-4 text-sm text-white/86">
+                1. Temukan cabang terdekat
               </div>
-              <div className="mobile-stack lg:self-start">
-                <Link href="/" className="btn-secondary w-full sm:w-auto">
-                  Beranda
-                </Link>
-                <Link href="/track" className="btn-accent w-full sm:w-auto">
-                  Lacak invoice
-                </Link>
+              <div className="rounded-[1.25rem] bg-white/10 px-4 py-4 text-sm text-white/86">
+                2. Lihat layanan dan biaya
+              </div>
+              <div className="rounded-[1.25rem] bg-white/10 px-4 py-4 text-sm text-white/86">
+                3. Kirim order ke outlet pilihan
               </div>
             </div>
-          </header>
 
-          <form className="section-block hero-card p-4 sm:p-5" action="/order">
-            <div className="grid gap-3 lg:grid-cols-[1fr_210px_210px_auto]">
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/track" className="btn-accent">
+                Lacak invoice
+              </Link>
+              <Link href="/" className="btn-secondary bg-white/12 text-white hover:bg-white/18">
+                Kembali
+              </Link>
+            </div>
+          </aside>
+        </section>
+
+        <section className="tablet-balance-card motion-enter motion-delay-2 mt-10 bg-white shadow-[0_18px_38px_rgba(25,28,30,0.05)]">
+          <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="section-label">Cari outlet</p>
+              <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-brand">
+                Temukan cabang yang paling pas untuk customer.
+              </h2>
+            </div>
+            <span className="status-chip-brand w-fit">Mulai order</span>
+          </div>
+
+          <form action="/order" className="grid gap-3 md:grid-cols-2 xl:grid-cols-[1fr_220px_220px_auto]">
+            <div className="relative">
+              <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-muted">
+                <SearchIcon />
+              </div>
               <input
                 type="text"
                 name="search"
                 defaultValue={data.filters.search}
                 placeholder="Cari nama outlet atau alamat"
-                className="field-soft"
+                className="field-soft pl-12"
               />
-              <select
-                name="province_id"
-                defaultValue={data.filters.province_id ?? ""}
-                className="field-soft"
-              >
-                <option value="">Semua provinsi</option>
-                {data.provinces.map((province) => (
-                  <option key={province.id} value={province.id}>
-                    {province.name}
-                  </option>
-                ))}
-              </select>
-              <select
-                name="city_id"
-                defaultValue={data.filters.city_id ?? ""}
-                className="field-soft"
-              >
-                <option value="">Semua kota</option>
-                {data.cities.map((city) => (
-                  <option key={city.id} value={city.id}>
-                    {city.name}
-                  </option>
-                ))}
-              </select>
-              <button type="submit" className="btn-primary w-full lg:w-auto">
-                Cari outlet
-              </button>
             </div>
+
+            <select
+              name="province_id"
+              defaultValue={data.filters.province_id ?? ""}
+              className="field-soft"
+            >
+              <option value="">Semua provinsi</option>
+              {data.provinces.map((province) => (
+                <option key={province.id} value={province.id}>
+                  {province.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              name="city_id"
+              defaultValue={data.filters.city_id ?? ""}
+              className="field-soft"
+            >
+              <option value="">Semua kota</option>
+              {data.cities.map((city) => (
+                <option key={city.id} value={city.id}>
+                  {city.name}
+                </option>
+              ))}
+            </select>
+
+            <button type="submit" className="btn-primary w-full md:col-span-2 xl:col-span-1 xl:w-auto">
+              Cari outlet
+            </button>
           </form>
+        </section>
 
-          <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {data.outlets.map((outlet) => (
-              <Link
-                key={outlet.id}
-                href={`/order/${outlet.slug}?skipBranch=1`}
-                className="section-block hero-card touch-card p-5"
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-accent text-lg font-semibold text-white">
-                    {outlet.name.charAt(0)}
-                  </div>
-                  <div className="flex flex-wrap justify-end gap-2">
-                    <span className="rounded-full bg-[#edf4f1] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
-                      aktif
-                    </span>
-                    {outlet.has_qris ? (
-                      <span className="rounded-full bg-[#fff0e7] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-brand">
-                        qris
-                      </span>
-                    ) : null}
-                  </div>
+        <section className="motion-enter motion-delay-3 mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {data.outlets.map((outlet) => (
+            <Link
+              key={outlet.id}
+              href={`/order/${outlet.slug}?skipBranch=1`}
+              className="group motion-enter-fast rounded-[2rem] bg-white p-5 shadow-[0_18px_38px_rgba(25,28,30,0.05)] transition hover:-translate-y-1 hover:shadow-[0_24px_52px_rgba(25,28,30,0.08)]"
+              style={{ animationDelay: `${0.06 * ((data.outlets.indexOf(outlet) % 6) + 1)}s` }}
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-[1rem] bg-[rgba(0,32,69,0.08)] text-brand">
+                  <StoreIcon />
                 </div>
+                <div className="flex flex-wrap justify-end gap-2">
+                  <span className="status-chip-mint">Aktif</span>
+                  {outlet.has_qris ? <span className="status-chip-brand">QRIS</span> : null}
+                </div>
+              </div>
 
-                <h2 className="mt-5 text-2xl font-semibold">{outlet.name}</h2>
-                <p className="mt-3 text-sm leading-6 text-muted">
+              <h2 className="mt-5 text-2xl font-semibold tracking-[-0.03em] text-brand">
+                {outlet.name}
+              </h2>
+
+              <div className="mt-4 flex items-start gap-3 text-sm text-muted">
+                <span className="mt-0.5 text-accent">
+                  <LocationIcon />
+                </span>
+                <p className="leading-7">
                   {outlet.address || "Alamat outlet belum tersedia."}
                 </p>
+              </div>
 
-                <div className="mt-5 flex flex-wrap gap-2">
-                  <span className="rounded-full bg-surface px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
-                    {outlet.services_count} layanan
+              <div className="mt-5 flex flex-wrap gap-2">
+                <span className="rounded-full bg-surface-soft px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
+                  {outlet.services_count} layanan
+                </span>
+                {outlet.pickup_fee > 0 ? (
+                  <span className="rounded-full bg-surface-soft px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
+                    Pickup tersedia
                   </span>
-                  {outlet.pickup_fee > 0 ? (
-                    <span className="rounded-full bg-surface px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
-                      pickup
-                    </span>
-                  ) : null}
-                </div>
+                ) : null}
+                {outlet.has_qris ? (
+                  <span className="inline-flex items-center gap-2 rounded-full bg-surface-soft px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
+                    <QrisIcon />
+                    QRIS
+                  </span>
+                ) : null}
+              </div>
 
-                <div className="mt-5 flex items-center justify-between border-t border-line pt-4">
-                  <p className="section-label">
-                    Mulai order
-                  </p>
-                  <span className="text-sm font-semibold text-brand">
-                    Buka outlet
+              <div className="mt-6 border-t border-surface-muted pt-4">
+                <div className="flex items-center justify-between gap-4 text-sm font-semibold">
+                  <span className="text-muted">Buka outlet</span>
+                  <span className="inline-flex items-center gap-2 text-brand transition group-hover:text-accent">
+                    Lanjut order
+                    <ArrowRightIcon />
                   </span>
                 </div>
-              </Link>
-            ))}
+              </div>
+            </Link>
+          ))}
+        </section>
+
+        {data.outlets.length === 0 ? (
+          <section className="motion-enter motion-delay-4 mt-8 rounded-[2rem] bg-white p-8 text-center shadow-[0_16px_34px_rgba(25,28,30,0.05)]">
+            <h2 className="text-2xl font-semibold tracking-[-0.04em] text-brand">
+              Outlet belum ditemukan
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-muted">
+              Coba ubah kata kunci pencarian atau pilih wilayah yang berbeda.
+            </p>
           </section>
-        </div>
-      </section>
-    </main>
+        ) : null}
+      </main>
+
+      <PublicBottomNav current="order" />
+    </>
   );
 }
+
+
+
+
