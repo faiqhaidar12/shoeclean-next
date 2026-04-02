@@ -99,7 +99,7 @@ export function RegisterForm() {
             onChange={(event) => setName(event.target.value)}
             autoComplete="name"
             required
-            placeholder="Nama owner / admin bisnis"
+            placeholder="Nama pemilik atau admin"
             className="w-full rounded-xl border-none bg-surface-soft py-4 pl-12 pr-4 text-foreground transition-all duration-300 placeholder:text-muted/55 focus:bg-white focus:ring-2 focus:ring-brand/10"
           />
         </div>
@@ -121,7 +121,7 @@ export function RegisterForm() {
             value={businessName}
             onChange={(event) => setBusinessName(event.target.value)}
             required
-            placeholder="Nama outlet utama Anda"
+            placeholder="Nama outlet atau bisnis Anda"
             className="w-full rounded-xl border-none bg-surface-soft py-4 pl-12 pr-4 text-foreground transition-all duration-300 placeholder:text-muted/55 focus:bg-white focus:ring-2 focus:ring-brand/10"
           />
         </div>
@@ -209,7 +209,7 @@ export function RegisterForm() {
           className="h-5 w-5 rounded border-line bg-surface-soft text-accent"
         />
         <span className="text-sm font-medium text-muted">
-          Saya setuju dengan <span className="font-bold text-accent">Syarat dan Ketentuan</span>
+          Saya setuju dengan <span className="font-bold text-accent">syarat penggunaan</span>
         </span>
       </label>
 
@@ -220,7 +220,7 @@ export function RegisterForm() {
         disabled={isSubmitting}
         className="group flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(90deg,#002045_0%,#1a365d_100%)] py-4 font-bold text-white shadow-lg transition-all duration-300 hover:shadow-brand/20 hover:scale-[1.01] active:scale-[0.98]"
       >
-        <span>{isSubmitting ? "Mempersiapkan workspace..." : "Buat akun dan outlet pertama"}</span>
+        <span>{isSubmitting ? "Sedang menyiapkan akun..." : "Buat akun sekarang"}</span>
         <span className="transition-transform group-hover:translate-x-1" aria-hidden="true">
           <ArrowRightIcon />
         </span>

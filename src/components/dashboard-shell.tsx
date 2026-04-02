@@ -175,9 +175,9 @@ export function DashboardShell({ data }: Props) {
   return (
     <DashboardFrame
       current="dashboard"
-      eyebrow="Portal Admin"
+      eyebrow="Ringkasan outlet"
       title={`Selamat datang, ${data.user.name}`}
-      description={`Dashboard ini mengikuti scope aktif: ${data.scope.active_label}.`}
+      description={`Anda sedang melihat ringkasan untuk ${data.scope.active_label}.`}
       actions={
         <>
           <Link href="/dashboard/reports" className="btn-accent w-full sm:w-auto">
@@ -189,7 +189,7 @@ export function DashboardShell({ data }: Props) {
             disabled={isLoggingOut}
             className="btn-primary w-full sm:w-auto"
           >
-            {isLoggingOut ? "Keluar..." : "Logout"}
+            {isLoggingOut ? "Keluar..." : "Keluar"}
           </button>
         </>
       }
@@ -200,7 +200,7 @@ export function DashboardShell({ data }: Props) {
             <div className="max-w-3xl">
               <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[10px] font-black uppercase tracking-[0.24em] text-white/80">
                 <span className="inline-flex h-2 w-2 rounded-full bg-emerald-300" />
-                Business Multi Outlet
+                Multi outlet
               </div>
               <h2 className="font-[var(--font-display-sans)] text-2xl font-extrabold">
                 Monitor performa outlet dari satu dashboard
@@ -213,7 +213,7 @@ export function DashboardShell({ data }: Props) {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 xl:min-w-[440px]">
               <div className="rounded-[1.5rem] border border-white/10 bg-white/8 px-4 py-4 backdrop-blur-sm">
                 <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/50">
-                  Cabang Dalam Scope
+                  Cabang dalam cakupan
                 </p>
                 <p className="mt-2 text-3xl font-[var(--font-display-sans)] font-extrabold">
                   {data.scope.outlets.length}
@@ -221,7 +221,7 @@ export function DashboardShell({ data }: Props) {
               </div>
               <div className="rounded-[1.5rem] border border-white/10 bg-white/8 px-4 py-4 backdrop-blur-sm">
                 <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/50">
-                  Total Outlet Owner
+                  Total cabang
                 </p>
                 <p className="mt-2 text-3xl font-[var(--font-display-sans)] font-extrabold">
                   {data.multi_outlet.owned_outlet_count}
@@ -229,7 +229,7 @@ export function DashboardShell({ data }: Props) {
               </div>
               <div className="rounded-[1.5rem] border border-white/10 bg-white/8 px-4 py-4 backdrop-blur-sm">
                 <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/50">
-                  Mode Dashboard
+                  Mode tampilan
                 </p>
                 <p className="mt-2 text-sm font-[var(--font-display-sans)] font-extrabold uppercase tracking-[0.18em] text-white">
                   Gabungan
@@ -254,7 +254,7 @@ export function DashboardShell({ data }: Props) {
               <div className="grid grid-cols-2 gap-4">
                 <div className="rounded-[1.6rem] border border-white/10 bg-white/8 px-5 py-5 backdrop-blur-sm">
                   <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/45">
-                    Revenue
+                    Pendapatan
                   </p>
                   <p className="mt-2 text-xl font-[var(--font-display-sans)] font-extrabold">
                     {formatRupiah(data.multi_outlet.top_performing_outlet.revenue_total)}
@@ -262,7 +262,7 @@ export function DashboardShell({ data }: Props) {
                 </div>
                 <div className="rounded-[1.6rem] border border-white/10 bg-white/8 px-5 py-5 backdrop-blur-sm">
                   <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/45">
-                    Total Order
+                    Total pesanan
                   </p>
                   <p className="mt-2 text-xl font-[var(--font-display-sans)] font-extrabold">
                     {data.multi_outlet.top_performing_outlet.orders_total}
@@ -285,18 +285,18 @@ export function DashboardShell({ data }: Props) {
               </div>
               <div>
                 <p className="text-[10px] font-black uppercase tracking-[0.24em] text-purple-600">
-                  Business Feature
+                  Fitur bisnis
                 </p>
                 <h3 className="mt-2 font-[var(--font-display-sans)] text-xl font-extrabold text-brand">
                   Laporan gabungan semua cabang tersedia di Business
                 </h3>
                 <p className="mt-2 max-w-3xl text-sm font-semibold leading-relaxed text-brand/65">
-                  Paket Pro saat ini fokus ke outlet aktif. Upgrade ke Business untuk melihat ringkasan gabungan semua cabang sekaligus.
+                  Paket Pro saat ini fokus pada cabang aktif. Upgrade ke Bisnis untuk melihat ringkasan gabungan semua cabang sekaligus.
                 </p>
               </div>
             </div>
             <Link href="/dashboard/subscription" className="inline-flex items-center justify-center rounded-2xl bg-brand px-5 py-3 text-sm font-bold text-white transition hover:bg-accent">
-              Lihat Paket Business
+              Lihat paket Bisnis
             </Link>
           </div>
         </section>
@@ -311,7 +311,7 @@ export function DashboardShell({ data }: Props) {
               </svg>
             </div>
             <div>
-              <h3 className="font-[var(--font-display-sans)] font-bold text-brand">Filter outlet & periode</h3>
+              <h3 className="font-[var(--font-display-sans)] font-bold text-brand">Filter cabang dan periode</h3>
               <p className="text-xs font-black uppercase tracking-widest text-brand/40">
                 Scope: {data.scope.active_label}
               </p>
@@ -320,7 +320,7 @@ export function DashboardShell({ data }: Props) {
 
           <form action="/dashboard" className="flex flex-wrap items-center gap-3">
             <div className="rounded-full bg-white px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-accent">
-              Scope aktif
+              Cakupan aktif
             </div>
             <select name="month" defaultValue={String(data.filters.month)} className="field-soft !w-40">
               {monthLabels.map((label, index) => (
@@ -506,7 +506,7 @@ export function DashboardShell({ data }: Props) {
               Aktivitas outlet
             </h2>
             <Link href="/dashboard/orders" className="text-xs font-bold text-brand hover:underline">
-              Lihat buku besar
+              Lihat semua pesanan
             </Link>
           </div>
 
@@ -520,7 +520,7 @@ export function DashboardShell({ data }: Props) {
                 >
                   <div className="min-w-0">
                     <p className="truncate text-sm font-bold text-brand">
-                      {order.customer?.name ?? "Customer umum"}
+                      {order.customer?.name ?? "Pelanggan umum"}
                     </p>
                     <p className="mt-1 truncate text-[10px] font-black uppercase tracking-[0.18em] text-muted">
                       {order.invoice_number} · {order.outlet?.name ?? "Outlet"}
@@ -590,7 +590,7 @@ export function DashboardShell({ data }: Props) {
                 Kuasai operasional bisnis cuci sepatu Anda.
               </h2>
               <p className="max-w-[320px] text-sm leading-relaxed text-[#adc7f7]">
-                Dashboard ini sekarang membawa scope outlet, performa cabang, dan tren pendapatan dari backend Laravel yang sama dengan aplikasi lama.
+                Pantau performa cabang, tren pendapatan, dan aktivitas pesanan dari satu tempat yang mudah dipantau setiap hari.
               </p>
             </div>
 
@@ -599,7 +599,7 @@ export function DashboardShell({ data }: Props) {
                 href="/dashboard/orders"
                 className="w-fit rounded-full bg-white px-6 py-3 text-sm font-bold text-brand shadow-xl shadow-black/20 transition-transform group-hover:scale-105"
               >
-                Buka Orders
+                Buka pesanan
               </Link>
               <Link
                 href="/dashboard/reports"
@@ -627,10 +627,10 @@ export function DashboardShell({ data }: Props) {
         <article className="rounded-[1.8rem] border border-line/35 bg-white p-6 shadow-[0_12px_28px_rgba(25,28,30,0.04)]">
           <p className="section-label">Cabang dalam ringkasan</p>
           <h3 className="mt-3 text-xl font-semibold tracking-[-0.03em] text-brand">
-            {data.scope.outlets.length} outlet aktif
+            {data.scope.outlets.length} cabang aktif
           </h3>
           <p className="mt-2 text-sm leading-7 text-muted">
-            Dashboard ini mengikuti scope user yang aktif dari backend Laravel.
+            Ringkasan ini mengikuti cabang yang sedang bisa Anda akses saat ini.
           </p>
         </article>
 

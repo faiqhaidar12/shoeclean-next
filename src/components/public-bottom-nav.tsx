@@ -8,10 +8,10 @@ type Props = {
 };
 
 const navItems = [
-  { key: "home", href: "/", label: "Home", icon: HomeIcon },
-  { key: "pricing", href: "/pricing", label: "Pricing", icon: PricingIcon },
-  { key: "track", href: "/track", label: "Track", icon: TrackIcon },
-  { key: "order", href: "/order", label: "Order", icon: OrderIcon },
+  { key: "home", href: "/", label: "Beranda", icon: HomeIcon },
+  { key: "pricing", href: "/pricing", label: "Harga", icon: PricingIcon },
+  { key: "track", href: "/track", label: "Lacak", icon: TrackIcon },
+  { key: "order", href: "/order", label: "Pesan", icon: OrderIcon },
 ] as const;
 
 export function PublicBottomNav({ current = "home" }: Props) {

@@ -1,5 +1,6 @@
 ﻿import Link from "next/link";
 import { PublicBottomNav } from "@/components/public-bottom-nav";
+import { SubscriptionPopButton } from "@/components/subscription-pop-button";
 import { PublicTopNav } from "@/components/public-top-nav";
 import { getOptionalAuthSession } from "@/lib/auth";
 import { BackendUnavailable } from "@/components/backend-unavailable";
@@ -10,14 +11,14 @@ const planOrder = ["free", "pro", "business"] as const;
 const planDisplay: Record<(typeof planOrder)[number], { label: string; badge?: string }> = {
   free: { label: "Pemula" },
   pro: { label: "Profesional", badge: "Paling populer" },
-  business: { label: "Business" },
+  business: { label: "Bisnis" },
 };
 
 const featureHighlights = [
   {
-    title: "Operasional outlet yang rapi",
+    title: "Pesanan lebih rapi setiap hari",
     description:
-      "Kelola order, status pengerjaan, pelanggan, dan pembayaran dari satu workspace yang konsisten.",
+      "Terima pesanan, pantau progres, dan cek pembayaran dari satu tempat tanpa bikin tim Anda kebingungan.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="h-8 w-8 text-accent">
         <path
@@ -30,9 +31,9 @@ const featureHighlights = [
     ),
   },
   {
-    title: "Siap dipakai tim outlet",
+    title: "Mudah dipakai seluruh tim",
     description:
-      "Owner, admin, dan staff bisa bekerja dari alur yang sama tanpa perlu pindah-pindah tools.",
+      "Owner, admin, dan staf bisa bekerja dalam alur yang sama, jadi pelayanan ke pelanggan terasa lebih cepat dan rapi.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="h-8 w-8 text-accent-ink">
         <path
@@ -50,9 +51,9 @@ const featureHighlights = [
     ),
   },
   {
-    title: "Laporan yang langsung berguna",
+    title: "Laporan yang mudah dipahami",
     description:
-      "Pantau revenue, expense, performa outlet, dan pertumbuhan bisnis tanpa merakit dashboard sendiri.",
+      "Lihat pemasukan, pengeluaran, dan performa outlet tanpa perlu menyusun laporan manual setiap hari.",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" className="h-8 w-8 text-brand">
         <path
@@ -71,17 +72,17 @@ const faqs = [
   {
     question: "Bisa upgrade paket kapan saja?",
     answer:
-      "Bisa. Anda dapat mulai dari paket yang paling ringan lalu upgrade saat outlet dan volume order bertambah.",
+      "Bisa. Anda dapat mulai dari paket yang paling ringan, lalu upgrade saat pesanan dan kebutuhan tim mulai bertambah.",
   },
   {
     question: "Apa yang dihitung sebagai outlet?",
     answer:
-      "Outlet adalah cabang atau titik operasional yang Anda kelola di sistem, termasuk lokasi utama dan cabang lain.",
+      "Outlet adalah cabang atau lokasi usaha yang Anda kelola di sistem, termasuk outlet utama maupun cabang lain.",
   },
   {
     question: "Kalau masih di paket gratis bagaimana saat order bertambah?",
     answer:
-      "Anda bisa memakai top-up kuota order terlebih dulu, atau langsung pindah ke paket Pro jika operasional sudah aktif tiap hari.",
+      "Anda bisa menambah kuota pesanan terlebih dulu, atau langsung pindah ke paket Pro jika pesanan sudah mulai rutin setiap hari.",
   },
 ];
 
@@ -118,11 +119,11 @@ export default async function PricingPage() {
     message =
       error instanceof ApiError
         ? error.message
-        : "Terjadi kendala saat memuat halaman pricing.";
+        : "Terjadi kendala saat memuat halaman harga.";
   }
 
   if (!data) {
-    return <BackendUnavailable message={message} title="Pricing belum terhubung" />;
+    return <BackendUnavailable message={message} title="Halaman harga belum terhubung" />;
   }
 
   return (
@@ -133,10 +134,10 @@ export default async function PricingPage() {
         <section className="public-hero-intro motion-enter text-center sm:mb-20">
           <p className="eyebrow mx-auto">{data.hero.badge}</p>
           <h1 className="mx-auto mt-6 max-w-4xl text-[2.5rem] font-semibold tracking-[-0.05em] text-brand sm:text-[4.25rem] sm:leading-[1.02]">
-            Paket yang tumbuh mengikuti <span className="text-accent">operasional laundry sepatu</span> Anda
+            Pilih paket yang paling pas untuk <span className="text-accent">menjalankan dan menumbuhkan outlet Anda</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-muted sm:text-lg">
-            {data.hero.description}
+            Mulai dari menerima pesanan online, memudahkan pelanggan melacak pesanan, sampai membantu tim outlet bekerja lebih rapi dari hari ke hari.
           </p>
 
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
@@ -155,6 +156,7 @@ export default async function PricingPage() {
             const plan = data.plans[key];
             const highlighted = key === "pro";
             const display = planDisplay[key];
+            const isPublished = plan.is_published ?? true;
 
             return (
               <article
@@ -181,7 +183,7 @@ export default async function PricingPage() {
                     <span className={`text-4xl font-semibold tracking-[-0.05em] ${highlighted ? "text-white" : "text-brand"}`}>
                       {plan.price_label}
                     </span>
-                    {plan.price > 0 ? (
+                    {plan.price > 0 && isPublished ? (
                       <span className={`pb-1 text-sm font-medium ${highlighted ? "text-white/68" : "text-muted"}`}>
                       </span>
                     ) : null}
@@ -205,18 +207,48 @@ export default async function PricingPage() {
                   ))}
                 </div>
 
-                <Link
-                  href={key === "business" ? "/register" : "/login"}
-                  className={
-                    highlighted
-                      ? "inline-flex w-full items-center justify-center rounded-full bg-accent-soft px-5 py-4 text-sm font-bold text-accent-ink shadow-[0_16px_28px_rgba(0,0,0,0.12)] transition hover:brightness-[0.98]"
-                      : key === "business"
-                        ? "inline-flex w-full items-center justify-center rounded-full bg-brand px-5 py-4 text-sm font-bold text-white transition hover:bg-brand-strong"
-                        : "inline-flex w-full items-center justify-center rounded-full bg-surface-muted px-5 py-4 text-sm font-bold text-brand transition hover:bg-[rgba(224,227,229,0.92)]"
-                  }
-                >
-                  {plan.cta}
-                </Link>
+                {isPublished ? (
+                  key === "free" || !session?.authenticated ? (
+                    <Link
+                      href={
+                        session?.authenticated
+                          ? "/dashboard/subscription"
+                          : "/register"
+                      }
+                      className={
+                        highlighted
+                          ? "inline-flex w-full items-center justify-center rounded-full bg-accent-soft px-5 py-4 text-sm font-bold text-accent-ink shadow-[0_16px_28px_rgba(0,0,0,0.12)] transition hover:brightness-[0.98]"
+                          : key === "business"
+                            ? "inline-flex w-full items-center justify-center rounded-full bg-brand px-5 py-4 text-sm font-bold text-white transition hover:bg-brand-strong"
+                            : "inline-flex w-full items-center justify-center rounded-full bg-surface-muted px-5 py-4 text-sm font-bold text-brand transition hover:bg-[rgba(224,227,229,0.92)]"
+                      }
+                    >
+                      {key === "free"
+                        ? session?.authenticated
+                          ? "Buka dasbor"
+                          : "Daftar gratis"
+                        : "Daftar untuk berlangganan"}
+                    </Link>
+                  ) : (
+                    <SubscriptionPopButton
+                      plan={key}
+                      label="Beli paket ini"
+                      successTitle={`Pembayaran paket ${display.label} berhasil.`}
+                      returnTo="/dashboard/subscription"
+                      className={
+                        highlighted
+                          ? "inline-flex w-full items-center justify-center rounded-full bg-accent-soft px-5 py-4 text-sm font-bold text-accent-ink shadow-[0_16px_28px_rgba(0,0,0,0.12)] transition hover:brightness-[0.98]"
+                          : key === "business"
+                            ? "inline-flex w-full items-center justify-center rounded-full bg-brand px-5 py-4 text-sm font-bold text-white transition hover:bg-brand-strong"
+                            : "inline-flex w-full items-center justify-center rounded-full bg-surface-muted px-5 py-4 text-sm font-bold text-brand transition hover:bg-[rgba(224,227,229,0.92)]"
+                      }
+                    />
+                  )
+                ) : (
+                  <span className="inline-flex w-full items-center justify-center rounded-full bg-surface-muted px-5 py-4 text-sm font-bold text-muted">
+                    Coming Soon
+                  </span>
+                )}
               </article>
             );
           })}
@@ -224,7 +256,7 @@ export default async function PricingPage() {
 
         <section className="motion-enter motion-delay-2 mt-24">
           <h2 className="text-center text-3xl font-semibold tracking-[-0.04em] text-brand sm:text-[2.55rem]">
-            Semua detail penting untuk bisnis Anda sudah diperhitungkan.
+            Bukan cuma soal harga, tapi soal membuat usaha Anda terasa lebih siap.
           </h2>
 
           <div className="mt-10 grid gap-4 md:grid-cols-4">
@@ -265,13 +297,13 @@ export default async function PricingPage() {
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-3">
-                    <span className="status-chip-mint">Order & payment</span>
-                    <span className="status-chip-brand">Expense & report</span>
-                    <span className="status-chip-soft">Promo & survey</span>
+                    <span className="status-chip-mint">Pesanan & pembayaran</span>
+                    <span className="status-chip-brand">Laporan outlet</span>
+                    <span className="status-chip-soft">Promo pelanggan</span>
                   </div>
 
                   <Link href="/register" className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-accent">
-                    Coba alur kerja lengkap
+                    Mulai siapkan bisnis Anda
                     <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4">
                       <path
                         d="M4.5 10h11m0 0-4-4m4 4-4 4"
@@ -287,13 +319,13 @@ export default async function PricingPage() {
                 <div className="rounded-[1.7rem] bg-surface-soft p-6">
                   <div className="rounded-[1.6rem] bg-[linear-gradient(135deg,#002045,#1a365d)] p-5 text-white shadow-[0_22px_46px_rgba(0,32,69,0.18)]">
                     <div className="flex items-center justify-between text-xs uppercase tracking-[0.18em] text-white/58">
-                      <span>Ringkasan workspace</span>
-                      <span>Live</span>
+                      <span>Ringkasan bisnis</span>
+                      <span>Siap dipakai</span>
                     </div>
                     <div className="mt-6 grid gap-3 sm:grid-cols-3">
                       <div className="rounded-[1.25rem] bg-white/10 p-4">
                         <p className="text-[11px] uppercase tracking-[0.18em] text-white/58">Outlet</p>
-                        <p className="mt-2 text-2xl font-semibold">{data.outlets.length}</p>
+                        <p className="mt-2 text-2xl font-semibold">{data.outlets.length}+</p>
                       </div>
                       <div className="rounded-[1.25rem] bg-white/10 p-4">
                         <p className="text-[11px] uppercase tracking-[0.18em] text-white/58">Paket aktif</p>
@@ -305,7 +337,7 @@ export default async function PricingPage() {
                       </div>
                     </div>
                     <div className="mt-5 rounded-[1.35rem] bg-white/8 p-4 text-sm text-white/80">
-                      Kuota tambahan tersedia untuk outlet yang masih berada di paket gratis, tanpa perlu langsung migrasi penuh.
+                      Anda bisa mulai dari yang ringan, lalu upgrade saat pesanan dan kebutuhan outlet mulai bertambah.
                     </div>
                   </div>
                 </div>
@@ -318,9 +350,11 @@ export default async function PricingPage() {
           <article className="motion-enter-fast section-dark p-6 sm:p-8" style={{ animationDelay: "0.1s" }}>
             <p className="section-label-dark">{data.plans.topup.subtitle}</p>
             <h2 className="mt-3 text-3xl font-semibold tracking-[-0.04em]">
-              {data.plans.topup.name} untuk outlet yang masih bertumbuh
+              {data.plans.topup.name} untuk outlet yang masih ramai pesanan
             </h2>
-            <p className="subcopy-dark mt-4">{data.plans.topup.description}</p>
+            <p className="subcopy-dark mt-4">
+              Tambahan kuota ini cocok untuk outlet yang masih berada di paket gratis tapi mulai menerima pesanan lebih banyak.
+            </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
               <div className="kpi-pill-dark min-w-[180px]">
@@ -329,37 +363,51 @@ export default async function PricingPage() {
               </div>
               <div className="kpi-pill-dark min-w-[180px]">
                 <p className="text-[11px] uppercase tracking-[0.2em] text-white/58">Tambahan kuota</p>
-                <p className="mt-2 text-3xl font-semibold">{data.plans.topup.quota} order</p>
+                <p className="mt-2 text-3xl font-semibold">{data.plans.topup.quota} pesanan</p>
               </div>
             </div>
 
-            <Link href="/login" className="btn-accent mt-8">
-              {data.plans.topup.cta}
-            </Link>
+            {data.plans.topup.is_published ? (
+              session?.authenticated ? (
+                <SubscriptionPopButton
+                  plan="topup"
+                  label="Tambah kuota pesanan"
+                  successTitle="Pembayaran top up berhasil."
+                  returnTo="/dashboard/subscription"
+                  className="btn-accent mt-8"
+                />
+              ) : (
+                <Link href="/register" className="btn-accent mt-8">
+                  Tambah kuota pesanan
+                </Link>
+              )
+            ) : (
+              <span className="btn-secondary mt-8 opacity-80">Coming Soon</span>
+            )}
           </article>
 
           <article
             className="motion-enter-fast rounded-[2rem] bg-white/84 p-6 shadow-[0_16px_38px_rgba(25,28,30,0.06)] sm:p-8"
             style={{ animationDelay: "0.2s" }}
           >
-            <p className="section-label">Panduan cepat memilih plan</p>
+            <p className="section-label">Panduan cepat memilih paket</p>
             <div className="mt-6 space-y-5">
               <div className="motion-enter-fast rounded-[1.4rem] bg-surface-soft p-5" style={{ animationDelay: "0.12s" }}>
-                <h3 className="font-semibold text-brand">Free</h3>
+                <h3 className="font-semibold text-brand">Pemula</h3>
                 <p className="mt-2 text-sm leading-7 text-muted">
-                  Cocok untuk mulai digital dan menguji alur order tanpa komitmen biaya bulanan.
+                  Cocok untuk mulai menerima pesanan online dan mencoba alur kerja baru tanpa biaya bulanan.
                 </p>
               </div>
               <div className="motion-enter-fast rounded-[1.4rem] bg-surface-soft p-5" style={{ animationDelay: "0.2s" }}>
                 <h3 className="font-semibold text-brand">Pro</h3>
                 <p className="mt-2 text-sm leading-7 text-muted">
-                  Pilihan paling stabil untuk outlet aktif yang ingin order tanpa batas dan operasional tim yang lebih rapi.
+                  Pilihan paling pas untuk outlet aktif yang ingin menerima pesanan tanpa batas dan membuat tim bekerja lebih rapi.
                 </p>
               </div>
               <div className="motion-enter-fast rounded-[1.4rem] bg-surface-soft p-5" style={{ animationDelay: "0.28s" }}>
-                <h3 className="font-semibold text-brand">Business</h3>
+                <h3 className="font-semibold text-brand">Bisnis</h3>
                 <p className="mt-2 text-sm leading-7 text-muted">
-                  Dipakai saat bisnis sudah mengelola banyak cabang dan butuh kontrol yang lebih luas dari satu panel.
+                  Cocok saat usaha Anda sudah punya beberapa cabang dan butuh kontrol yang lebih luas dari satu dashboard.
                 </p>
               </div>
             </div>
@@ -368,7 +416,7 @@ export default async function PricingPage() {
 
         <section className="mx-auto mt-24 max-w-3xl">
           <h2 className="text-center text-3xl font-semibold tracking-[-0.04em] text-brand sm:text-[2.45rem]">
-            Pertanyaan umum
+            Pertanyaan yang sering ditanyakan pemilik outlet
           </h2>
           <div className="mt-10 space-y-5">
             {faqs.map((faq, index) => (
@@ -387,7 +435,7 @@ export default async function PricingPage() {
 
       <footer className="border-t border-white/60 bg-white/88">
         <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-6 px-4 py-10 text-sm text-muted sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-          <p>© 2026 ShoeClean. Sistem operasional untuk bisnis perawatan sepatu.</p>
+          <p>© 2026 ShoeClean. Website dan dashboard untuk bisnis perawatan sepatu.</p>
           <div className="flex flex-wrap items-center gap-6">
             <Link href="/pricing" className="transition hover:text-brand">
               Harga
@@ -409,5 +457,3 @@ export default async function PricingPage() {
     </>
   );
 }
-
-

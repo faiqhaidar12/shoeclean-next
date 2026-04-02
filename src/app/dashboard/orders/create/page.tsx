@@ -4,7 +4,7 @@ import { BackendUnavailable } from "@/components/backend-unavailable";
 import { DashboardFrame } from "@/components/dashboard-frame";
 import { InternalOrderCreateForm } from "@/components/internal-order-create-form";
 import { getInternalOrderCreateMeta } from "@/lib/auth";
-import { API_BASE_URL, ApiError } from "@/lib/api";
+import { ApiError } from "@/lib/api";
 
 export const dynamic = "force-dynamic";
 
@@ -26,7 +26,7 @@ export default async function DashboardOrderCreatePage({ searchParams }: Props) 
     if (error instanceof ApiError && error.status === 503) {
       return (
         <BackendUnavailable
-          title="Form buat order belum terhubung"
+          title="Form pesanan belum terhubung"
           message={error.message}
         />
       );
@@ -38,17 +38,14 @@ export default async function DashboardOrderCreatePage({ searchParams }: Props) 
   return (
     <DashboardFrame
       current="orders"
-      eyebrow="Pendaftaran Unit"
-      title="Buat pesanan baru."
-      description="Flow kasir internal sekarang mengikuti komposisi Stitch: customer, layanan, metode penyerahan, dan ringkasan biaya tetap dalam satu kanvas yang nyaman di desktop maupun tablet."
+      eyebrow="Pesanan baru"
+      title="Buat pesanan baru"
+      description="Isi data pelanggan, pilih layanan, lalu simpan pesanan dalam satu alur yang rapi dan nyaman dipakai di desktop maupun tablet."
       actions={
         <>
           <Link href="/dashboard/orders" className="btn-secondary w-full sm:w-auto">
             Batal
           </Link>
-          <a href={`${API_BASE_URL}/orders/create`} className="btn-secondary w-full sm:w-auto">
-            Form Laravel lama
-          </a>
         </>
       }
     >

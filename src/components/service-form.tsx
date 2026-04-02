@@ -90,7 +90,7 @@ export function ServiceForm({
       setDashboardFlash({
         type: "success",
         title: mode === "create" ? "Layanan berhasil dibuat" : "Layanan berhasil diperbarui",
-        message: "Tim outlet sekarang bisa langsung memakai layanan ini saat membuat pesanan.",
+        message: "Tim Anda sekarang bisa langsung memakai layanan ini saat membuat pesanan.",
       });
       router.push("/dashboard/services");
       router.refresh();
@@ -111,7 +111,7 @@ export function ServiceForm({
               {mode === "create" ? "Bangun layanan unggulan baru" : "Rapikan detail layanan outlet"}
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-              Pastikan nama, unit, dan harga layanan jelas agar tim kasir dan customer melihat struktur layanan yang konsisten.
+              Pastikan nama, unit, dan harga layanan jelas agar tim kasir dan pelanggan melihat pilihan layanan yang konsisten.
             </p>
           </div>
 
@@ -184,11 +184,11 @@ export function ServiceForm({
             </div>
 
             <div className="rounded-[1.6rem] border border-line/45 bg-surface/70 p-6">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Penempatan layanan</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Pengaturan layanan</p>
               <div className="mt-5 grid gap-5 sm:grid-cols-2">
                 <div className="space-y-3">
                   <label htmlFor="service-outlet" className="text-[10px] font-black uppercase tracking-widest text-brand/40">
-                    Outlet
+                    Cabang
                   </label>
                   <select
                     id="service-outlet"
@@ -227,16 +227,16 @@ export function ServiceForm({
           </section>
 
           <aside className="section-dark rounded-[1.75rem] p-6 sm:p-7 text-white">
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/55">Panduan operasional</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/55">Panduan pengisian</p>
             <div className="mt-5 space-y-4 text-sm leading-7 text-white/78">
               <p>
-                Gunakan nama layanan yang mudah dikenali kasir, misalnya berdasarkan hasil akhir atau level treatment.
+                Gunakan nama layanan yang mudah dikenali kasir, misalnya berdasarkan hasil akhir atau jenis perawatan.
               </p>
               <p>
-                Harga akan dipakai ulang di order internal dan storefront, jadi hindari singkatan yang membingungkan tim outlet.
+                Harga akan dipakai ulang saat membuat pesanan, jadi hindari singkatan yang membingungkan tim Anda.
               </p>
               <p>
-                Status <span className="font-semibold text-white">inactive</span> cocok saat layanan sedang disembunyikan sementara tanpa harus dihapus.
+                Status <span className="font-semibold text-white">nonaktif</span> cocok saat layanan ingin disembunyikan sementara tanpa harus dihapus.
               </p>
             </div>
           </aside>

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { BackendUnavailable } from "@/components/backend-unavailable";
 import { DashboardFrame } from "@/components/dashboard-frame";
-import { getServices } from "@/lib/auth";
+import { getServices, requireDashboardModuleAccess } from "@/lib/auth";
 import { ApiError } from "@/lib/api";
 import { formatRupiah } from "@/lib/format";
 
@@ -22,10 +22,28 @@ export default async function DashboardServicesPage({ searchParams }: Props) {
   let data: Awaited<ReturnType<typeof getServices>>;
 
   try {
+    await requireDashboardModuleAccess("services");
     data = await getServices(params);
   } catch (error) {
     if (error instanceof ApiError && error.status === 401) {
       redirect("/login");
+    }
+
+    if (error instanceof ApiError && error.status === 403) {
+      return (
+        <DashboardFrame
+          current="services"
+          eyebrow="Layanan Outlet"
+          title="Halaman layanan hanya untuk owner atau admin."
+          description="Staf tidak memiliki akses untuk menambah atau mengubah daftar layanan outlet."
+        >
+          <section className="section-block p-5 sm:p-6">
+            <p className="text-sm leading-7 text-muted">
+              Jika akun ini perlu mengatur layanan, perannya harus diperbarui menjadi admin atau owner.
+            </p>
+          </section>
+        </DashboardFrame>
+      );
     }
 
     if (error instanceof ApiError && error.status === 503) {
@@ -42,9 +60,9 @@ export default async function DashboardServicesPage({ searchParams }: Props) {
   return (
     <DashboardFrame
       current="services"
-      eyebrow="Katalog Layanan"
-      title="Susun layanan unggulan outlet."
-      description="Rapikan struktur layanan, harga, dan status aktif agar tim kasir dan storefront memakai katalog yang selalu sinkron."
+      eyebrow="Layanan Outlet"
+      title="Susun layanan unggulan outlet"
+      description="Atur layanan, harga, dan status aktif agar tim Anda selalu memakai daftar layanan yang sama."
       actions={
         <Link href="/dashboard/services/create" className="btn-primary w-full sm:w-auto">
           Tambah layanan
@@ -57,14 +75,14 @@ export default async function DashboardServicesPage({ searchParams }: Props) {
           <p className="mt-3 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-brand">
             {data.services.total}
           </p>
-          <p className="mt-2 text-sm text-muted">Layanan aktif dan cadangan yang tersedia di seluruh outlet terpilih.</p>
+          <p className="mt-2 text-sm text-muted">Jumlah layanan yang tersedia pada cabang yang sedang Anda lihat.</p>
         </article>
         <article className="section-block p-5 sm:p-6">
           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Layanan aktif</p>
           <p className="mt-3 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-brand">
             {activeServices}
           </p>
-          <p className="mt-2 text-sm text-muted">Unit layanan yang sekarang bisa langsung dipakai saat order dibuat.</p>
+          <p className="mt-2 text-sm text-muted">Layanan yang saat ini bisa langsung dipilih saat membuat pesanan.</p>
         </article>
         <article className="section-dark rounded-[1.75rem] p-6 text-white">
           <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/55">Harga tertinggi</p>
@@ -72,7 +90,7 @@ export default async function DashboardServicesPage({ searchParams }: Props) {
             {formatRupiah(highestPrice)}
           </p>
           <p className="mt-2 text-sm text-white/72">
-            Membantu owner melihat positioning premium di katalog layanan saat ini.
+            Membantu Anda melihat layanan dengan harga tertinggi pada daftar saat ini.
           </p>
         </article>
       </section>
@@ -86,7 +104,7 @@ export default async function DashboardServicesPage({ searchParams }: Props) {
             </h2>
           </div>
           <p className="max-w-xl text-sm leading-7 text-muted">
-            Cari nama layanan, saring per outlet, lalu buka detail layanan untuk update harga, unit, atau status.
+            Cari nama layanan, saring per cabang, lalu buka detailnya untuk mengubah harga, satuan, atau status.
           </p>
         </div>
 
@@ -108,7 +126,7 @@ export default async function DashboardServicesPage({ searchParams }: Props) {
             defaultValue={params.outlet_id ?? String(data.filters.outlet_id ?? "")}
             className="field-soft"
           >
-            <option value="">Semua outlet</option>
+            <option value="">Semua cabang</option>
             {data.outlets.map((outlet) => (
               <option key={outlet.id} value={outlet.id}>
                 {outlet.name}
@@ -129,7 +147,7 @@ export default async function DashboardServicesPage({ searchParams }: Props) {
               {data.services.total} layanan siap dipakai
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-7 text-muted">
-              Buka salah satu layanan untuk mengubah harga atau menonaktifkannya tanpa perlu kembali ke dashboard Laravel lama.
+              Buka salah satu layanan untuk mengubah harga atau menonaktifkannya dari halaman ini.
             </p>
           </div>
           <span className="highlight-chip">
@@ -147,7 +165,7 @@ export default async function DashboardServicesPage({ searchParams }: Props) {
               <div className="flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <p className="font-semibold text-foreground">{service.name}</p>
-                  <p className="mt-1 text-sm text-muted">{service.outlet?.name ?? "Outlet utama"}</p>
+                      <p className="mt-1 text-sm text-muted">{service.outlet?.name ?? "Cabang utama"}</p>
                 </div>
                 <span
                   className={`inline-flex min-h-8 items-center whitespace-nowrap rounded-full px-3 py-2 text-[11px] leading-none font-black uppercase tracking-[0.16em] ${
@@ -178,7 +196,7 @@ export default async function DashboardServicesPage({ searchParams }: Props) {
             <div className="min-w-[920px]">
               <div className="grid grid-cols-[minmax(260px,1.5fr)_minmax(220px,1fr)_180px_140px_140px] gap-4 bg-slate-50 px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">
                 <span>Layanan</span>
-                <span>Outlet</span>
+                <span>Cabang</span>
                 <span>Harga</span>
                 <span>Unit</span>
                 <span>Status</span>
@@ -192,11 +210,11 @@ export default async function DashboardServicesPage({ searchParams }: Props) {
                   >
                     <div className="min-w-0">
                       <p className="truncate font-semibold text-foreground">{service.name}</p>
-                      <p className="mt-1 truncate text-sm text-muted">Klik untuk mengubah harga atau status layanan</p>
+                      <p className="mt-1 truncate text-sm text-muted">Buka untuk mengubah harga atau status layanan</p>
                     </div>
                     <div className="min-w-0">
-                      <p className="truncate font-semibold text-foreground">{service.outlet?.name ?? "Outlet utama"}</p>
-                      <p className="mt-1 truncate text-sm text-muted">Katalog cabang</p>
+                      <p className="truncate font-semibold text-foreground">{service.outlet?.name ?? "Cabang utama"}</p>
+                      <p className="mt-1 truncate text-sm text-muted">Daftar layanan cabang</p>
                     </div>
                     <div className="font-semibold text-brand">{formatRupiah(service.price)}</div>
                     <div className="font-semibold text-foreground">{service.unit}</div>

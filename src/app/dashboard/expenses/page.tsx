@@ -2,7 +2,7 @@
 import { redirect } from "next/navigation";
 import { BackendUnavailable } from "@/components/backend-unavailable";
 import { DashboardFrame } from "@/components/dashboard-frame";
-import { getExpenses } from "@/lib/auth";
+import { getExpenses, requireDashboardModuleAccess } from "@/lib/auth";
 import { ApiError } from "@/lib/api";
 import { formatRupiah } from "@/lib/format";
 
@@ -38,10 +38,26 @@ export default async function DashboardExpensesPage({ searchParams }: Props) {
   let data: Awaited<ReturnType<typeof getExpenses>>;
 
   try {
+    await requireDashboardModuleAccess("expenses");
     data = await getExpenses(params);
   } catch (error) {
     if (error instanceof ApiError && error.status === 401) {
       redirect("/login");
+    }
+
+    if (error instanceof ApiError && error.status === 403) {
+      return (
+        <DashboardFrame
+          current="expenses"
+          eyebrow="Jurnal Pengeluaran"
+          title="Halaman pengeluaran hanya untuk owner atau admin."
+          description="Staf tidak memiliki akses untuk melihat atau mengubah jurnal pengeluaran."
+        >
+          <section className="section-block p-5 sm:p-6">
+            <p className="text-sm leading-7 text-muted">Gunakan akun owner atau admin untuk membuka jurnal pengeluaran outlet.</p>
+          </section>
+        </DashboardFrame>
+      );
     }
 
     if (error instanceof ApiError && error.status === 503) {
@@ -59,7 +75,7 @@ export default async function DashboardExpensesPage({ searchParams }: Props) {
       current="expenses"
       eyebrow="Jurnal Pengeluaran"
       title="Pantau biaya operasional outlet."
-      description="Catat biaya harian, telusuri pengeluaran per outlet, dan jaga cashflow tetap rapi dari satu dashboard."
+      description="Catat biaya harian, telusuri pengeluaran per cabang, dan jaga arus kas tetap rapi dari satu halaman."
       actions={
         <Link href="/dashboard/expenses/create" className="btn-primary w-full sm:w-auto">
           Tambah pengeluaran
@@ -86,7 +102,7 @@ export default async function DashboardExpensesPage({ searchParams }: Props) {
           <p className="mt-3 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-white">
             {monthOptions.find((month) => month.value === currentMonth)?.label ?? "Bulan"} {currentYear}
           </p>
-          <p className="mt-2 text-sm text-white/72">Gunakan filter untuk melihat ritme pengeluaran outlet antar bulan dan tahun.</p>
+          <p className="mt-2 text-sm text-white/72">Gunakan filter untuk melihat ritme pengeluaran cabang antar bulan dan tahun.</p>
         </article>
       </section>
 
@@ -99,7 +115,7 @@ export default async function DashboardExpensesPage({ searchParams }: Props) {
             </h2>
           </div>
           <p className="max-w-xl text-sm leading-7 text-muted">
-            Cari kategori atau deskripsi, lalu sempitkan berdasarkan outlet dan periode agar pemeriksaan cashflow lebih cepat.
+            Cari kategori atau deskripsi, lalu sempitkan berdasarkan cabang dan periode agar pemeriksaan arus kas lebih cepat.
           </p>
         </div>
 
@@ -130,7 +146,7 @@ export default async function DashboardExpensesPage({ searchParams }: Props) {
             defaultValue={params.outlet_id ?? String(data.filters.outlet_id ?? "")}
             className="field-soft"
           >
-            <option value="">Semua outlet</option>
+            <option value="">Semua cabang</option>
             {data.outlets.map((outlet) => (
               <option key={outlet.id} value={outlet.id}>
                 {outlet.name}
@@ -166,7 +182,7 @@ export default async function DashboardExpensesPage({ searchParams }: Props) {
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
                     <p className="font-semibold text-foreground">{expense.category}</p>
-                    <p className="mt-1 text-sm text-muted">{expense.outlet?.name ?? "Outlet"} · {expense.user?.name ?? "Tim outlet"}</p>
+                    <p className="mt-1 text-sm text-muted">{expense.outlet?.name ?? "Cabang utama"} · {expense.user?.name ?? "Tim outlet"}</p>
                   </div>
                   <p className="font-semibold text-brand">{formatRupiah(expense.amount)}</p>
                 </div>
@@ -184,7 +200,7 @@ export default async function DashboardExpensesPage({ searchParams }: Props) {
             <div className="grid grid-cols-[180px_minmax(280px,1.2fr)_220px_180px] gap-4 bg-slate-50 px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">
               <span>Kategori</span>
               <span>Detail</span>
-              <span>Outlet / Tim</span>
+              <span>Cabang / Tim</span>
               <span>Nominal</span>
             </div>
             <div className="divide-y divide-line/35">
@@ -199,11 +215,11 @@ export default async function DashboardExpensesPage({ searchParams }: Props) {
                     <p className="mt-1 text-sm text-muted">{expense.expense_date ?? "-"}</p>
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold text-foreground">Klik untuk meninjau detail transaksi</p>
-                    <p className="mt-1 line-clamp-2 text-sm text-muted">{expense.description ?? "Tidak ada catatan tambahan."}</p>
+                    <p className="truncate text-sm font-semibold text-foreground">Buka untuk melihat detail transaksi</p>
+                    <p className="mt-1 line-clamp-2 text-sm text-muted">{expense.description ?? "Belum ada catatan tambahan."}</p>
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate font-semibold text-foreground">{expense.outlet?.name ?? "Outlet utama"}</p>
+                    <p className="truncate font-semibold text-foreground">{expense.outlet?.name ?? "Cabang utama"}</p>
                     <p className="mt-1 truncate text-sm text-muted">{expense.user?.name ?? "Tim outlet"}</p>
                   </div>
                   <div className="font-semibold text-brand">{formatRupiah(expense.amount)}</div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist_Mono, Inter, Manrope } from "next/font/google";
+import "leaflet/dist/leaflet.css";
 import "./globals.css";
 
 const bodySans = Inter({
@@ -18,8 +19,8 @@ const displaySans = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "ShoeClean Storefront",
-  description: "Storefront modern ShoeClean untuk order, tracking, dan pricing yang mobile-first.",
+  title: "ShoeClean",
+  description: "Website order, pelacakan, dan dashboard outlet untuk bisnis perawatan sepatu.",
 };
 
 export default function RootLayout({

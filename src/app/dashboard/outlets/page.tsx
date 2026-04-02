@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { BackendUnavailable } from "@/components/backend-unavailable";
 import { DashboardFrame } from "@/components/dashboard-frame";
-import { getOutlets } from "@/lib/auth";
+import { getOutlets, requireDashboardModuleAccess } from "@/lib/auth";
 import { ApiError } from "@/lib/api";
 import { formatRupiah } from "@/lib/format";
 
@@ -21,6 +21,7 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
   let data: Awaited<ReturnType<typeof getOutlets>>;
 
   try {
+    await requireDashboardModuleAccess("outlets");
     data = await getOutlets(params);
   } catch (error) {
     if (error instanceof ApiError && error.status === 401) {
@@ -31,13 +32,13 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
       return (
         <DashboardFrame
           current="outlets"
-          eyebrow="Registri Outlet"
-          title="Akses outlet tidak tersedia"
-          description="Halaman ini saat ini dibatasi untuk owner dan admin outlet."
+          eyebrow="Cabang Outlet"
+          title="Akses cabang tidak tersedia"
+          description="Halaman ini saat ini dibatasi untuk pemilik usaha dan admin cabang."
         >
           <section className="rounded-[2rem] bg-white p-6 shadow-[0_12px_28px_rgba(25,28,30,0.04)]">
             <p className="text-sm text-muted">
-              Jika Anda ingin staff juga bisa melihat detail outlet, kita bisa evaluasi ulang scope aksesnya pada langkah berikutnya.
+              Jika Anda ingin staf juga bisa melihat detail cabang, izin aksesnya perlu diperluas terlebih dulu.
             </p>
           </section>
         </DashboardFrame>
@@ -47,7 +48,7 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
     if (error instanceof ApiError && error.status === 503) {
       return (
         <BackendUnavailable
-          title="Daftar outlet belum terhubung"
+          title="Daftar cabang belum terhubung"
           message={error.message}
         />
       );
@@ -59,13 +60,13 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
   return (
     <DashboardFrame
       current="outlets"
-      eyebrow="Ringkasan Jaringan"
-      title="Registri outlet"
-      description="Mengawasi semua pusat restorasi aktif, status operasional, dan kapasitas cabang dari satu workspace."
+      eyebrow="Cabang Outlet"
+      title="Daftar cabang"
+      description="Pantau semua cabang aktif, status layanan, dan kapasitas usaha dari satu halaman."
       actions={
         data.meta.can_create ? (
           <Link href="/dashboard/outlets/create" className="btn-primary w-full sm:w-auto">
-            Tambah outlet baru
+            Tambah cabang baru
           </Link>
         ) : (
           <Link href="/dashboard/subscription" className="btn-secondary w-full sm:w-auto">
@@ -77,13 +78,13 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
       <section className="mb-10 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">
-            Ringkasan jaringan
+            Ringkasan cabang
           </p>
           <h2 className="mt-4 font-[var(--font-display-sans)] text-4xl font-extrabold italic tracking-[-0.04em] text-brand sm:text-5xl">
-            Registri outlet
+            Daftar cabang
           </h2>
           <p className="mt-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand/40">
-            Mengawasi semua pusat restorasi aktif
+            Pantau semua cabang aktif Anda
           </p>
         </div>
 
@@ -105,7 +106,7 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
             type="text"
             name="search"
             defaultValue={params.search ?? ""}
-            placeholder="Cari outlet, slug, atau alamat"
+            placeholder="Cari cabang, alamat singkat, atau alamat lengkap"
             className="field-soft"
           />
           <select
@@ -129,7 +130,7 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
       <section className="mb-10 grid gap-6 md:grid-cols-3">
         <article className="rounded-[1.8rem] bg-brand p-6 text-white shadow-[0_18px_40px_rgba(0,32,69,0.14)]">
           <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/45">
-            Total outlet
+            Total cabang
           </p>
           <p className="mt-3 text-5xl font-[var(--font-display-sans)] font-extrabold">
             {data.summary.total_outlets}
@@ -137,7 +138,7 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
         </article>
         <article className="rounded-[1.8rem] bg-accent p-6 text-white shadow-[0_18px_40px_rgba(0,106,102,0.16)]">
           <p className="text-[11px] font-black uppercase tracking-[0.2em] text-white/45">
-            Outlet aktif
+            Cabang aktif
           </p>
           <p className="mt-3 text-5xl font-[var(--font-display-sans)] font-extrabold">
             {data.summary.active_outlets}
@@ -149,10 +150,10 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
           </p>
           <p className="mt-3 text-xl font-[var(--font-display-sans)] font-extrabold text-brand">
             {data.meta.max_outlets === null
-              ? "Unlimited outlet"
+              ? "Tanpa batas cabang"
               : `${data.meta.current_outlets} dari ${data.meta.max_outlets}`}
           </p>
-          <p className="mt-2 text-sm text-muted">Slot outlet yang sudah dipakai saat ini.</p>
+          <p className="mt-2 text-sm text-muted">Slot cabang yang sudah dipakai saat ini.</p>
         </article>
       </section>
 
@@ -164,10 +165,10 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
             </svg>
           </div>
           <h3 className="font-[var(--font-display-sans)] text-2xl font-extrabold italic text-brand">
-            Belum ada outlet
+            Belum ada cabang
           </h3>
           <p className="mt-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand/40">
-            Mulai bangun jaringan artisan Anda
+            Mulai siapkan cabang pertama Anda
           </p>
         </section>
       ) : (
@@ -212,14 +213,14 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
                       ? "bg-[rgba(129,242,235,0.2)] text-accent-ink"
                       : "bg-surface-soft text-brand/55"
                   }`}>
-                    {outlet.status}
+                    {outlet.status === "active" ? "Aktif" : "Nonaktif"}
                   </span>
                 </div>
 
                 <div className="mt-8 grid gap-3 sm:grid-cols-2">
                   <div className="rounded-[1.25rem] bg-surface-soft p-4">
                     <p className="text-[10px] font-black uppercase tracking-[0.18em] text-brand/35">
-                      Staf outlet
+                      Tim cabang
                     </p>
                     <p className="mt-2 text-lg font-[var(--font-display-sans)] font-extrabold text-brand">
                       {outlet.counts.users}
@@ -237,11 +238,11 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
 
                 <div className="mt-5 grid gap-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted">Pickup</span>
+                    <span className="text-muted">Jemput</span>
                     <span className="font-bold text-brand">{formatRupiah(outlet.pickup_fee)}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted">Delivery</span>
+                    <span className="text-muted">Antar</span>
                     <span className="font-bold text-brand">{formatRupiah(outlet.delivery_fee)}</span>
                   </div>
                 </div>
@@ -250,11 +251,11 @@ export default async function DashboardOutletsPage({ searchParams }: Props) {
                   <div className="flex items-center gap-2">
                     <div className="h-2 w-2 rounded-full bg-emerald-500" />
                     <span className="text-[9px] font-black uppercase tracking-[0.2em] text-brand/40">
-                      Sistem aktif
+                      Cabang aktif
                     </span>
                   </div>
                   <span className="rounded-full bg-surface-soft px-4 py-2 text-[10px] font-black uppercase tracking-[0.18em] text-accent transition group-hover:bg-accent group-hover:text-white">
-                    Buka outlet
+                    Buka cabang
                   </span>
                 </div>
               </Link>

@@ -84,7 +84,7 @@ export function ExpenseForm({ mode, outlets, categories, initialValues }: Props)
       setDashboardFlash({
         type: "success",
         title: mode === "create" ? "Pengeluaran berhasil dicatat" : "Pengeluaran berhasil diperbarui",
-        message: "Ringkasan keuangan outlet sudah ikut tersinkron.",
+        message: "Ringkasan keuangan cabang sudah ikut diperbarui.",
       });
       router.push("/dashboard/expenses");
       router.refresh();
@@ -102,10 +102,10 @@ export function ExpenseForm({ mode, outlets, categories, initialValues }: Props)
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Jurnal biaya</p>
             <h2 className="mt-3 text-2xl font-[var(--font-display-sans)] font-extrabold tracking-[-0.03em] text-brand">
-              {mode === "create" ? "Catat pengeluaran operasional baru" : "Rapikan catatan pengeluaran outlet"}
+              {mode === "create" ? "Catat pengeluaran baru" : "Perbarui catatan pengeluaran cabang"}
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-              Simpan pengeluaran dengan kategori dan tanggal yang jelas agar owner mudah membaca cashflow outlet dari satu tempat.
+              Simpan pengeluaran dengan kategori dan tanggal yang jelas agar pemilik usaha mudah membaca arus kas cabang.
             </p>
           </div>
 
@@ -176,7 +176,7 @@ export function ExpenseForm({ mode, outlets, categories, initialValues }: Props)
 
               <div className="space-y-3">
                 <label htmlFor="expense-outlet" className="text-[10px] font-black uppercase tracking-widest text-brand/40">
-                  Outlet
+                  Cabang
                 </label>
                 {mode === "create" ? (
                   <select
@@ -198,7 +198,7 @@ export function ExpenseForm({ mode, outlets, categories, initialValues }: Props)
             </div>
 
             <div className="rounded-[1.6rem] border border-line/45 bg-surface/70 p-6">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Catatan internal</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Catatan tambahan</p>
               <div className="mt-5 space-y-3">
                 <label htmlFor="expense-description" className="text-[10px] font-black uppercase tracking-widest text-brand/40">
                   Deskripsi
@@ -207,7 +207,7 @@ export function ExpenseForm({ mode, outlets, categories, initialValues }: Props)
                   id="expense-description"
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
-                  placeholder="Tuliskan konteks pengeluaran ini agar owner dan admin lebih mudah melakukan audit."
+                  placeholder="Tuliskan keterangan singkat agar pengeluaran ini lebih mudah dipahami saat ditinjau kembali."
                   className="field-soft min-h-[160px]"
                 />
               </div>
@@ -217,7 +217,7 @@ export function ExpenseForm({ mode, outlets, categories, initialValues }: Props)
           <aside className="section-dark rounded-[1.75rem] p-6 sm:p-7 text-white">
             <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/55">Panduan pencatatan</p>
             <div className="mt-5 space-y-4 text-sm leading-7 text-white/78">
-              <p>Pilih kategori yang paling dekat dengan jenis biaya agar laporan bulanan tetap mudah dibaca owner.</p>
+              <p>Pilih kategori yang paling sesuai agar laporan bulanan tetap mudah dibaca pemilik usaha.</p>
               <p>Tambahkan deskripsi singkat jika pengeluaran bersifat tidak rutin, misalnya penggantian alat atau kebutuhan event.</p>
               <p>Gunakan tanggal transaksi aktual supaya grafik laporan dan ekspor biaya tetap akurat.</p>
             </div>

@@ -105,7 +105,7 @@ export function PromoForm({ mode, outlets, types, canManageGlobal, initialValues
       setDashboardFlash({
         type: "success",
         title: mode === "create" ? "Promo berhasil dibuat" : "Promo berhasil diperbarui",
-        message: "Pengaturan promo siap dipakai di storefront dan order internal.",
+        message: "Pengaturan promo siap dipakai saat pelanggan memesan dan saat tim membuat pesanan.",
       });
       router.push("/dashboard/promos");
       router.refresh();
@@ -121,12 +121,12 @@ export function PromoForm({ mode, outlets, types, canManageGlobal, initialValues
       <div className="grid gap-9 sm:gap-10">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Campaign promo</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Program promo</p>
             <h2 className="mt-3 text-2xl font-[var(--font-display-sans)] font-extrabold tracking-[-0.03em] text-brand">
-              {mode === "create" ? "Bangun promo baru untuk campaign outlet" : "Perbarui konfigurasi promo aktif"}
+              {mode === "create" ? "Buat promo baru untuk cabang Anda" : "Perbarui pengaturan promo"}
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-              Atur kode promo, periode, dan batas penggunaan dengan ritme yang rapi agar storefront dan order internal selalu sinkron.
+              Atur kode promo, periode, dan batas penggunaan agar pelanggan dan tim Anda selalu melihat promo yang sama.
             </p>
           </div>
 
@@ -166,9 +166,9 @@ export function PromoForm({ mode, outlets, types, canManageGlobal, initialValues
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Cakupan dan aturan</p>
               <div className="mt-5 grid gap-5 sm:grid-cols-2">
                 <div className="space-y-3">
-                  <label htmlFor="promo-outlet" className="text-[10px] font-black uppercase tracking-widest text-brand/40">Outlet</label>
+                  <label htmlFor="promo-outlet" className="text-[10px] font-black uppercase tracking-widest text-brand/40">Cabang</label>
                   <select id="promo-outlet" value={outletId} onChange={(event) => setOutletId(event.target.value)} className="field-soft">
-                    {canManageGlobal ? <option value="global">Semua outlet</option> : null}
+                    {canManageGlobal ? <option value="global">Semua cabang</option> : null}
                     {outlets.map((outlet) => (
                       <option key={outlet.id} value={outlet.id}>{outlet.name}</option>
                     ))}
@@ -209,17 +209,17 @@ export function PromoForm({ mode, outlets, types, canManageGlobal, initialValues
               <input type="checkbox" checked={isActive} onChange={(event) => setIsActive(event.target.checked)} className="mt-1 h-4 w-4 rounded border-line" />
               <span>
                 <span className="block font-semibold text-foreground">Promo aktif</span>
-                <span className="mt-1 block text-sm leading-7 text-muted">Nonaktifkan jika promo ingin disimpan dulu tanpa muncul di storefront.</span>
+                <span className="mt-1 block text-sm leading-7 text-muted">Nonaktifkan jika promo ingin disimpan dulu tanpa muncul di halaman pemesanan.</span>
               </span>
             </label>
           </section>
 
           <aside className="section-dark rounded-[1.75rem] p-6 sm:p-7 text-white">
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/55">Panduan campaign</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/55">Panduan promo</p>
             <div className="mt-5 space-y-4 text-sm leading-7 text-white/78">
-              <p>Gunakan kode promo yang pendek dan mudah diingat customer agar konversi checkout tetap tinggi.</p>
+              <p>Gunakan kode promo yang pendek dan mudah diingat pelanggan agar lebih mudah dipakai saat memesan.</p>
               <p>Untuk diskon persentase, gunakan maksimal diskon jika owner ingin menjaga margin tetap sehat.</p>
-              <p>Promo global cocok untuk kampanye besar, sedangkan promo outlet cocok untuk aktivasi cabang tertentu.</p>
+              <p>Promo untuk semua cabang cocok untuk kampanye besar, sedangkan promo per cabang cocok untuk aktivitas lokal tertentu.</p>
             </div>
           </aside>
         </div>
@@ -229,7 +229,7 @@ export function PromoForm({ mode, outlets, types, canManageGlobal, initialValues
 
       <div className="mt-9 flex flex-col gap-4 border-t border-line/35 pt-8 sm:flex-row">
         <button type="button" onClick={() => router.push("/dashboard/promos")} className="btn-secondary w-full flex-1">
-          {mode === "create" ? "Batalkan campaign" : "Batalkan perubahan"}
+          {mode === "create" ? "Batalkan promo" : "Batalkan perubahan"}
         </button>
         <button type="submit" disabled={isSubmitting} className="btn-primary w-full flex-1">
           {isSubmitting ? "Menyimpan..." : mode === "create" ? "Simpan promo" : "Simpan perubahan"}

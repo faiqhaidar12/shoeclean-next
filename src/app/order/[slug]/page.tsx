@@ -55,7 +55,7 @@ export default async function OrderDetailPage({
       <main className="public-main-shell">
         <section className="public-hero-intro tablet-balance-grid motion-enter lg:grid-cols-[1.04fr_0.96fr] lg:items-stretch">
           <div className="tablet-balance-card motion-enter motion-delay-1 bg-white shadow-[0_18px_38px_rgba(25,28,30,0.05)]">
-            <p className="eyebrow">Storefront outlet</p>
+            <p className="eyebrow">Detail outlet</p>
             <h1 className="mt-5 text-[2.2rem] font-semibold tracking-[-0.05em] text-brand sm:text-[3.6rem] sm:leading-[1.02]">
               {data.outlet.name}
             </h1>
@@ -68,13 +68,13 @@ export default async function OrderDetailPage({
 
             <div className="mt-6 flex flex-wrap gap-3">
               <span className="motion-enter-fast highlight-chip" style={{ animationDelay: "0.08s" }}>
-                Form ramah smartphone
+                Pemesanan mudah dari HP
               </span>
               <span className="motion-enter-fast highlight-chip" style={{ animationDelay: "0.14s" }}>
-                Pembayaran fleksibel
+                Pembayaran lebih praktis
               </span>
               <span className="motion-enter-fast highlight-chip" style={{ animationDelay: "0.2s" }}>
-                Checkout lebih singkat
+                Proses pesan lebih singkat
               </span>
             </div>
 
@@ -108,19 +108,19 @@ export default async function OrderDetailPage({
           </div>
 
           <aside className="tablet-balance-card motion-enter motion-delay-2 bg-brand text-white shadow-[0_24px_54px_rgba(0,32,69,0.18)]">
-            <p className="section-label-dark">Ringkas untuk customer</p>
+            <p className="section-label-dark">Cara pesan</p>
             <h2 className="mt-3 text-2xl font-semibold tracking-[-0.04em]">
-              Semua langkah order dibuat ringan saat dibuka dari smartphone.
+              Semua langkah pemesanan dibuat sederhana agar nyaman di ponsel.
             </h2>
             <div className="mt-6 grid gap-3">
               <div className="rounded-[1.25rem] bg-white/10 px-4 py-4 text-sm text-white/86">
                 1. Pilih layanan dan jumlah
               </div>
               <div className="rounded-[1.25rem] bg-white/10 px-4 py-4 text-sm text-white/86">
-                2. Isi data customer dan metode order
+                2. Isi nama, nomor HP, dan cara penyerahan
               </div>
               <div className="rounded-[1.25rem] bg-white/10 px-4 py-4 text-sm text-white/86">
-                3. Cek total lalu kirim order ke outlet
+                3. Cek total lalu kirim pesanan
               </div>
             </div>
 
@@ -145,7 +145,7 @@ export default async function OrderDetailPage({
               <div>
                 <p className="section-label">Layanan outlet</p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-brand">
-                  Harga yang mudah dibaca
+                  Daftar layanan dan harga
                 </h2>
               </div>
               <div className="mt-5 grid gap-3">
@@ -173,7 +173,7 @@ export default async function OrderDetailPage({
               <section className="tablet-balance-card motion-enter-fast motion-delay-1 bg-white shadow-[0_18px_38px_rgba(25,28,30,0.05)]">
                 <p className="section-label">QRIS outlet</p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-brand">
-                  Customer bisa bayar lebih cepat
+                  Bayar lebih cepat dengan QRIS
                 </h2>
                 <div className="mt-5 overflow-hidden rounded-[1.5rem] bg-surface-soft p-3">
                   <Image
@@ -187,7 +187,7 @@ export default async function OrderDetailPage({
                 </div>
                 <p className="mt-4 text-sm leading-7 text-muted">
                   {data.outlet.qris_notes ||
-                    "QRIS outlet tersedia untuk mempermudah pembayaran customer."}
+                    "QRIS tersedia untuk memudahkan pembayaran pesanan Anda."}
                 </p>
               </section>
             ) : null}

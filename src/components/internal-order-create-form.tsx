@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, ReactNode, useEffect, useMemo, useState } from "react";
+import { LeafletLocationPicker } from "@/components/leaflet-location-picker";
 import type {
   InternalOrderCreateMetaResponse,
   InternalOrderCustomerSearchResponse,
@@ -25,6 +26,11 @@ type PromoState = {
   name: string;
   discount_amount: number;
 } | null;
+
+type LocationPoint = {
+  lat: number;
+  lng: number;
+};
 
 const orderTypeCards = [
   {
@@ -62,6 +68,8 @@ export function InternalOrderCreateForm({ data }: Props) {
   const [orderType, setOrderType] = useState("regular");
   const [pickupAddress, setPickupAddress] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [pickupPoint, setPickupPoint] = useState<LocationPoint | null>(null);
+  const [deliveryPoint, setDeliveryPoint] = useState<LocationPoint | null>(null);
   const [notes, setNotes] = useState("");
   const [promoCode, setPromoCode] = useState("");
   const [promo, setPromo] = useState<PromoState>(null);
@@ -73,6 +81,10 @@ export function InternalOrderCreateForm({ data }: Props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const currentOutlet = data.outlets.find((outlet) => String(outlet.id) === outletId) ?? null;
+  const currentOutletPoint =
+    currentOutlet && currentOutlet.latitude !== null && currentOutlet.longitude !== null
+      ? { lat: currentOutlet.latitude, lng: currentOutlet.longitude }
+      : null;
   const availableServices = useMemo(
     () => data.services.filter((service) => String(service.outlet_id) === outletId),
     [data.services, outletId],
@@ -95,8 +107,8 @@ export function InternalOrderCreateForm({ data }: Props) {
     return total + (service ? service.price * item.quantity : 0);
   }, 0);
 
-  const pickupFee = orderType === "pickup" ? currentOutlet?.pickup_fee ?? 0 : 0;
-  const deliveryFee = orderType === "delivery" ? currentOutlet?.delivery_fee ?? 0 : 0;
+  const pickupFee = orderType === "pickup" ? Number(currentOutlet?.pickup_fee ?? 0) : 0;
+  const deliveryFee = orderType === "delivery" ? Number(currentOutlet?.delivery_fee ?? 0) : 0;
   const discountAmount = promo?.discount_amount ?? 0;
   const total = Math.max(0, subtotal + pickupFee + deliveryFee - discountAmount);
 
@@ -125,6 +137,28 @@ export function InternalOrderCreateForm({ data }: Props) {
 
     return () => clearTimeout(timer);
   }, [customerSearch, selectedCustomer]);
+
+  useEffect(() => {
+    setPickupAddress("");
+    setDeliveryAddress("");
+    setPickupPoint(null);
+    setDeliveryPoint(null);
+    setPromo(null);
+    setPromoCode("");
+    setPromoMessage("");
+  }, [outletId]);
+
+  useEffect(() => {
+    if (orderType !== "pickup") {
+      setPickupAddress("");
+      setPickupPoint(null);
+    }
+
+    if (orderType !== "delivery") {
+      setDeliveryAddress("");
+      setDeliveryPoint(null);
+    }
+  }, [orderType]);
 
   function addItem() {
     setItems((current) => [...current, { service_id: "", quantity: "1" }]);
@@ -278,6 +312,10 @@ export function InternalOrderCreateForm({ data }: Props) {
           order_type: orderType,
           pickup_address: pickupAddress,
           delivery_address: deliveryAddress,
+          pickup_latitude: pickupPoint?.lat,
+          pickup_longitude: pickupPoint?.lng,
+          delivery_latitude: deliveryPoint?.lat,
+          delivery_longitude: deliveryPoint?.lng,
           promo_code: promo?.code ?? promoCode.trim(),
           items: normalizedItems
             .filter((item) => item.service_id && item.quantity > 0)
@@ -315,7 +353,7 @@ export function InternalOrderCreateForm({ data }: Props) {
         <div className="space-y-6">
           <section className="overflow-hidden rounded-[2rem] border border-[color:var(--border-subtle)] bg-white/96 p-6 shadow-[0_24px_80px_rgba(9,27,52,0.08)] sm:p-8">
             <div className="flex items-start gap-4">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--brand-900)]">
+              <div className="hidden h-11 w-11 items-center justify-center rounded-full bg-[var(--accent-soft)] text-[var(--brand-900)] sm:flex">
                 <CustomerIcon />
               </div>
               <div className="min-w-0">
@@ -457,7 +495,7 @@ export function InternalOrderCreateForm({ data }: Props) {
 
           <section className="overflow-hidden rounded-[2rem] border border-[color:var(--border-subtle)] bg-white/96 p-6 shadow-[0_24px_80px_rgba(9,27,52,0.08)] sm:p-8">
             <div className="flex items-start gap-4">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--accent-mint-soft)] text-[var(--brand-900)]">
+              <div className="hidden h-11 w-11 items-center justify-center rounded-full bg-[var(--accent-mint-soft)] text-[var(--brand-900)] sm:flex">
                 <ServiceStackIcon />
               </div>
               <div className="min-w-0">
@@ -553,18 +591,18 @@ export function InternalOrderCreateForm({ data }: Props) {
 
           <section className="overflow-hidden rounded-[2rem] border border-[color:var(--border-subtle)] bg-white/96 p-6 shadow-[0_24px_80px_rgba(9,27,52,0.08)] sm:p-8">
             <div className="flex items-start gap-4">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[rgba(207,232,227,0.72)] text-[var(--brand-900)]">
+              <div className="hidden h-11 w-11 items-center justify-center rounded-full bg-[rgba(207,232,227,0.72)] text-[var(--brand-900)] sm:flex">
                 <NoteIcon />
               </div>
               <div className="min-w-0">
-                <p className="section-label">Catatan operasional</p>
-                <h2 className="mt-2 font-heading text-2xl font-extrabold tracking-[-0.02em] text-[var(--brand-900)] sm:text-[2rem]">
-                  Lengkapi detail pickup, delivery, dan promo.
-                </h2>
-                <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--text-muted)] sm:text-[0.98rem]">
-                  Bagian ini membantu tim outlet memahami instruksi penjemputan, pengantaran,
-                  dan catatan khusus order.
-                </p>
+              <p className="section-label">Catatan tambahan</p>
+              <h2 className="mt-2 font-heading text-2xl font-extrabold tracking-[-0.02em] text-[var(--brand-900)] sm:text-[2rem]">
+                  Lengkapi promo, alamat, dan catatan pesanan.
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--text-muted)] sm:text-[0.98rem]">
+                  Isi bagian ini jika pesanan perlu dijemput, diantar, memakai promo, atau
+                  membutuhkan catatan khusus untuk tim Anda.
+              </p>
               </div>
             </div>
 
@@ -595,27 +633,51 @@ export function InternalOrderCreateForm({ data }: Props) {
 
             <div className="mt-5 grid gap-4">
               {orderType === "pickup" ? (
-                <FieldShell label="Alamat pickup">
-                  <textarea
-                    rows={4}
-                    value={pickupAddress}
-                    onChange={(event) => setPickupAddress(event.target.value)}
-                    placeholder="Alamat lengkap penjemputan"
-                    className="field-soft min-h-[120px]"
+                <div className="space-y-4">
+                  <FieldShell label="Alamat pickup">
+                    <textarea
+                      rows={4}
+                      value={pickupAddress}
+                      onChange={(event) => setPickupAddress(event.target.value)}
+                      placeholder="Alamat lengkap penjemputan"
+                      className="field-soft min-h-[120px]"
+                    />
+                  </FieldShell>
+                  <LeafletLocationPicker
+                    title="Titik jemput customer"
+                    description="Klik peta atau geser pin agar tim dan driver melihat titik jemput yang paling presisi."
+                    value={pickupPoint}
+                    onChange={setPickupPoint}
+                    staticPosition={currentOutletPoint}
+                    staticLabel={currentOutlet?.name ?? "Outlet"}
+                    editableLabel="Titik jemput"
+                    clearLabel="Hapus titik jemput"
                   />
-                </FieldShell>
+                </div>
               ) : null}
 
               {orderType === "delivery" ? (
-                <FieldShell label="Alamat delivery">
-                  <textarea
-                    rows={4}
-                    value={deliveryAddress}
-                    onChange={(event) => setDeliveryAddress(event.target.value)}
-                    placeholder="Alamat lengkap pengantaran"
-                    className="field-soft min-h-[120px]"
+                <div className="space-y-4">
+                  <FieldShell label="Alamat delivery">
+                    <textarea
+                      rows={4}
+                      value={deliveryAddress}
+                      onChange={(event) => setDeliveryAddress(event.target.value)}
+                      placeholder="Alamat lengkap pengantaran"
+                      className="field-soft min-h-[120px]"
+                    />
+                  </FieldShell>
+                  <LeafletLocationPicker
+                    title="Titik antar customer"
+                    description="Pilih titik pengantaran agar cabang dan driver tidak hanya mengandalkan alamat teks."
+                    value={deliveryPoint}
+                    onChange={setDeliveryPoint}
+                    staticPosition={currentOutletPoint}
+                    staticLabel={currentOutlet?.name ?? "Outlet"}
+                    editableLabel="Titik antar"
+                    clearLabel="Hapus titik antar"
                   />
-                </FieldShell>
+                </div>
               ) : null}
 
               <FieldShell label="Catatan order">
@@ -634,7 +696,7 @@ export function InternalOrderCreateForm({ data }: Props) {
         <div className="space-y-6 xl:sticky xl:top-24 xl:self-start">
           <section className="overflow-hidden rounded-[2rem] border border-[color:var(--border-subtle)] bg-white/96 p-6 shadow-[0_24px_80px_rgba(9,27,52,0.08)] sm:p-8">
             <div className="flex items-start gap-4">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--brand-100)] text-[var(--brand-900)]">
+              <div className="hidden h-11 w-11 items-center justify-center rounded-full bg-[var(--brand-100)] text-[var(--brand-900)] sm:flex">
                 <RouteIcon />
               </div>
               <div>
@@ -711,15 +773,15 @@ export function InternalOrderCreateForm({ data }: Props) {
                 label={`Layanan (${selectedItems.length} item)`}
                 value={formatRupiah(subtotal)}
               />
-              <SummaryRow label="Pickup fee" value={formatRupiah(pickupFee)} />
-              <SummaryRow label="Delivery fee" value={formatRupiah(deliveryFee)} />
-              <SummaryRow label="Diskon promo" value={`-${formatRupiah(discountAmount)}`} />
+              {pickupFee > 0 ? <SummaryRow label="Biaya jemput" value={formatRupiah(pickupFee)} /> : null}
+              {deliveryFee > 0 ? <SummaryRow label="Biaya antar" value={formatRupiah(deliveryFee)} /> : null}
+              {discountAmount > 0 ? <SummaryRow label="Diskon promo" value={`-${formatRupiah(discountAmount)}`} /> : null}
               <SummaryRow label="Plan aktif" value={data.order_limit.plan} highlight="soft" />
               <SummaryRow
                 label="Sisa kuota"
                 value={
                   data.order_limit.remaining === null
-                    ? "Unlimited"
+                    ? "Tanpa batas"
                     : String(data.order_limit.remaining)
                 }
                 highlight="soft"
@@ -772,18 +834,18 @@ export function InternalOrderCreateForm({ data }: Props) {
             <div className="absolute right-[-38px] top-[-34px] h-32 w-32 rounded-full bg-[rgba(129,242,235,0.26)] blur-2xl" />
             <div className="absolute bottom-[-44px] left-[-22px] h-28 w-28 rounded-full bg-[rgba(0,32,69,0.12)] blur-2xl" />
             <div className="relative">
-              <p className="section-label">Operasional outlet</p>
+              <p className="section-label">Ringkasan kasir</p>
               <h3 className="mt-2 font-heading text-xl font-extrabold tracking-[-0.02em] text-[var(--brand-900)]">
-                Form kasir yang cepat dibaca di desktop maupun tablet.
+                Semua informasi penting ada di satu sisi.
               </h3>
               <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--text-muted)]">
-                Layout ini mengikuti alur Stitch, tapi tetap memakai fitur real yang sudah aktif:
-                customer, layanan, promo, pickup, delivery, dan ringkasan biaya.
+                Gunakan panel ini untuk memastikan layanan, kuota pesanan, dan cabang aktif
+                sudah sesuai sebelum pesanan disimpan.
               </p>
 
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                <InfoPill label="Layanan outlet" value={String(availableServices.length)} />
-                <InfoPill label="Order bulan ini" value={String(data.order_limit.total_orders)} />
+                <InfoPill label="Layanan tersedia" value={String(availableServices.length)} />
+                <InfoPill label="Pesanan bulan ini" value={String(data.order_limit.total_orders)} />
               </div>
             </div>
           </section>

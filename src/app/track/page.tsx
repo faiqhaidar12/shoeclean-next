@@ -84,25 +84,33 @@ const helpCards = [
   {
     title: "Butuh bantuan?",
     description:
-      "Kalau invoice belum ditemukan, tim outlet bisa bantu cek status pesanan lebih lanjut lewat nomor yang Anda gunakan saat order.",
-    cta: "Kembali ke order",
+      "Kalau nomor invoice tidak ditemukan, Anda bisa kembali ke halaman pemesanan atau menghubungi outlet tempat Anda memesan.",
+    cta: "Pesan lagi",
     href: "/order",
   },
   {
-    title: "Lihat detail pembayaran",
+    title: "Cek tagihan dengan mudah",
     description:
-      "Status tagihan dan item layanan selalu tampil di halaman ini, jadi customer tidak perlu tanya manual ke outlet.",
-    cta: "Lihat paket aplikasi",
+      "Total tagihan dan rincian layanan akan tampil di halaman ini, jadi Anda bisa mengeceknya kapan saja.",
+    cta: "Lihat harga",
     href: "/pricing",
   },
   {
-    title: "Tracking yang lebih transparan",
+    title: "Lacak pesanan kapan saja",
     description:
-      "Halaman pelacakan ini memang dirancang singkat, jelas, dan nyaman dibuka dari smartphone customer.",
+      "Halaman ini dibuat singkat dan mudah dibaca, supaya Anda tetap nyaman mengecek pesanan dari HP.",
     cta: "Kembali ke beranda",
     href: "/",
   },
 ];
+
+function createMapsUrl(latitude?: number | null, longitude?: number | null) {
+  if (latitude == null || longitude == null) {
+    return null;
+  }
+
+  return `https://www.google.com/maps?q=${latitude},${longitude}`;
+}
 
 export default async function TrackPage({ searchParams }: TrackPageProps) {
   const session = await getOptionalAuthSession();
@@ -110,16 +118,18 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
   const invoice = params.invoice?.trim() ?? "";
 
   let errorMessage = "";
+  let errorStatus: number | null = null;
   let data: Awaited<ReturnType<typeof getPublicTracking>> | null = null;
 
   if (invoice) {
     try {
       data = await getPublicTracking(invoice);
     } catch (error) {
+      errorStatus = error instanceof ApiError ? error.status : null;
       errorMessage =
         error instanceof ApiError
           ? error.message
-          : "Terjadi kendala saat memuat data tracking.";
+          : "Terjadi kendala saat memuat data pelacakan.";
     }
   }
 
@@ -128,6 +138,9 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
     data && data.order.timeline.length > 1
       ? `${Math.max(8, ((activeSteps - 1) / (data.order.timeline.length - 1)) * 100)}%`
       : "0%";
+  const outletMapsUrl = createMapsUrl(data?.order.outlet?.latitude, data?.order.outlet?.longitude);
+  const pickupMapsUrl = createMapsUrl(data?.order.pickup_latitude, data?.order.pickup_longitude);
+  const deliveryMapsUrl = createMapsUrl(data?.order.delivery_latitude, data?.order.delivery_longitude);
 
   return (
     <>
@@ -136,18 +149,18 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
       <main className="public-main-shell">
         <section className="public-hero-intro motion-enter max-w-3xl text-center md:text-left">
           <h1 className="text-4xl font-semibold tracking-[-0.05em] text-brand sm:text-[4rem] sm:leading-[1.02]">
-            Lacak <span className="text-accent">progres pesanan</span> customer Anda
+            Lacak <span className="text-accent">status pesanan</span> Anda
           </h1>
           <p className="mt-4 max-w-2xl text-base leading-8 text-muted sm:text-lg">
-            Masukkan nomor invoice untuk melihat status pengerjaan, pembayaran, outlet, dan detail layanan secara real-time.
+            Masukkan nomor invoice untuk melihat status pengerjaan, detail layanan, dan informasi pembayaran dengan lebih mudah.
           </p>
 
           <div className="tablet-balance-card motion-enter motion-delay-1 mt-8 bg-white shadow-[0_18px_38px_rgba(25,28,30,0.05)]">
             <div className="mb-4 flex items-center justify-between gap-4">
               <div>
-                <p className="section-label">Tracking invoice</p>
+                <p className="section-label">Lacak pesanan</p>
                 <p className="mt-2 text-sm font-semibold text-brand">
-                  Fokus utama customer dimulai dari nomor invoice ini.
+                  Cukup masukkan nomor invoice yang Anda terima setelah memesan.
                 </p>
               </div>
               <span className="status-chip-brand hidden sm:inline-flex">Langsung cek</span>
@@ -174,8 +187,6 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
           </div>
         </section>
 
-        {errorMessage ? <div className="alert-panel mb-8">{errorMessage}</div> : null}
-
         {data ? (
           <section className="tablet-balance-grid motion-enter motion-delay-2 gap-8 lg:grid-cols-12">
             <article className="relative motion-enter-fast overflow-hidden rounded-[2rem] bg-white p-8 shadow-[0_20px_40px_rgba(25,28,30,0.06)] lg:col-span-8 sm:p-10">
@@ -187,7 +198,7 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
                     Pesanan {data.order.invoice_number}
                   </span>
                   <h2 className="mt-4 text-2xl font-semibold tracking-[-0.04em] text-brand sm:text-3xl">
-                    {data.order.items[0]?.service_name ?? "Pesanan ShoeClean"}
+                    {data.order.items[0]?.service_name ?? "Pesanan Anda"}
                   </h2>
                 </div>
 
@@ -248,7 +259,7 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
                   <div>
                     <p className="text-xs font-medium text-muted">Jenis layanan</p>
                     <p className="mt-1 text-sm font-bold text-brand">
-                      {data.order.items[0]?.service_name ?? "Layanan ShoeClean"}
+                      {data.order.items[0]?.service_name ?? "Layanan pilihan Anda"}
                     </p>
                   </div>
                 </div>
@@ -296,7 +307,7 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
                     <span className="status-chip-mint">{data.order.status_label}</span>
                   </div>
                   <div className="flex items-center justify-between rounded-[1.15rem] bg-white p-4">
-                    <span className="text-sm font-medium text-foreground">Pembayaran</span>
+                    <span className="text-sm font-medium text-foreground">Status pembayaran</span>
                     <span className="status-chip-brand">{data.order.payment_status_label}</span>
                   </div>
                   <div className="rounded-[1.15rem] bg-white p-4">
@@ -318,7 +329,7 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
                 />
                 <div className="absolute inset-0 flex items-end bg-gradient-to-t from-brand/80 to-transparent p-6">
                   <p className="text-sm font-medium leading-7 text-white">
-                    Customer bisa mengecek progres dengan cepat tanpa perlu chat bolak-balik ke outlet.
+                    Anda bisa mengecek perkembangan pesanan dengan cepat tanpa perlu bertanya berulang kali.
                   </p>
                 </div>
               </article>
@@ -334,21 +345,49 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
                 {data.order.outlet?.phone ? (
                   <p className="mt-4 text-sm font-semibold text-accent">{data.order.outlet.phone}</p>
                 ) : null}
+                {outletMapsUrl ? (
+                  <a
+                    href={outletMapsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-4 inline-flex text-sm font-semibold text-brand underline decoration-[rgba(0,32,69,0.28)] underline-offset-4 transition hover:text-accent"
+                  >
+                    Buka lokasi cabang
+                  </a>
+                ) : null}
               </article>
             </aside>
+          </section>
+        ) : invoice && errorMessage ? (
+          <section className="motion-enter motion-delay-2 rounded-[2rem] bg-white p-8 shadow-[0_16px_34px_rgba(25,28,30,0.05)]">
+            <span className="inline-flex rounded-full bg-[rgba(244,99,99,0.1)] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-[#b63c3c]">
+              {errorStatus === 404 ? "Invoice belum ditemukan" : errorStatus === 503 ? "Server belum terhubung" : "Pelacakan belum berhasil"}
+            </span>
+            <h2 className="mt-4 text-2xl font-semibold tracking-[-0.04em] text-brand">
+              {errorStatus === 404 ? "Nomor invoice belum ditemukan." : "Pesanan belum bisa ditampilkan."}
+            </h2>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">{errorMessage}</p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link href={`/track${invoice ? `?invoice=${encodeURIComponent(invoice)}` : ""}`} className="btn-secondary w-full sm:w-auto">
+                Coba lagi
+              </Link>
+              <Link href="/order" className="btn-primary w-full sm:w-auto">
+                Pesan layanan
+              </Link>
+            </div>
           </section>
         ) : invoice && !errorMessage ? (
           <section className="motion-enter motion-delay-2 rounded-[2rem] bg-white p-8 shadow-[0_16px_34px_rgba(25,28,30,0.05)]">
             <h2 className="text-2xl font-semibold tracking-[-0.04em] text-brand">Invoice tidak ditemukan</h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-              Pastikan nomor invoice sudah sesuai. Jika customer memesan lewat outlet, mintakan nomor invoice yang tampil di halaman sukses order atau struk.
+              Pastikan nomor invoice sudah benar. Jika Anda baru saja memesan, gunakan nomor invoice yang muncul di halaman berhasil atau bukti pesanan.
             </p>
           </section>
         ) : (
           <section className="motion-enter motion-delay-2 rounded-[2rem] bg-white p-8 shadow-[0_16px_34px_rgba(25,28,30,0.05)]">
             <h2 className="text-2xl font-semibold tracking-[-0.04em] text-brand">Mulai lacak pesanan</h2>
             <p className="mt-3 max-w-2xl text-sm leading-7 text-muted">
-              Masukkan nomor invoice untuk melihat status pesanan, total tagihan, outlet penanganan, dan progres layanan secara langsung.
+              Masukkan nomor invoice untuk melihat status pesanan, total tagihan, outlet yang menangani, dan progres layanan.
             </p>
           </section>
         )}
@@ -357,7 +396,7 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
           <section className="tablet-balance-card motion-enter motion-delay-3 mt-8 bg-white shadow-[0_16px_34px_rgba(25,28,30,0.05)]">
             <div className="flex items-center justify-between gap-4">
               <h3 className="text-xl font-semibold tracking-[-0.03em] text-brand">Detail layanan</h3>
-              <span className="status-chip-soft">{data.order.items.length} item</span>
+              <span className="status-chip-soft">{data.order.items.length} layanan</span>
             </div>
             <div className="mt-6 grid gap-4 md:grid-cols-2">
               {data.order.items.map((item, index) => (
@@ -370,7 +409,7 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
                     <div>
                       <p className="font-semibold text-brand">{item.service_name ?? "Layanan"}</p>
                       <p className="mt-1 text-sm text-muted">
-                        Qty {item.quantity}
+                        Jumlah {item.quantity}
                         {item.unit ? ` ${item.unit}` : ""}
                       </p>
                     </div>
@@ -379,6 +418,44 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
                 </article>
               ))}
             </div>
+
+            {data.order.pickup_address || data.order.delivery_address ? (
+              <div className="mt-8 grid gap-4 border-t border-slate-100 pt-6 md:grid-cols-2">
+                {data.order.pickup_address ? (
+                  <article className="rounded-[1.4rem] bg-surface-soft p-5">
+                    <p className="section-label">Titik jemput</p>
+                    <p className="mt-3 text-sm leading-7 text-muted">{data.order.pickup_address}</p>
+                    {pickupMapsUrl ? (
+                      <a
+                        href={pickupMapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-4 inline-flex text-sm font-semibold text-accent underline underline-offset-4"
+                      >
+                        Buka titik jemput
+                      </a>
+                    ) : null}
+                  </article>
+                ) : null}
+
+                {data.order.delivery_address ? (
+                  <article className="rounded-[1.4rem] bg-surface-soft p-5">
+                    <p className="section-label">Titik antar</p>
+                    <p className="mt-3 text-sm leading-7 text-muted">{data.order.delivery_address}</p>
+                    {deliveryMapsUrl ? (
+                      <a
+                        href={deliveryMapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-4 inline-flex text-sm font-semibold text-accent underline underline-offset-4"
+                      >
+                        Buka titik antar
+                      </a>
+                    ) : null}
+                  </article>
+                ) : null}
+              </div>
+            ) : null}
           </section>
         ) : null}
 
@@ -410,7 +487,7 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
               Harga
             </Link>
             <Link href="/track" className="transition hover:text-brand">
-              Pelacakan
+              Lacak Pesanan
             </Link>
             <Link href="/login" className="transition hover:text-brand">
               Masuk

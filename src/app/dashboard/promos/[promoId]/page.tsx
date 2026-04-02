@@ -27,11 +27,11 @@ export default async function DashboardPromoDetailPage({ params }: Props) {
           current="promos"
           eyebrow="Ubah promo"
           title="Promo ini tidak bisa diakses."
-          description="Kemungkinan promo bersifat global atau berada di outlet di luar scope akun Anda."
+          description="Kemungkinan promo berlaku untuk cabang lain atau berada di luar cakupan akun Anda."
         >
           <section className="section-block p-5 sm:p-6">
             <p className="text-sm leading-7 text-muted">
-              Jika promo ini memang harus dikelola di akun ini, kita bisa evaluasi ulang rule aksesnya. Untuk saat ini backend masih menjaga scope outlet agar tetap aman.
+              Jika promo ini memang perlu dikelola di akun ini, aksesnya perlu diperluas terlebih dulu agar tetap aman.
             </p>
           </section>
         </DashboardFrame>
@@ -50,7 +50,7 @@ export default async function DashboardPromoDetailPage({ params }: Props) {
       current="promos"
       eyebrow="Ubah promo"
       title={data.promo.code}
-      description="Perbarui periode aktif, nilai diskon, batas penggunaan, dan cakupan outlet promo ini."
+      description="Perbarui periode aktif, nilai diskon, batas penggunaan, dan cakupan cabang promo ini."
     >
       <div className="mx-auto max-w-4xl">
         <Link
@@ -58,7 +58,7 @@ export default async function DashboardPromoDetailPage({ params }: Props) {
           className="mb-6 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-brand/40 transition hover:text-accent"
         >
           <span aria-hidden>{"<-"}</span>
-          Kembali ke campaign
+          Kembali ke promo
         </Link>
         <PromoForm
           mode="edit"

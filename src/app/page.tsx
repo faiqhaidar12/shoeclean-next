@@ -83,22 +83,22 @@ export default async function Home() {
 
   const testimonials = [
     {
-      name: "Owner Laundry Sepatu",
-      role: "Pengguna awal ShoeClean",
+      name: "Raka",
+      role: "Pemilik usaha perawatan sepatu",
       text:
-        "Tracking order dan alur customer sekarang terasa jauh lebih rapi. Tim frontdesk jadi tidak perlu menjelaskan progres berkali-kali.",
+        "Pelanggan jadi lebih tenang karena bisa cek status pesanan sendiri. Tim kami juga lebih hemat waktu saat jam sibuk.",
     },
     {
-      name: "Admin Cabang",
-      role: "Tim operasional",
+      name: "Nadia",
+      role: "Admin outlet",
       text:
-        "Pelanggan bisa langsung order dari HP dan melihat status invoice dengan jelas. Ini sangat membantu saat jam sibuk.",
+        "Form pemesanan dari HP terasa lebih mudah dipahami. Banyak pelanggan langsung lanjut pesan tanpa harus banyak bertanya.",
     },
     {
-      name: "ShoeClean Admin",
-      role: "Pengelola sistem",
+      name: "Fajar",
+      role: "Pemilik outlet",
       text:
-        "Frontend baru tetap memakai backend Laravel lama, jadi migrasinya aman sambil desain dan flow terus dirapikan.",
+        "Tampilan yang rapi bikin usaha kami terlihat lebih profesional, terutama saat pelanggan baru pertama kali memesan.",
     },
   ];
 
@@ -113,28 +113,28 @@ export default async function Home() {
               <div className="motion-enter-fast mb-8 inline-flex items-center gap-2 rounded-full bg-accent-soft px-4 py-1.5" style={{ animationDelay: "0.08s" }}>
                 <SparkleIcon className="h-4 w-4 text-accent-ink" />
                 <span className="text-xs font-bold uppercase tracking-[0.18em] text-accent-ink">
-                  Software operasional untuk bisnis cuci sepatu
+                  Website order dan dashboard untuk bisnis perawatan sepatu
                 </span>
               </div>
 
               <h1 className="motion-enter-fast max-w-4xl font-[var(--font-display-sans)] text-5xl font-extrabold leading-[1.08] tracking-[-0.05em] text-brand md:text-7xl" style={{ animationDelay: "0.14s" }}>
-                Bangun pengalaman{" "}
+                Buat pengalaman{" "}
                 <span className="bg-[linear-gradient(135deg,#002045_0%,#1a365d_100%)] bg-clip-text text-transparent">
-                  order, tracking, dan operasional
+                  pesan, lacak, dan kelola pesanan
                 </span>{" "}
-                dalam satu web app yang terasa premium.
+                yang lebih rapi dan meyakinkan.
               </h1>
 
               <p className="motion-enter-fast mt-8 max-w-xl text-lg leading-relaxed text-muted" style={{ animationDelay: "0.2s" }}>
-                ShoeClean membantu bisnis cuci sepatu menjual layanan lebih rapi, melayani customer lebih cepat, dan mengelola outlet dengan dashboard yang lebih modern.
+                ShoeClean membantu usaha perawatan sepatu menerima pesanan online, menampilkan proses pengerjaan dengan jelas, dan memberi pengalaman yang nyaman untuk pelanggan maupun tim outlet.
               </p>
 
               <div className="motion-enter-fast mt-10 flex flex-col gap-4 sm:flex-row" style={{ animationDelay: "0.26s" }}>
                 <Link href="/register" className="rounded-full bg-[linear-gradient(135deg,#002045_0%,#1a365d_100%)] px-8 py-4 text-center text-lg font-bold text-white shadow-xl shadow-brand/20 transition-transform duration-300 hover:scale-[1.02]">
-                  Mulai Gunakan ShoeClean
+                  Coba untuk Bisnis Anda
                 </Link>
                 <Link href="/pricing" className="flex items-center justify-center gap-2 rounded-full bg-surface-soft px-8 py-4 text-center text-lg font-bold text-brand transition-colors hover:bg-surface-muted">
-                  Lihat Paket
+                  Lihat Harga
                 </Link>
               </div>
             </div>
@@ -156,8 +156,8 @@ export default async function Home() {
                     <TrendIcon className="h-4 w-4 text-accent" />
                   </div>
                   <div>
-                    <div className="text-sm font-bold text-brand">Pendapatan Naik 42%</div>
-                    <div className="text-xs text-muted">Rata-rata pertumbuhan pelanggan</div>
+                    <div className="text-sm font-bold text-brand">Pesanan lebih tertata</div>
+                    <div className="text-xs text-muted">Pelanggan bisa cek status tanpa repot</div>
                   </div>
                 </div>
               </div>
@@ -173,7 +173,7 @@ export default async function Home() {
                 Satu produk untuk menjual, mengelola, dan menumbuhkan bisnis Anda.
               </h2>
               <p className="mt-6 text-lg text-muted">
-                ShoeClean bukan sekadar halaman order. Ini adalah web app operasional yang membantu owner, admin, dan customer bekerja dalam alur yang sama.
+                Dari halaman pemesanan sampai pelacakan status, semuanya dirancang agar pelanggan merasa nyaman dan bisnis Anda terlihat lebih profesional.
               </p>
             </div>
 
@@ -183,18 +183,18 @@ export default async function Home() {
                   <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-strong">
                     <TrendIcon className="h-5 w-5 text-white" />
                   </div>
-                  <h3 className="mb-4 text-2xl font-bold text-brand">Pelacakan Pesanan Presisi</h3>
+                  <h3 className="mb-4 text-2xl font-bold text-brand">Pelacakan pesanan yang jelas</h3>
                   <p className="text-muted">
-                    Jadikan tracking invoice sebagai pengalaman customer yang meyakinkan, bukan sekadar fitur tambahan di belakang dashboard.
+                    Pelanggan bisa melihat perkembangan pesanan dengan mudah, tanpa perlu bolak-balik chat untuk menanyakan status.
                   </p>
                 </div>
                 <div className="mt-12 rounded-xl border border-line bg-surface-soft p-4">
                   <div className="mb-4 flex items-center justify-between">
                     <span className="text-xs font-bold uppercase tracking-[0.18em] text-brand">
-                      Customer experience
+                      Pengalaman pelanggan
                     </span>
                     <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs font-bold text-accent-ink">
-                      Tracking
+                      Lacak
                     </span>
                   </div>
                   <div className="h-2 w-full overflow-hidden rounded-full bg-surface-muted">
@@ -208,9 +208,9 @@ export default async function Home() {
                   <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-xl bg-white/10">
                     <TeamIcon className="h-5 w-5 text-white" />
                   </div>
-                  <h3 className="mb-4 text-2xl font-bold">Optimalisasi Tim Outlet</h3>
+                  <h3 className="mb-4 text-2xl font-bold">Bantu tim bekerja lebih rapi</h3>
                   <p className="text-white/70">
-                    Kelola order, layanan, tim, promo, expenses, outlet, dan laporan dari satu dashboard yang konsisten.
+                    Atur pesanan, layanan, pelanggan, dan aktivitas outlet dari satu tempat yang mudah dipahami.
                   </p>
                 </div>
                 <div className="mt-8 flex -space-x-3">
@@ -234,21 +234,21 @@ export default async function Home() {
                 <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-xl bg-accent-soft">
                   <BarsIcon className="h-5 w-5 text-accent" />
                 </div>
-                <h3 className="mb-4 text-2xl font-bold text-brand">Harga yang Mudah Dibaca</h3>
+                <h3 className="mb-4 text-2xl font-bold text-brand">Harga yang mudah dipahami</h3>
                 <p className="text-muted">
-                  Tampilkan paket langganan dan layanan utama dengan visual yang lebih meyakinkan untuk membantu proses closing.
+                  Tampilkan pilihan harga dan layanan dengan tampilan yang rapi agar pelanggan lebih yakin untuk memesan.
                 </p>
               </div>
 
               <div className="motion-enter-fast rounded-[2rem] bg-[linear-gradient(135deg,#006a66_0%,#00504d_100%)] p-10 text-white md:col-span-2" style={{ animationDelay: "0.32s" }}>
                 <div className="flex flex-col gap-12 md:flex-row md:items-center">
                   <div className="flex-1">
-                    <h3 className="mb-4 text-2xl font-bold">Analitik Real-time</h3>
+                    <h3 className="mb-4 text-2xl font-bold">Pantau bisnis dengan lebih tenang</h3>
                     <p className="mb-8 text-white/80">
-                      Owner bisa melihat performa order, revenue, customer, dan aktivitas tim dalam tampilan yang terasa seperti produk modern, bukan admin lama yang berat.
+                      Lihat pesanan, pemasukan, dan perkembangan outlet dari dashboard yang lebih ringan dan mudah dibaca.
                     </p>
                     <Link href="/dashboard" className="rounded-full bg-white px-6 py-2 text-sm font-bold text-accent">
-                      Lihat Dashboard
+                      Buka Dasbor
                     </Link>
                   </div>
                   <div className="flex h-32 flex-1 items-end justify-around gap-2">
@@ -269,7 +269,7 @@ export default async function Home() {
             <div className="mb-16 flex flex-col justify-between md:flex-row md:items-end">
               <div className="max-w-xl">
                 <h2 className="font-[var(--font-display-sans)] text-3xl font-extrabold text-brand md:text-4xl">
-                  Dibangun untuk bisnis yang ingin terlihat lebih profesional di mata customer.
+                  Dibuat untuk usaha yang ingin tampil lebih meyakinkan di mata pelanggan.
                 </h2>
               </div>
             </div>
@@ -309,17 +309,17 @@ export default async function Home() {
             <div className="relative overflow-hidden rounded-[3rem] bg-brand-strong p-12 text-center text-white md:p-20">
               <div className="relative z-10">
                 <h2 className="motion-enter-fast mb-8 font-[var(--font-display-sans)] text-4xl font-extrabold tracking-[-0.04em] md:text-5xl" style={{ animationDelay: "0.1s" }}>
-                  Siap menjual ShoeClean sebagai pusat operasional bisnis Anda?
+                  Siap membuat proses pesan dan lacak sepatu jadi lebih nyaman?
                 </h2>
                 <p className="motion-enter-fast mx-auto mb-12 max-w-2xl text-lg text-white/70" style={{ animationDelay: "0.18s" }}>
-                  Mulai dari storefront customer, tracking invoice, sampai dashboard internal tanpa harus memecah flow ke banyak aplikasi.
+                  Mulai dari pemesanan, pelacakan, sampai pengelolaan outlet, semuanya bisa berjalan dalam satu alur yang rapi.
                 </p>
                 <div className="motion-enter-fast flex flex-col justify-center gap-4 sm:flex-row" style={{ animationDelay: "0.26s" }}>
                   <Link href="/register" className="rounded-full bg-accent px-10 py-4 text-lg font-bold text-white transition-colors hover:bg-[#007b77]">
-                    Daftar Sekarang
+                    Mulai Sekarang
                   </Link>
                   <Link href="/order" className="rounded-full border border-white/20 bg-white/10 px-10 py-4 text-lg font-bold text-white transition-colors hover:bg-white/20">
-                    Lihat Use Case
+                    Coba Alur Pesan
                   </Link>
                 </div>
               </div>
@@ -348,10 +348,10 @@ export default async function Home() {
               Privasi
             </Link>
             <Link href="/track" className="text-xs text-slate-400 transition-colors hover:text-brand">
-              Tracking
+              Lacak Pesanan
             </Link>
             <Link href="/order" className="text-xs text-slate-400 transition-colors hover:text-brand">
-              Outlet
+              Pesan
             </Link>
           </div>
         </div>

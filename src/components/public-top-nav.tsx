@@ -11,9 +11,9 @@ type Props = {
 
 const navItems = [
   { key: "home", href: "/", label: "Beranda" },
-  { key: "pricing", href: "/pricing", label: "Pricing" },
-  { key: "track", href: "/track", label: "Track" },
-  { key: "order", href: "/order", label: "Order" },
+  { key: "pricing", href: "/pricing", label: "Harga" },
+  { key: "track", href: "/track", label: "Lacak" },
+  { key: "order", href: "/order", label: "Pesan" },
 ] as const;
 
 function navClass(active: boolean) {
@@ -53,7 +53,7 @@ export function PublicTopNav({ current = "home", authenticated = false }: Props)
               ShoeClean
             </Link>
             <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-muted">
-              Clinical artisan
+              Order dan dashboard outlet
             </p>
           </div>
 
@@ -69,17 +69,17 @@ export function PublicTopNav({ current = "home", authenticated = false }: Props)
             {authenticated ? (
               <>
                 <Link href="/dashboard" className="btn-secondary px-4 py-2.5 text-sm">
-                  Dashboard
+                  Dasbor
                 </Link>
-                <LogoutConfirmation label="Logout" className="btn-primary px-5 py-2.5 text-sm" />
+                <LogoutConfirmation label="Keluar" className="btn-primary px-5 py-2.5 text-sm" />
               </>
             ) : (
               <>
                 <Link href="/login" className="btn-secondary px-4 py-2.5 text-sm">
-                  Login
+                  Masuk
                 </Link>
                 <Link href="/register" className="btn-primary px-5 py-2.5 text-sm">
-                  Register
+                  Daftar
                 </Link>
               </>
             )}
@@ -114,7 +114,7 @@ export function PublicTopNav({ current = "home", authenticated = false }: Props)
                   ShoeClean
                 </p>
                 <p className="mt-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-muted">
-                  Clinical artisan
+                  Order dan dashboard outlet
                 </p>
               </div>
               <button
@@ -148,16 +148,12 @@ export function PublicTopNav({ current = "home", authenticated = false }: Props)
                     onClick={() => setIsOpen(false)}
                     className="btn-primary w-full justify-center"
                   >
-                    Dashboard
+                    Dasbor
                   </Link>
                   <LogoutConfirmation
-                    label="Logout"
+                    label="Keluar"
                     className="btn-secondary w-full justify-center"
                     fullWidth
-                    onOpenChange={(open) => {
-                      if (!open) return;
-                      setIsOpen(false);
-                    }}
                   />
                 </>
               ) : (
@@ -167,14 +163,14 @@ export function PublicTopNav({ current = "home", authenticated = false }: Props)
                     onClick={() => setIsOpen(false)}
                     className="btn-primary w-full justify-center"
                   >
-                    Register
+                    Daftar
                   </Link>
                   <Link
                     href="/login"
                     onClick={() => setIsOpen(false)}
                     className="btn-secondary w-full justify-center"
                   >
-                    Login
+                    Masuk
                   </Link>
                 </>
               )}

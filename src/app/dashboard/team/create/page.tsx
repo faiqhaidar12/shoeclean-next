@@ -16,6 +16,23 @@ export default async function DashboardTeamCreatePage() {
   } catch (error) {
     if (error instanceof ApiError && error.status === 401) redirect("/login");
 
+    if (error instanceof ApiError && error.status === 403) {
+      return (
+        <DashboardFrame
+          current="team"
+          eyebrow="Tim Outlet"
+          title="Kelola tim tersedia mulai paket Pro."
+          description="Pembuatan admin atau staf belum aktif untuk akun yang masih berada di paket gratis."
+        >
+          <section className="section-block p-5 sm:p-6">
+            <p className="text-sm leading-7 text-muted">
+              Upgrade ke Pro atau Bisnis untuk membuka fitur pengelolaan tim dan menambahkan anggota operasional dari halaman ini.
+            </p>
+          </section>
+        </DashboardFrame>
+      );
+    }
+
     if (error instanceof ApiError && error.status === 503) {
       return <BackendUnavailable title="Form team belum terhubung" message={error.message} />;
     }
@@ -26,9 +43,9 @@ export default async function DashboardTeamCreatePage() {
   return (
     <DashboardFrame
       current="team"
-      eyebrow="Tambah personel"
-      title="Tambah admin atau staff."
-      description="Buat user team baru sesuai hak akses yang diizinkan oleh role Anda saat ini."
+      eyebrow="Tim Outlet"
+      title="Tambah admin atau staf"
+      description="Buat anggota tim baru sesuai hak akses yang diizinkan oleh peran akun Anda saat ini."
     >
       <div className="mx-auto max-w-4xl">
         <Link
@@ -36,7 +53,7 @@ export default async function DashboardTeamCreatePage() {
           className="mb-6 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-brand/40 transition hover:text-accent"
         >
           <span aria-hidden>{"<-"}</span>
-          Kembali ke personel
+          Kembali ke tim
         </Link>
         <TeamMemberForm mode="create" outlets={data.outlets} roles={data.roles} />
       </div>

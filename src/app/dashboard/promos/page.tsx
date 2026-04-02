@@ -38,13 +38,13 @@ export default async function DashboardPromosPage({ searchParams }: Props) {
       return (
         <DashboardFrame
           current="promos"
-          eyebrow="Campaign Promo"
+          eyebrow="Promo Cabang"
           title="Promo belum tersedia di paket Anda."
-          description="Fitur promo mengikuti paket langganan owner. Upgrade ke Pro atau Business untuk mengelola campaign promo dari dashboard Next."
+          description="Fitur promo mengikuti paket langganan pemilik usaha. Upgrade ke Pro atau Bisnis untuk mengelola promo dari halaman ini."
         >
           <section className="section-block p-5 sm:p-6">
             <p className="text-sm leading-7 text-muted">
-              Backend mengembalikan batasan akses promo untuk akun ini. Setelah paket di-upgrade, halaman ini akan langsung aktif tanpa migrasi tambahan.
+              Setelah paket di-upgrade, halaman ini akan langsung aktif dan bisa dipakai tanpa pengaturan tambahan.
             </p>
           </section>
         </DashboardFrame>
@@ -61,29 +61,29 @@ export default async function DashboardPromosPage({ searchParams }: Props) {
   return (
     <DashboardFrame
       current="promos"
-      eyebrow="Campaign Promo"
-      title="Kelola promo dan campaign outlet."
-      description="Atur kode promo untuk storefront dan order internal tanpa kehilangan kontrol atas periode, batas penggunaan, dan cakupan outlet."
+      eyebrow="Promo Cabang"
+      title="Kelola promo cabang"
+      description="Atur kode promo untuk pemesanan pelanggan dan pesanan internal tanpa kehilangan kontrol atas periode, batas penggunaan, dan cakupan cabang."
       actions={<Link href="/dashboard/promos/create" className="btn-primary w-full sm:w-auto">Tambah promo</Link>}
     >
       <section className="grid gap-4 lg:grid-cols-3">
         <article className="section-block p-5 sm:p-6">
           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Total promo</p>
           <p className="mt-3 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-brand">{data.summary.total_promos}</p>
-          <p className="mt-2 text-sm text-muted">Jumlah promo yang tercatat dalam katalog campaign outlet Anda.</p>
+          <p className="mt-2 text-sm text-muted">Jumlah promo yang tercatat untuk usaha Anda saat ini.</p>
         </article>
         <article className="section-block p-5 sm:p-6">
           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Promo aktif</p>
           <p className="mt-3 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-brand">{data.summary.active_promos}</p>
-          <p className="mt-2 text-sm text-muted">Promo yang saat ini bisa dipakai customer di storefront atau kasir.</p>
+          <p className="mt-2 text-sm text-muted">Promo yang saat ini bisa dipakai pelanggan atau tim kasir.</p>
         </article>
         <article className="section-dark rounded-[1.75rem] p-6 text-white">
           <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/55">Akses promo</p>
           <p className="mt-3 font-[var(--font-display-sans)] text-2xl font-extrabold tracking-tight text-white">
-            {data.meta.can_manage_global ? "Bisa kelola global" : "Khusus outlet"}
+            {data.meta.can_manage_global ? "Bisa kelola semua cabang" : "Khusus cabang"}
           </p>
           <p className="mt-2 text-sm text-white/72">
-            {data.meta.can_manage_global ? "Akun ini bisa membuat promo untuk semua outlet." : "Akun ini hanya bisa membuat promo spesifik outlet."}
+            {data.meta.can_manage_global ? "Akun ini bisa membuat promo untuk semua cabang." : "Akun ini hanya bisa membuat promo untuk cabang tertentu."}
           </p>
         </article>
       </section>
@@ -91,10 +91,10 @@ export default async function DashboardPromosPage({ searchParams }: Props) {
       <form action="/dashboard/promos" className="section-block p-5 sm:p-6">
         <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">Filter campaign</p>
-            <h2 className="mt-2 font-[var(--font-display-sans)] text-2xl font-extrabold tracking-tight text-brand">Temukan promo yang ingin dioptimalkan</h2>
+            <p className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">Filter promo</p>
+              <h2 className="mt-2 font-[var(--font-display-sans)] text-2xl font-extrabold tracking-tight text-brand">Temukan promo yang ingin diperbarui</h2>
           </div>
-          <p className="max-w-xl text-sm leading-7 text-muted">Cari berdasarkan kode atau nama promo, lalu saring menurut status, tipe diskon, dan outlet.</p>
+          <p className="max-w-xl text-sm leading-7 text-muted">Cari berdasarkan kode atau nama promo, lalu saring menurut status, tipe diskon, dan cabang.</p>
         </div>
 
         <div className="grid gap-3 lg:grid-cols-[1fr_180px_180px_220px_auto]">
@@ -108,7 +108,7 @@ export default async function DashboardPromosPage({ searchParams }: Props) {
             {data.types.map((type) => <option key={type} value={type}>{type}</option>)}
           </select>
           <select name="outlet_id" defaultValue={params.outlet_id ?? String(data.filters.outlet_id ?? "")} className="field-soft">
-            <option value="">Semua outlet</option>
+            <option value="">Semua cabang</option>
             {data.outlets.map((outlet) => <option key={outlet.id} value={outlet.id}>{outlet.name}</option>)}
           </select>
           <button type="submit" className="btn-accent w-full lg:w-auto">Terapkan</button>
@@ -136,7 +136,7 @@ export default async function DashboardPromosPage({ searchParams }: Props) {
                       <span className={`inline-flex min-h-8 items-center whitespace-nowrap rounded-full px-3 py-2 text-[11px] leading-none font-black uppercase tracking-[0.16em] ${statusTone[promo.availability_status] ?? "bg-surface text-muted"}`}>{promo.availability_label}</span>
                     </div>
                     <p className="mt-3 font-semibold text-foreground">{promo.name}</p>
-                    <p className="mt-1 text-sm text-muted">{promo.outlet?.name ?? "Semua outlet"} · {promo.type}</p>
+                    <p className="mt-1 text-sm text-muted">{promo.outlet?.name ?? "Semua cabang"} · {promo.type === "percentage" ? "Persentase" : "Nominal"}</p>
                   </div>
                   <div className="text-right">
                     <p className="font-semibold text-brand">{promo.type === "percentage" ? `${promo.value}%` : formatRupiah(promo.value)}</p>
@@ -152,21 +152,21 @@ export default async function DashboardPromosPage({ searchParams }: Props) {
             <div className="overflow-x-auto rounded-[1.75rem] border border-line/40">
               <div className="min-w-[980px]">
                 <div className="grid grid-cols-[180px_minmax(0,1.2fr)_200px_180px_160px] gap-4 bg-slate-50 px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">
-                  <span>Kode</span><span>Detail</span><span>Outlet / Periode</span><span>Benefit</span><span>Status</span>
+                  <span>Kode</span><span>Detail</span><span>Cabang / Periode</span><span>Manfaat</span><span>Status</span>
                 </div>
                 <div className="divide-y divide-line/35">
                   {data.promos.data.map((promo) => (
                     <Link key={promo.id} href={`/dashboard/promos/${promo.id}`} className="grid grid-cols-[180px_minmax(0,1.2fr)_200px_180px_160px] gap-4 px-6 py-5 transition hover:bg-slate-50/90">
                       <div>
                         <p className="font-mono text-sm font-bold text-foreground">{promo.code}</p>
-                        <p className="mt-1 text-sm text-muted">{promo.type}</p>
+                        <p className="mt-1 text-sm text-muted">{promo.type === "percentage" ? "Persentase" : "Nominal"}</p>
                       </div>
                       <div className="min-w-0">
                         <p className="truncate font-semibold text-foreground">{promo.name}</p>
-                        <p className="mt-1 truncate text-sm text-muted">Klik untuk mengubah aturan dan periode promo</p>
+                        <p className="mt-1 truncate text-sm text-muted">Buka untuk mengubah aturan dan periode promo</p>
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate font-semibold text-foreground">{promo.outlet?.name ?? "Semua outlet"}</p>
+                        <p className="truncate font-semibold text-foreground">{promo.outlet?.name ?? "Semua cabang"}</p>
                         <p className="mt-1 truncate text-sm text-muted">{promo.start_date ?? "-"} sampai {promo.end_date ?? "-"}</p>
                       </div>
                       <div>
@@ -207,7 +207,7 @@ export default async function DashboardPromosPage({ searchParams }: Props) {
           </section>
 
           <section className="section-block p-5 sm:p-6">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Tipe promo</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Jenis promo</p>
             <div className="mt-4 flex flex-wrap gap-2">
               {data.types.map((type) => <span key={type} className="highlight-chip">{type}</span>)}
             </div>

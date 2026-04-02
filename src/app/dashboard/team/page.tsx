@@ -2,8 +2,8 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { BackendUnavailable } from "@/components/backend-unavailable";
 import { DashboardFrame } from "@/components/dashboard-frame";
-import { getTeam } from "@/lib/auth";
 import { ApiError } from "@/lib/api";
+import { getTeam } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +24,23 @@ export default async function DashboardTeamPage({ searchParams }: Props) {
   } catch (error) {
     if (error instanceof ApiError && error.status === 401) redirect("/login");
 
+    if (error instanceof ApiError && error.status === 403) {
+      return (
+        <DashboardFrame
+          current="team"
+          eyebrow="Tim Outlet"
+          title="Kelola tim tersedia mulai paket Pro."
+          description="Akun baru masih memakai paket gratis, jadi pengelolaan admin dan staf belum aktif di halaman ini."
+        >
+          <section className="section-block p-5 sm:p-6">
+            <p className="text-sm leading-7 text-muted">
+              Setelah paket di-upgrade ke Pro atau Bisnis, halaman tim akan langsung aktif untuk menambah admin atau staf tanpa pengaturan tambahan.
+            </p>
+          </section>
+        </DashboardFrame>
+      );
+    }
+
     if (error instanceof ApiError && error.status === 503) {
       return <BackendUnavailable title="Modul tim belum terhubung" message={error.message} />;
     }
@@ -37,39 +54,39 @@ export default async function DashboardTeamPage({ searchParams }: Props) {
     <DashboardFrame
       current="team"
       eyebrow="Tim Outlet"
-      title="Kelola admin dan staff."
-      description="Owner dan admin bisa mengatur user team outlet langsung dari dashboard baru dengan struktur akses yang lebih mudah dibaca."
+      title="Kelola admin dan staf"
+      description="Atur anggota tim, peran, dan cabang akses dari satu halaman yang mudah dipantau."
       actions={
         <Link href="/dashboard/team/create" className="btn-primary w-full sm:w-auto">
-          Tambah user team
+          Tambah anggota tim
         </Link>
       }
     >
-      <section className="grid gap-4 lg:grid-cols-3">
+      <section className="grid min-w-0 gap-4 lg:grid-cols-3">
         <article className="section-block p-5 sm:p-6">
           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Total personel</p>
           <p className="mt-3 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-brand">
             {data.users.total}
           </p>
-          <p className="mt-2 text-sm text-muted">Jumlah anggota tim yang berada dalam scope akun aktif saat ini.</p>
+          <p className="mt-2 text-sm text-muted">Jumlah anggota tim yang berada dalam cakupan akun aktif saat ini.</p>
         </article>
         <article className="section-block p-5 sm:p-6">
           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Bisa dikelola</p>
           <p className="mt-3 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-brand">
             {editableUsers}
           </p>
-          <p className="mt-2 text-sm text-muted">Anggota tim yang dapat diperbarui langsung oleh role Anda saat ini.</p>
+          <p className="mt-2 text-sm text-muted">Anggota tim yang bisa Anda ubah langsung dengan akun yang sedang dipakai.</p>
         </article>
         <article className="section-dark rounded-[1.75rem] p-6 text-white">
-          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/55">Role aktor</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/55">Peran aktif</p>
           <p className="mt-3 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-white">
-            {data.meta.actor_role ?? "team"}
+            {data.meta.actor_role ?? "tim"}
           </p>
-          <p className="mt-2 text-sm text-white/72">Hak kelola daftar staf mengikuti role login yang sedang digunakan sekarang.</p>
+          <p className="mt-2 text-sm text-white/72">Hak kelola tim mengikuti peran akun yang sedang Anda gunakan saat ini.</p>
         </article>
       </section>
 
-      <form action="/dashboard/team" className="section-block p-5 sm:p-6">
+      <form action="/dashboard/team" className="section-block min-w-0 overflow-hidden p-5 sm:p-6">
         <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">Filter personel</p>
@@ -78,7 +95,7 @@ export default async function DashboardTeamPage({ searchParams }: Props) {
             </h2>
           </div>
           <p className="max-w-xl text-sm leading-7 text-muted">
-            Cari berdasarkan nama atau email, lalu saring menurut outlet untuk mempercepat pengelolaan akun staf.
+            Cari berdasarkan nama atau email, lalu saring menurut cabang untuk mempercepat pengelolaan akun staf.
           </p>
         </div>
 
@@ -95,7 +112,7 @@ export default async function DashboardTeamPage({ searchParams }: Props) {
             defaultValue={params.outlet_id ?? String(data.filters.outlet_id ?? "")}
             className="field-soft"
           >
-            <option value="">Semua outlet</option>
+            <option value="">Semua cabang</option>
             {data.outlets.map((outlet) => (
               <option key={outlet.id} value={outlet.id}>
                 {outlet.name}
@@ -108,21 +125,21 @@ export default async function DashboardTeamPage({ searchParams }: Props) {
         </div>
       </form>
 
-      <section className="section-block p-5 sm:p-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <div>
+      <section className="section-block min-w-0 overflow-hidden p-5 sm:p-6">
+        <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div className="min-w-0">
             <p className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">Direktori tim</p>
-            <h2 className="mt-2 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-brand">
-              {data.users.total} user ditemukan
+            <h2 className="mt-2 break-words font-[var(--font-display-sans)] text-2xl font-extrabold tracking-tight text-brand sm:text-3xl">
+              {data.users.total} anggota tim ditemukan
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-7 text-muted">
-              Buka profil anggota tim untuk memperbarui role, outlet, atau kredensial login sesuai kewenangan Anda.
+              Buka profil anggota tim untuk memperbarui peran, cabang, atau akses masuk sesuai kewenangan Anda.
             </p>
           </div>
-          <span className="highlight-chip">Aktor: {data.meta.actor_role ?? "team"}</span>
+          <span className="highlight-chip w-fit self-start lg:self-auto">Peran aktif: {data.meta.actor_role ?? "tim"}</span>
         </div>
 
-        <div className="dashboard-panel-stack mt-6 lg:hidden">
+        <div className="dashboard-panel-stack mt-6 min-w-0 lg:hidden">
           {data.users.data.map((user) =>
             user.permissions.can_edit ? (
               <Link
@@ -130,39 +147,39 @@ export default async function DashboardTeamPage({ searchParams }: Props) {
                 href={`/dashboard/team/${user.id}`}
                 className="soft-panel block p-5 transition hover:-translate-y-0.5"
               >
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex min-w-0 flex-col gap-3">
                   <div className="min-w-0">
                     <p className="font-semibold text-foreground">{user.name}</p>
                     <p className="mt-1 text-sm text-muted">{user.email}</p>
                     <p className="mt-1 text-sm text-muted">
-                      {user.outlet?.name ?? "Tanpa outlet"} · {user.role_label ?? user.role ?? "-"}
+                      {user.outlet?.name ?? "Belum terhubung ke cabang"} · {user.role_label ?? user.role ?? "-"}
                     </p>
                   </div>
                   <span
-                    className={`inline-flex min-h-8 items-center whitespace-nowrap rounded-full px-3 py-2 text-[11px] leading-none font-black uppercase tracking-[0.16em] ${
+                    className={`inline-flex min-h-8 w-fit items-center rounded-full px-3 py-2 text-[11px] leading-none font-black uppercase tracking-[0.16em] ${
                       user.email_verified ? "bg-[#edf4f1] text-accent" : "bg-surface text-muted"
                     }`}
                   >
-                    {user.email_verified ? "verified" : "unverified"}
+                    {user.email_verified ? "Terverifikasi" : "Belum verifikasi"}
                   </span>
                 </div>
               </Link>
             ) : (
               <div key={user.id} className="soft-panel p-5 opacity-90">
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex min-w-0 flex-col gap-3">
                   <div className="min-w-0">
                     <p className="font-semibold text-foreground">{user.name}</p>
                     <p className="mt-1 text-sm text-muted">{user.email}</p>
                     <p className="mt-1 text-sm text-muted">
-                      {user.outlet?.name ?? "Tanpa outlet"} · {user.role_label ?? user.role ?? "-"}
+                      {user.outlet?.name ?? "Belum terhubung ke cabang"} · {user.role_label ?? user.role ?? "-"}
                     </p>
                   </div>
                   <span
-                    className={`inline-flex min-h-8 items-center whitespace-nowrap rounded-full px-3 py-2 text-[11px] leading-none font-black uppercase tracking-[0.16em] ${
+                    className={`inline-flex min-h-8 w-fit items-center rounded-full px-3 py-2 text-[11px] leading-none font-black uppercase tracking-[0.16em] ${
                       user.email_verified ? "bg-[#edf4f1] text-accent" : "bg-surface text-muted"
                     }`}
                   >
-                    {user.email_verified ? "verified" : "unverified"}
+                    {user.email_verified ? "Terverifikasi" : "Belum verifikasi"}
                   </span>
                 </div>
               </div>
@@ -175,8 +192,8 @@ export default async function DashboardTeamPage({ searchParams }: Props) {
             <div className="min-w-[900px]">
               <div className="grid grid-cols-[minmax(280px,1.2fr)_220px_180px_160px] gap-4 bg-slate-50 px-6 py-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">
                 <span>Personel</span>
-                <span>Outlet</span>
-                <span>Role</span>
+                <span>Cabang</span>
+                <span>Peran</span>
                 <span>Status</span>
               </div>
               <div className="divide-y divide-line/35">
@@ -192,8 +209,8 @@ export default async function DashboardTeamPage({ searchParams }: Props) {
                         <p className="mt-1 truncate text-sm text-muted">{user.email}</p>
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate font-semibold text-foreground">{user.outlet?.name ?? "Tanpa outlet"}</p>
-                        <p className="mt-1 truncate text-sm text-muted">Bisa dikelola</p>
+                        <p className="truncate font-semibold text-foreground">{user.outlet?.name ?? "Belum terhubung ke cabang"}</p>
+                        <p className="mt-1 truncate text-sm text-muted">Bisa diubah</p>
                       </div>
                       <div className="font-semibold text-foreground">{user.role_label ?? user.role ?? "-"}</div>
                       <div className="flex items-start">
@@ -202,7 +219,7 @@ export default async function DashboardTeamPage({ searchParams }: Props) {
                             user.email_verified ? "bg-[#edf4f1] text-accent" : "bg-surface text-muted"
                           }`}
                         >
-                          {user.email_verified ? "verified" : "unverified"}
+                          {user.email_verified ? "Terverifikasi" : "Belum verifikasi"}
                         </span>
                       </div>
                     </Link>
@@ -216,8 +233,8 @@ export default async function DashboardTeamPage({ searchParams }: Props) {
                         <p className="mt-1 truncate text-sm text-muted">{user.email}</p>
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate font-semibold text-foreground">{user.outlet?.name ?? "Tanpa outlet"}</p>
-                        <p className="mt-1 truncate text-sm text-muted">Hanya lihat</p>
+                        <p className="truncate font-semibold text-foreground">{user.outlet?.name ?? "Belum terhubung ke cabang"}</p>
+                        <p className="mt-1 truncate text-sm text-muted">Hanya bisa dilihat</p>
                       </div>
                       <div className="font-semibold text-foreground">{user.role_label ?? user.role ?? "-"}</div>
                       <div className="flex items-start">
@@ -226,7 +243,7 @@ export default async function DashboardTeamPage({ searchParams }: Props) {
                             user.email_verified ? "bg-[#edf4f1] text-accent" : "bg-surface text-muted"
                           }`}
                         >
-                          {user.email_verified ? "verified" : "unverified"}
+                          {user.email_verified ? "Terverifikasi" : "Belum verifikasi"}
                         </span>
                       </div>
                     </div>
@@ -238,7 +255,7 @@ export default async function DashboardTeamPage({ searchParams }: Props) {
         </div>
 
         {data.users.data.length === 0 ? (
-          <div className="soft-panel mt-6 p-5 text-sm text-muted">Belum ada user team yang cocok dengan filter ini.</div>
+          <div className="soft-panel mt-6 p-5 text-sm text-muted">Belum ada anggota tim yang cocok dengan filter ini.</div>
         ) : null}
 
         <div className="mobile-stack mt-6">

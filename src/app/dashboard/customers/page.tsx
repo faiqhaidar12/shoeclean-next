@@ -29,7 +29,7 @@ export default async function DashboardCustomersPage({ searchParams }: Props) {
     if (error instanceof ApiError && error.status === 503) {
       return (
         <BackendUnavailable
-          title="Daftar customer belum terhubung"
+          title="Daftar pelanggan belum terhubung"
           message={error.message}
         />
       );
@@ -43,29 +43,29 @@ export default async function DashboardCustomersPage({ searchParams }: Props) {
       current="customers"
       eyebrow="Pelanggan"
       title="Daftar pelanggan"
-      description="Kelola database customer yang dipakai outlet untuk order berulang, pencarian cepat, dan histori layanan."
+      description="Simpan data pelanggan agar pemesanan ulang, pencarian, dan riwayat layanan lebih mudah dikelola."
       actions={
         <Link href="/dashboard/customers/create" className="btn-primary w-full sm:w-auto">
           Tambah pelanggan
         </Link>
       }
     >
-      <section className="mb-10 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+      <section className="mb-10 min-w-0 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">
             Pelanggan
           </p>
           <h2 className="mt-4 font-[var(--font-display-sans)] text-4xl font-extrabold italic tracking-[-0.04em] text-brand sm:text-5xl">
-            Database customer
+            Data pelanggan
           </h2>
           <p className="mt-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand/40">
-            Individu terhormat dalam ekosistem layanan Anda
+            Data yang siap dipakai saat melayani pelanggan
           </p>
         </div>
       </section>
 
-      <section className="mb-12 space-y-8">
-        <form action="/dashboard/customers" className="relative max-w-3xl">
+      <section className="mb-12 min-w-0 space-y-8 overflow-x-hidden">
+        <form action="/dashboard/customers" className="relative min-w-0 max-w-3xl">
           <div className="pointer-events-none absolute inset-y-0 left-6 flex items-center text-brand/20">
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none">
               <path d="m21 21-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -75,12 +75,12 @@ export default async function DashboardCustomersPage({ searchParams }: Props) {
             type="text"
             name="search"
             defaultValue={params.search ?? ""}
-            placeholder="Cari pelanggan berdasarkan nama atau kontak..."
+            placeholder="Cari pelanggan berdasarkan nama atau nomor HP..."
             className="field-soft !rounded-[1.8rem] !bg-surface-soft/70 !py-5 !pl-16 pr-5 text-sm shadow-[0_10px_24px_rgba(25,28,30,0.04)] transition hover:!bg-surface-soft"
           />
         </form>
 
-        <form action="/dashboard/customers" className="flex items-center gap-3 overflow-x-auto pb-2">
+        <form action="/dashboard/customers" className="flex min-w-0 items-center gap-3 overflow-x-auto pb-2">
           <button
             type="submit"
             className={`flex-shrink-0 rounded-full px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] transition ${
@@ -127,7 +127,7 @@ export default async function DashboardCustomersPage({ searchParams }: Props) {
             Belum ada pelanggan
           </h3>
           <p className="mt-4 text-[10px] font-black uppercase tracking-[0.2em] text-brand/40">
-            Menunggu penambahan customer baru
+            Tambahkan pelanggan pertama Anda
           </p>
         </section>
       ) : (

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { LeafletLocationPicker } from "@/components/leaflet-location-picker";
 import type { StorefrontOutletResponse } from "@/lib/api";
 import { formatRupiah } from "@/lib/format";
 
@@ -17,6 +18,11 @@ type PromoState = {
   message: string;
 } | null;
 
+type LocationPoint = {
+  lat: number;
+  lng: number;
+};
+
 type Props = {
   data: StorefrontOutletResponse;
 };
@@ -29,6 +35,8 @@ export function StorefrontOrderForm({ data }: Props) {
   const [orderType, setOrderType] = useState("regular");
   const [pickupAddress, setPickupAddress] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [pickupPoint, setPickupPoint] = useState<LocationPoint | null>(null);
+  const [deliveryPoint, setDeliveryPoint] = useState<LocationPoint | null>(null);
   const [promoCode, setPromoCode] = useState("");
   const [promo, setPromo] = useState<PromoState>(null);
   const [promoMessage, setPromoMessage] = useState("");
@@ -153,6 +161,10 @@ export function StorefrontOrderForm({ data }: Props) {
       formData.set("order_type", orderType);
       formData.set("pickup_address", pickupAddress);
       formData.set("delivery_address", deliveryAddress);
+      formData.set("pickup_latitude", pickupPoint ? String(pickupPoint.lat) : "");
+      formData.set("pickup_longitude", pickupPoint ? String(pickupPoint.lng) : "");
+      formData.set("delivery_latitude", deliveryPoint ? String(deliveryPoint.lat) : "");
+      formData.set("delivery_longitude", deliveryPoint ? String(deliveryPoint.lng) : "");
       formData.set("promo_code", promo?.code ?? promoCode.trim());
       formData.set("notes", notes);
       formData.set("payment_method", paymentMethod);
@@ -195,8 +207,8 @@ export function StorefrontOrderForm({ data }: Props) {
         <section className="section-block hero-card p-4 sm:p-5">
           <div className="flex items-center justify-between gap-3">
             <div>
-              <p className="section-label">Cabang lain</p>
-              <h2 className="mt-2 text-xl font-semibold">Ganti cabang dengan sekali tap.</h2>
+              <p className="section-label">Outlet lain</p>
+              <h2 className="mt-2 text-xl font-semibold">Pilih outlet yang paling dekat atau paling nyaman.</h2>
             </div>
           </div>
           <div className="mt-4 grid gap-3 md:grid-cols-2">
@@ -223,7 +235,7 @@ export function StorefrontOrderForm({ data }: Props) {
 
       {data.ui.order_limit_reached ? (
         <section className="section-block border-[#f3c9c0] bg-[#fff1ee] px-5 py-5 text-sm leading-6 text-[#9a3b2b]">
-          Outlet ini sedang tidak bisa menerima order baru.
+          Mohon maaf, outlet ini sedang belum bisa menerima pesanan baru untuk sementara waktu.
         </section>
       ) : null}
 
@@ -233,11 +245,11 @@ export function StorefrontOrderForm({ data }: Props) {
             <p className="section-label">Langkah 1</p>
             <h2 className="mt-2 text-xl font-semibold">Pilih layanan</h2>
             <p className="mt-2 text-sm leading-6 text-muted">
-              Pilih layanan yang ingin dikerjakan lalu atur jumlahnya.
+              Pilih layanan yang Anda butuhkan, lalu tentukan jumlah pasangnya.
             </p>
           </div>
           <button type="button" onClick={addItem} className="btn-secondary w-full sm:w-auto">
-            Tambah item
+            Tambah layanan
           </button>
         </div>
 
@@ -246,7 +258,7 @@ export function StorefrontOrderForm({ data }: Props) {
             <div key={`${index}-${item.service_id}`} className="soft-panel p-4 sm:p-5">
               <div className="grid gap-3">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-sm font-semibold text-brand">Item {index + 1}</p>
+                  <p className="text-sm font-semibold text-brand">Layanan {index + 1}</p>
                   {items.length > 1 ? (
                     <button
                       type="button"
@@ -291,7 +303,7 @@ export function StorefrontOrderForm({ data }: Props) {
                     className="field-soft"
                   />
                   <div className="rounded-[1.2rem] bg-white px-4 py-3 text-sm text-muted shadow-[inset_0_0_0_1px_rgba(0,32,69,0.06)]">
-                    Qty layanan
+                    Jumlah
                   </div>
                 </div>
               </div>
@@ -302,16 +314,16 @@ export function StorefrontOrderForm({ data }: Props) {
 
       <section className="section-block p-4 sm:p-5">
         <p className="section-label">Langkah 2</p>
-        <h2 className="mt-2 text-xl font-semibold">Data customer</h2>
+        <h2 className="mt-2 text-xl font-semibold">Data pemesan</h2>
         <p className="mt-2 text-sm leading-6 text-muted">
-          Pastikan nama dan nomor aktif agar outlet mudah menghubungi customer.
+          Isi nama dan nomor HP yang aktif agar outlet bisa menghubungi Anda jika diperlukan.
         </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           <input
             required
             value={customerName}
             onChange={(event) => setCustomerName(event.target.value)}
-            placeholder="Nama customer"
+            placeholder="Nama Anda"
             className="field-soft"
           />
           <input
@@ -328,7 +340,7 @@ export function StorefrontOrderForm({ data }: Props) {
         <p className="section-label">Langkah 3</p>
         <h2 className="mt-2 text-xl font-semibold">Pengambilan & pembayaran</h2>
         <p className="mt-2 text-sm leading-6 text-muted">
-          Pilih regular, pickup, atau delivery, lalu tentukan cara pembayarannya.
+          Pilih cara penyerahan sepatu dan cara pembayaran yang paling nyaman untuk Anda.
         </p>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -337,9 +349,9 @@ export function StorefrontOrderForm({ data }: Props) {
             onChange={(event) => setOrderType(event.target.value)}
             className="field-soft"
           >
-            <option value="regular">Regular</option>
-            <option value="pickup">Pickup</option>
-            <option value="delivery">Delivery</option>
+            <option value="regular">Datang langsung ke outlet</option>
+            <option value="pickup">Jemput ke alamat Anda</option>
+            <option value="delivery">Kirim kembali ke alamat Anda</option>
           </select>
 
           <select
@@ -353,25 +365,57 @@ export function StorefrontOrderForm({ data }: Props) {
         </div>
 
         {orderType === "pickup" ? (
-          <textarea
-            required
-            rows={3}
-            value={pickupAddress}
-            onChange={(event) => setPickupAddress(event.target.value)}
-            placeholder="Alamat pickup"
-            className="field-soft mt-4"
-          />
+          <div className="mt-4 space-y-4">
+            <textarea
+              required
+              rows={3}
+              value={pickupAddress}
+              onChange={(event) => setPickupAddress(event.target.value)}
+              placeholder="Alamat penjemputan"
+              className="field-soft"
+            />
+            <LeafletLocationPicker
+              title="Titik jemput di peta"
+              description="Klik peta atau geser pin agar driver tahu titik jemput yang paling tepat."
+              value={pickupPoint}
+              onChange={setPickupPoint}
+              staticPosition={
+                data.outlet.latitude !== null && data.outlet.longitude !== null
+                  ? { lat: data.outlet.latitude, lng: data.outlet.longitude }
+                  : null
+              }
+              staticLabel={data.outlet.name}
+              editableLabel="Titik jemput"
+              clearLabel="Hapus titik jemput"
+            />
+          </div>
         ) : null}
 
         {orderType === "delivery" ? (
-          <textarea
-            required
-            rows={3}
-            value={deliveryAddress}
-            onChange={(event) => setDeliveryAddress(event.target.value)}
-            placeholder="Alamat delivery"
-            className="field-soft mt-4"
-          />
+          <div className="mt-4 space-y-4">
+            <textarea
+              required
+              rows={3}
+              value={deliveryAddress}
+              onChange={(event) => setDeliveryAddress(event.target.value)}
+              placeholder="Alamat pengantaran"
+              className="field-soft"
+            />
+            <LeafletLocationPicker
+              title="Titik antar di peta"
+              description="Pilih titik pengantaran yang paling tepat agar driver tidak bingung saat mengantar."
+              value={deliveryPoint}
+              onChange={setDeliveryPoint}
+              staticPosition={
+                data.outlet.latitude !== null && data.outlet.longitude !== null
+                  ? { lat: data.outlet.latitude, lng: data.outlet.longitude }
+                  : null
+              }
+              staticLabel={data.outlet.name}
+              editableLabel="Titik antar"
+              clearLabel="Hapus titik antar"
+            />
+          </div>
         ) : null}
 
         {paymentMethod === "qris" && data.outlet.qris_image_url ? (
@@ -387,7 +431,7 @@ export function StorefrontOrderForm({ data }: Props) {
               />
             </div>
             <p className="mt-3 text-sm leading-6 text-muted">
-              {data.outlet.qris_notes || "Scan QRIS outlet ini sesuai total estimasi."}
+              {data.outlet.qris_notes || "Silakan scan QRIS ini sesuai total tagihan yang terlihat di ringkasan pesanan."}
             </p>
             <input
               type="file"
@@ -404,16 +448,16 @@ export function StorefrontOrderForm({ data }: Props) {
           rows={3}
           value={paymentNotes}
           onChange={(event) => setPaymentNotes(event.target.value)}
-          placeholder="Catatan pembayaran"
+          placeholder="Catatan pembayaran, jika ada"
           className="field-soft mt-4"
         />
       </section>
 
       <section className="section-block p-4 sm:p-5">
         <p className="section-label">Opsional</p>
-        <h2 className="mt-2 text-xl font-semibold">Promo & catatan order</h2>
+        <h2 className="mt-2 text-xl font-semibold">Promo & catatan tambahan</h2>
         <p className="mt-2 text-sm leading-6 text-muted">
-          Tambahkan kode promo atau catatan khusus bila diperlukan.
+          Jika Anda punya kode promo atau pesan khusus untuk outlet, tuliskan di sini.
         </p>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_auto]">
@@ -438,7 +482,7 @@ export function StorefrontOrderForm({ data }: Props) {
           rows={3}
           value={notes}
           onChange={(event) => setNotes(event.target.value)}
-          placeholder="Catatan order"
+          placeholder="Tambahkan catatan untuk outlet jika diperlukan"
           className="field-soft mt-4"
         />
       </section>
@@ -446,10 +490,10 @@ export function StorefrontOrderForm({ data }: Props) {
       <section className="section-dark hero-card p-5 sm:p-6">
         <p className="section-label-dark">Ringkasan</p>
         <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em]">
-          Total estimasi order
+          Perkiraan total pesanan
         </h2>
         <p className="mt-2 text-sm leading-6 text-white/72">
-          Setelah semua data benar, lanjutkan dengan tombol utama di bawah ini.
+          Setelah semua data sudah benar, kirim pesanan Anda ke outlet melalui tombol di bawah ini.
         </p>
         <div className="mt-5 space-y-3 text-sm">
           <div className="flex items-center justify-between gap-4">
@@ -458,13 +502,13 @@ export function StorefrontOrderForm({ data }: Props) {
           </div>
           {pickupFee > 0 ? (
             <div className="flex items-center justify-between gap-4">
-              <span className="text-white/70">Pickup fee</span>
+              <span className="text-white/70">Biaya jemput</span>
               <span>{formatRupiah(pickupFee)}</span>
             </div>
           ) : null}
           {deliveryFee > 0 ? (
             <div className="flex items-center justify-between gap-4">
-              <span className="text-white/70">Delivery fee</span>
+              <span className="text-white/70">Biaya antar</span>
               <span>{formatRupiah(deliveryFee)}</span>
             </div>
           ) : null}
@@ -477,9 +521,7 @@ export function StorefrontOrderForm({ data }: Props) {
         </div>
 
         <div className="mt-5 border-t border-white/10 pt-5">
-          <p className="text-xs uppercase tracking-[0.22em] text-white/60">
-            Total estimasi
-          </p>
+          <p className="text-xs uppercase tracking-[0.22em] text-white/60">Perkiraan total</p>
           <p className="mt-2 text-3xl font-semibold">{formatRupiah(total)}</p>
         </div>
 

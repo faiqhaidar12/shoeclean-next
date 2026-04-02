@@ -60,6 +60,35 @@ body {
     linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
 }
 
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+  font: inherit;
+}
+
+.leaflet-custom-pin {
+  background: transparent;
+  border: 0;
+}
+
+.leaflet-custom-pin__inner {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  border: 3px solid #fff;
+  box-shadow: 0 12px 24px rgba(0, 32, 69, 0.2);
+}
+
+.leaflet-custom-pin__inner--outlet {
+  background: #002045;
+}
+
+.leaflet-custom-pin__inner--customer {
+  background: #006a66;
+}
+
 * {
   border-color: var(--line);
 }

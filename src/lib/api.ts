@@ -1,7 +1,7 @@
 const rawApiBaseUrl =
   process.env.API_BASE_URL ??
   process.env.NEXT_PUBLIC_API_BASE_URL ??
-  "http://localhost:8000";
+  "http://shoeclean.test";
 
 export const API_BASE_URL = rawApiBaseUrl.startsWith("http://") ||
   rawApiBaseUrl.startsWith("https://")
@@ -14,6 +14,8 @@ export type PublicOutlet = {
   slug: string;
   address: string | null;
   phone: string | null;
+  latitude: number | null;
+  longitude: number | null;
   pickup_fee: number;
   delivery_fee: number;
   has_qris: boolean;
@@ -57,6 +59,7 @@ export type PricingPlan = {
   subtitle: string;
   price: number;
   price_label: string;
+  is_published: boolean;
   order_limit: number | null;
   max_outlets: number | null;
   description: string;
@@ -83,6 +86,7 @@ export type PricingResponse = {
       subtitle: string;
       price: number;
       price_label: string;
+      is_published: boolean;
       quota: number;
       description: string;
       cta: string;
@@ -103,6 +107,12 @@ export type TrackResponse = {
     total_price: number;
     notes: string | null;
     order_type: string | null;
+    pickup_address: string | null;
+    pickup_latitude: number | null;
+    pickup_longitude: number | null;
+    delivery_address: string | null;
+    delivery_latitude: number | null;
+    delivery_longitude: number | null;
     customer: {
       name: string;
       phone: string;
@@ -111,6 +121,8 @@ export type TrackResponse = {
       name: string;
       address: string | null;
       phone: string | null;
+      latitude: number | null;
+      longitude: number | null;
       qris_image_url: string | null;
     } | null;
     items: Array<{
@@ -186,6 +198,12 @@ export type StorefrontSuccessResponse = {
       name: string | null;
       phone: string | null;
     };
+    pickup_address?: string | null;
+    pickup_latitude?: number | null;
+    pickup_longitude?: number | null;
+    delivery_address?: string | null;
+    delivery_latitude?: number | null;
+    delivery_longitude?: number | null;
     items: Array<{
       id: number;
       service_name: string | null;
@@ -270,7 +288,7 @@ export function getPublicPricing() {
 
 export function getPublicTracking(invoice: string) {
   return request<TrackResponse>(
-    `/api/public/track/${encodeURIComponent(invoice)}`,
+    `/api/public/track?invoice=${encodeURIComponent(invoice)}`,
   );
 }
 

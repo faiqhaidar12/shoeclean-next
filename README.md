@@ -25,6 +25,16 @@ API_BASE_URL=http://localhost:8000
 NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
 ```
 
+Opsional untuk error monitoring production dengan Sentry:
+
+```bash
+NEXT_PUBLIC_SENTRY_DSN=
+SENTRY_DSN=
+SENTRY_AUTH_TOKEN=
+SENTRY_ORG=
+SENTRY_PROJECT=
+```
+
 ## Strategi migrasi
 
 1. Laravel tetap menjadi backend dan domain logic.
@@ -57,3 +67,25 @@ Nama endpoint ini masih draft dan bisa kita sesuaikan nanti.
 - Styling awal memakai Tailwind CSS.
 - Fase 1 sudah mulai memakai API Laravel untuk halaman home, pricing, dan track order.
 - Storefront publik juga sudah mulai dipindahkan: daftar outlet, detail outlet, submit order, dan halaman sukses order.
+
+## Monitoring Production
+
+Jalur gratis yang direkomendasikan:
+
+1. Vercel Runtime Logs
+2. Sentry free plan
+
+Cara pakai di production:
+
+1. Buat project Sentry untuk Next.js.
+2. Isi env `NEXT_PUBLIC_SENTRY_DSN` dan `SENTRY_DSN` di Vercel.
+3. Jika ingin source map upload yang lebih enak dibaca, isi juga `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, dan `SENTRY_PROJECT`.
+4. Redeploy project Next.js.
+5. Untuk log cepat, buka deployment/project di Vercel lalu cek Runtime Logs.
+6. Untuk error terstruktur, buka issue di dashboard Sentry.
+
+Catatan:
+
+- Tanpa env Sentry, aplikasi tetap jalan normal.
+- Dengan env DSN saja, error monitoring sudah aktif.
+- Dengan auth token + org + project, stack trace production akan lebih mudah dibaca karena source map bisa ikut ter-upload.

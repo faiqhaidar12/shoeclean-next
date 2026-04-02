@@ -20,13 +20,13 @@ export default async function DashboardPromosCreatePage() {
       return (
         <DashboardFrame
           current="promos"
-          eyebrow="Campaign Promo"
+          eyebrow="Promo Cabang"
           title="Akses promo belum tersedia."
-          description="Akun ini belum bisa membuat promo karena fitur promo mengikuti paket langganan owner."
+          description="Akun ini belum bisa membuat promo karena fitur promo mengikuti paket langganan pemilik usaha."
         >
           <section className="section-block p-5 sm:p-6">
             <p className="text-sm leading-7 text-muted">
-              Setelah paket owner di-upgrade, form ini akan langsung aktif dan bisa dipakai tanpa perubahan tambahan.
+              Setelah paket usaha di-upgrade, form ini akan langsung aktif dan bisa dipakai tanpa pengaturan tambahan.
             </p>
           </section>
         </DashboardFrame>
@@ -43,9 +43,9 @@ export default async function DashboardPromosCreatePage() {
   return (
     <DashboardFrame
       current="promos"
-      eyebrow="Campaign promo"
-      title="Tambah promo baru."
-      description="Siapkan kode promo baru untuk seasonal push, campaign outlet, atau promo pembukaan cabang."
+      eyebrow="Promo Cabang"
+      title="Tambah promo baru"
+      description="Siapkan kode promo baru untuk promo musiman, promo cabang, atau penawaran pembukaan outlet."
     >
       <div className="mx-auto max-w-4xl">
         <Link
@@ -53,7 +53,7 @@ export default async function DashboardPromosCreatePage() {
           className="mb-6 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-brand/40 transition hover:text-accent"
         >
           <span aria-hidden>{"<-"}</span>
-          Kembali ke campaign
+          Kembali ke promo
         </Link>
         <PromoForm mode="create" outlets={data.outlets} types={data.types} canManageGlobal={data.meta.can_manage_global} />
       </div>

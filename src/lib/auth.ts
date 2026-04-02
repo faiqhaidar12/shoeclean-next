@@ -1,22 +1,11 @@
 import { cookies } from "next/headers";
 import { API_BASE_URL, ApiError } from "@/lib/api";
+import { canAccessDashboardModule, type DashboardModuleKey, type DashboardUser } from "@/lib/dashboard-access";
 
 export type AuthSession = {
   authenticated: boolean;
-  user: {
-    id: number;
-    name: string;
-    email: string;
+  user: DashboardUser & {
     email_verified: boolean;
-    roles: string[];
-    primary_role: string | null;
-    current_plan: string;
-    remaining_orders: number | null;
-    outlet: {
-      id: number;
-      name: string;
-      slug: string;
-    } | null;
   };
 };
 
@@ -142,7 +131,11 @@ export type OrderDetailResponse = {
     notes: string | null;
     order_type: string | null;
     pickup_address: string | null;
+    pickup_latitude: number | null;
+    pickup_longitude: number | null;
     delivery_address: string | null;
+    delivery_latitude: number | null;
+    delivery_longitude: number | null;
     discount_amount: number;
     payment_notes: string | null;
     payment_verified_at: string | null;
@@ -164,6 +157,8 @@ export type OrderDetailResponse = {
       slug: string;
       address: string | null;
       phone: string | null;
+      latitude: number | null;
+      longitude: number | null;
       qris_image_url: string | null;
       qris_notes: string | null;
     } | null;
@@ -261,6 +256,8 @@ export type InternalOrderCreateMetaResponse = {
     slug: string;
     pickup_fee: number;
     delivery_fee: number;
+    latitude: number | null;
+    longitude: number | null;
   }>;
   services: Array<{
     id: number;
@@ -512,6 +509,8 @@ export type OutletsIndexResponse = {
       city_name: string | null;
       district_id: string | null;
       district_name: string | null;
+      latitude: number | null;
+      longitude: number | null;
       qris_image_url: string | null;
       qris_image_original_name: string | null;
       qris_notes: string | null;
@@ -549,6 +548,8 @@ export type OutletDetailResponse = {
     city_name: string | null;
     district_id: string | null;
     district_name: string | null;
+    latitude: number | null;
+    longitude: number | null;
     qris_image_url: string | null;
     qris_image_original_name: string | null;
     qris_notes: string | null;
@@ -649,8 +650,9 @@ export type ReportsSummaryResponse = {
     started_at: string | null;
     expires_at: string | null;
     days_remaining: number | null;
-    mayar_transaction_id: string | null;
-    mayar_member_id: string | null;
+    payment_gateway: string | null;
+    transaction_id: string | null;
+    reference_id: string | null;
   } | null;
   order_limit: {
     allowed: boolean;
@@ -677,6 +679,7 @@ export type ReportsSummaryResponse = {
       subtitle: string;
       price: number;
       price_label: string;
+      is_published: boolean;
       order_limit?: number | null;
       max_outlets?: number | null;
       description: string;
@@ -685,21 +688,51 @@ export type ReportsSummaryResponse = {
       quota?: number;
     }
   >;
-  payment_links: {
-    pro: string;
-    business: string;
-    topup: string;
-  };
-    subscription_history: Array<{
+    payment_links: {
+      pro: string;
+      business: string;
+      topup: string;
+    };
+    pending_transactions: Array<{
       id: number;
-      plan: string;
+      kind: string;
+      plan_key: string | null;
+      plan_label: string;
+      merchant_order_id: string;
+      reference: string | null;
+      payment_method: string | null;
+      status_code: string | null;
+      status_message: string | null;
+      amount: number;
+      amount_label: string;
+      payment_url: string | null;
+      popup_script_url: string | null;
+      expires_at: string | null;
+      created_at: string | null;
+      last_synced_at: string | null;
+      is_expired: boolean;
+    }>;
+      subscription_history: Array<{
+        id: number;
+        plan: string;
       status: string;
       started_at: string | null;
       expires_at: string | null;
-      mayar_transaction_id: string | null;
+      payment_gateway: string | null;
+      transaction_id: string | null;
+      reference_id: string | null;
       amount: number | null;
       amount_label: string | null;
       receipt_item: string;
+      payment_transaction: {
+        gateway: string | null;
+        merchant_order_id: string | null;
+        reference: string | null;
+        payment_method: string | null;
+        status_code: string | null;
+        status_message: string | null;
+        paid_at: string | null;
+      } | null;
     }>;
     quota_history: Array<{
       id: number;
@@ -707,10 +740,21 @@ export type ReportsSummaryResponse = {
       quota_used: number;
       quota_remaining: number;
       purchased_at: string | null;
-      mayar_transaction_id: string | null;
+      payment_gateway: string | null;
+      transaction_id: string | null;
+      reference_id: string | null;
       amount: number | null;
       amount_label: string | null;
       receipt_item: string;
+      payment_transaction: {
+        gateway: string | null;
+        merchant_order_id: string | null;
+        reference: string | null;
+        payment_method: string | null;
+        status_code: string | null;
+        status_message: string | null;
+        paid_at: string | null;
+      } | null;
     }>;
   };
 
@@ -997,6 +1041,20 @@ export async function getOptionalAuthSession() {
   } catch {
     return null;
   }
+}
+
+export async function requireDashboardModuleAccess(
+  module: DashboardModuleKey,
+  options?: { outletId?: number | null },
+) {
+  const session = await getAuthSession();
+
+  if (!canAccessDashboardModule(session.user, module, options)) {
+    const error = new ApiError("Akses ke halaman ini tidak tersedia untuk akun Anda.", 403);
+    throw error;
+  }
+
+  return session;
 }
 
 export function getDashboardSummary(params?: {

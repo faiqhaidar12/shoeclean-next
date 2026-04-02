@@ -5,6 +5,9 @@ import { useEffect, useState, type ReactNode } from "react";
 import { DashboardFlashToast } from "@/components/dashboard-flash-toast";
 import { LogoutConfirmation } from "@/components/logout-confirmation";
 import { takeDashboardFlash, type DashboardFlash } from "@/lib/dashboard-flash";
+import { getDashboardNavItems, type DashboardNavItem, type DashboardUser } from "@/lib/dashboard-access";
+
+let cachedDashboardUser: DashboardUser | null = null;
 
 type Props = {
   current:
@@ -25,20 +28,6 @@ type Props = {
   actions?: ReactNode;
   children: ReactNode;
 };
-
-const navItems = [
-  { key: "dashboard", href: "/dashboard", label: "Dasbor" },
-  { key: "outlets", href: "/dashboard/outlets", label: "Cabang" },
-  { key: "services", href: "/dashboard/services", label: "Layanan" },
-  { key: "team", href: "/dashboard/team", label: "Staf" },
-  { key: "expenses", href: "/dashboard/expenses", label: "Keuangan" },
-  { key: "promos", href: "/dashboard/promos", label: "Promo" },
-  { key: "customers", href: "/dashboard/customers", label: "Pelanggan" },
-  { key: "orders", href: "/dashboard/orders", label: "Pesanan" },
-  { key: "reports", href: "/dashboard/reports", label: "Laporan" },
-  { key: "subscription", href: "/dashboard/subscription", label: "Subscription" },
-  { key: "surveys", href: "/dashboard/surveys", label: "Surveys" },
-] as const;
 
 function MenuIcon() {
   return (
@@ -75,6 +64,36 @@ export function DashboardFrame({
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const [flash, setFlash] = useState<DashboardFlash | null>(() => takeDashboardFlash());
   const [flashVisible, setFlashVisible] = useState(false);
+  const [user, setUser] = useState<DashboardUser | null>(() => cachedDashboardUser);
+  const [lockedFeature, setLockedFeature] = useState<{
+    title: string;
+    description: string;
+    minPlanBadge?: string;
+  } | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    fetch("/api/auth/session", {
+      method: "GET",
+      credentials: "include",
+      cache: "no-store",
+    })
+      .then(async (response) => {
+        if (!response.ok) return null;
+        return (await response.json()) as { user?: DashboardUser };
+      })
+      .then((payload) => {
+        if (!isMounted || !payload?.user) return;
+        cachedDashboardUser = payload.user;
+        setUser(payload.user);
+      })
+      .catch(() => {});
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     if (!flash) {
@@ -127,37 +146,83 @@ export function DashboardFrame({
     window.setTimeout(() => setFlash(null), 220);
   }
 
+  const navItems = user ? getDashboardNavItems(user) : [];
+
+  function renderNavItem(item: DashboardNavItem, mobile = false) {
+    const baseClass = mobile
+      ? `mx-2 my-1 flex items-center justify-between rounded-lg px-4 py-3 text-[14px] font-semibold transition-all ${
+          current === item.key ? "bg-white text-brand shadow-sm" : "text-slate-500 hover:bg-slate-100"
+        }`
+      : `mx-2 my-1 flex items-center justify-between rounded-lg px-4 py-2.5 text-[13px] font-semibold transition-all duration-200 ${
+          current === item.key ? "scale-95 bg-white text-brand shadow-sm" : "text-slate-500 hover:bg-slate-100"
+        }`;
+
+    if (item.enabled) {
+      return (
+        <Link
+          key={item.key}
+          href={item.href}
+          onClick={mobile ? () => setIsMobileNavOpen(false) : undefined}
+          className={baseClass}
+        >
+          <span>{item.label}</span>
+          {item.minPlanBadge ? (
+            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.16em] text-muted">
+              {item.minPlanBadge}
+            </span>
+          ) : null}
+        </Link>
+      );
+    }
+
+    return (
+      <button
+        key={item.key}
+        type="button"
+        onClick={() => {
+          setLockedFeature({
+            title: item.lockedTitle ?? `${item.label} terkunci`,
+            description:
+              item.lockedDescription ?? "Fitur ini belum tersedia untuk paket bisnis yang sedang aktif.",
+            minPlanBadge: item.minPlanBadge,
+          });
+          if (mobile) {
+            setIsMobileNavOpen(false);
+          }
+        }}
+        className={`${baseClass} text-left`}
+      >
+        <span>{item.label}</span>
+        {item.minPlanBadge ? (
+          <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.16em] text-amber-700">
+            {item.minPlanBadge}
+          </span>
+        ) : null}
+      </button>
+    );
+  }
+
   return (
-    <main className="min-h-screen bg-surface font-sans text-foreground">
+    <main className="min-h-screen overflow-x-clip bg-surface font-sans text-foreground">
       <DashboardFlashToast flash={flash} visible={flashVisible} onClose={dismissFlash} />
       <aside className="fixed left-0 top-0 z-40 hidden h-screen w-64 flex-col bg-slate-50 py-6 xl:flex">
         <div className="mb-8 px-6">
-          <div className="mb-6 text-lg font-black text-brand">Portal Admin</div>
+          <div className="mb-6 text-lg font-black text-brand">ShoeClean</div>
           <div className="flex items-center space-x-3 rounded-xl bg-white p-3 shadow-sm">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-strong text-sm font-bold text-white">
-              A
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-strong text-sm font-bold text-white">
+              {user?.name?.slice(0, 1).toUpperCase() ?? "A"}
+                </div>
+                <div className="overflow-hidden">
+              <p className="truncate text-[13px] font-semibold text-brand">{user?.name ?? "Akun aktif"}</p>
+              <p className="text-[11px] text-muted">
+                {user?.is_owner ? "Pemilik outlet" : user?.is_admin ? "Admin outlet" : user?.is_staff ? "Staf outlet" : "Area pengelolaan outlet"}
+              </p>
+                </div>
+              </div>
             </div>
-            <div className="overflow-hidden">
-              <p className="truncate text-[13px] font-semibold text-brand">Profil Admin</p>
-              <p className="text-[11px] text-muted">Workspace ShoeClean</p>
-            </div>
-          </div>
-        </div>
 
         <div className="flex-1 space-y-1 overflow-y-auto px-2">
-          {navItems.map((item) => (
-            <Link
-              key={item.key}
-              href={item.href}
-              className={`mx-2 my-1 flex items-center rounded-lg px-4 py-2.5 text-[13px] font-semibold transition-all duration-200 ${
-                current === item.key
-                  ? "scale-95 bg-white text-brand shadow-sm"
-                  : "text-slate-500 hover:bg-slate-100"
-              }`}
-            >
-              <span>{item.label}</span>
-            </Link>
-          ))}
+          {navItems.map((item) => renderNavItem(item))}
         </div>
 
         <div className="px-6 py-4">
@@ -171,7 +236,7 @@ export function DashboardFrame({
 
         <div className="border-t border-slate-200 px-2 pt-4">
           <Link href="/" className="mx-2 my-1 flex items-center rounded-lg px-4 py-2 text-[13px] font-semibold text-slate-500 transition-all hover:bg-slate-100">
-            Storefront
+            Halaman publik
           </Link>
           <div className="mx-2 my-1">
             <LogoutConfirmation
@@ -186,10 +251,10 @@ export function DashboardFrame({
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <div className="min-w-0">
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-muted">
-              Portal Admin
+              ShoeClean
             </p>
             <p className="truncate font-[var(--font-display-sans)] text-xl font-extrabold tracking-tight text-brand">
-              ShoeClean Dashboard
+              Dasbor Outlet
             </p>
           </div>
 
@@ -233,8 +298,8 @@ export function DashboardFrame({
         >
             <div className="mb-8 flex items-start justify-between px-6">
               <div>
-                <div className="text-lg font-black text-brand">Portal Admin</div>
-                <p className="mt-1 text-xs text-muted">Workspace ShoeClean</p>
+                <div className="text-lg font-black text-brand">ShoeClean</div>
+                <p className="mt-1 text-xs text-muted">Area pengelolaan outlet</p>
               </div>
               <button
                 type="button"
@@ -249,30 +314,19 @@ export function DashboardFrame({
             <div className="mb-6 px-6">
               <div className="flex items-center space-x-3 rounded-xl bg-white p-3 shadow-sm">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-strong text-sm font-bold text-white">
-                  A
+                  {user?.name?.slice(0, 1).toUpperCase() ?? "A"}
                 </div>
                 <div className="overflow-hidden">
-                  <p className="truncate text-[13px] font-semibold text-brand">Profil Admin</p>
-                  <p className="text-[11px] text-muted">Workspace ShoeClean</p>
+                  <p className="truncate text-[13px] font-semibold text-brand">{user?.name ?? "Akun aktif"}</p>
+                  <p className="text-[11px] text-muted">
+                    {user?.is_owner ? "Pemilik outlet" : user?.is_admin ? "Admin outlet" : user?.is_staff ? "Staf outlet" : "Area pengelolaan outlet"}
+                  </p>
                 </div>
               </div>
             </div>
 
             <div className="flex-1 space-y-1 overflow-y-auto px-2">
-              {navItems.map((item) => (
-                <Link
-                  key={item.key}
-                  href={item.href}
-                  onClick={() => setIsMobileNavOpen(false)}
-                  className={`mx-2 my-1 flex items-center rounded-lg px-4 py-3 text-[14px] font-semibold transition-all ${
-                    current === item.key
-                      ? "bg-white text-brand shadow-sm"
-                      : "text-slate-500 hover:bg-slate-100"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navItems.map((item) => renderNavItem(item, true))}
             </div>
 
             <div className="px-6 py-4">
@@ -291,23 +345,19 @@ export function DashboardFrame({
                 onClick={() => setIsMobileNavOpen(false)}
                 className="mx-2 my-1 flex items-center rounded-lg px-4 py-3 text-[14px] font-semibold text-slate-500 transition-all hover:bg-slate-100"
               >
-                Storefront
+                Halaman publik
               </Link>
               <div className="mx-2 my-1">
                 <LogoutConfirmation
                   label="Keluar"
                   className="flex w-full items-center rounded-lg px-4 py-3 text-[14px] font-semibold text-slate-500 transition-all hover:bg-slate-100"
-                  onOpenChange={(open) => {
-                    if (!open) return;
-                    setIsMobileNavOpen(false);
-                  }}
                 />
               </div>
             </div>
           </aside>
       </div>
 
-      <section className="min-h-screen px-4 py-5 sm:px-6 sm:py-6 xl:ml-64 xl:px-8 xl:py-8">
+      <section className="min-h-screen overflow-x-clip px-4 py-5 sm:px-6 sm:py-6 xl:ml-64 xl:px-8 xl:py-8">
         <div className="mx-auto max-w-[1440px]">
           <header className="mb-8 flex flex-col gap-5 md:mb-12 md:flex-row md:items-end md:justify-between">
             <div className="dashboard-header-copy">
@@ -323,6 +373,49 @@ export function DashboardFrame({
           <div className="dashboard-stack">{children}</div>
         </div>
       </section>
+
+      {lockedFeature ? (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+          <button
+            type="button"
+            className="absolute inset-0 bg-[rgba(0,32,69,0.45)] backdrop-blur-sm"
+            onClick={() => setLockedFeature(null)}
+            aria-label="Tutup informasi fitur terkunci"
+          />
+          <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] bg-white p-6 shadow-2xl sm:p-8">
+            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-100 text-amber-600 shadow-sm">
+              <svg className="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z" />
+              </svg>
+            </div>
+            <div className="flex items-center gap-2">
+              <p className="text-[10px] font-black uppercase tracking-[0.24em] text-amber-600">Upgrade Diperlukan</p>
+              {lockedFeature.minPlanBadge ? (
+                <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.16em] text-amber-700">
+                  {lockedFeature.minPlanBadge}
+                </span>
+              ) : null}
+            </div>
+            <h3 className="mt-3 font-[var(--font-display-sans)] text-2xl font-extrabold tracking-tight text-brand">
+              {lockedFeature.title}
+            </h3>
+            <p className="mt-3 text-sm font-semibold leading-relaxed text-brand/60">
+              {lockedFeature.description}
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              {user?.is_owner ? (
+                <Link href="/dashboard/subscription" className="btn-primary w-full" onClick={() => setLockedFeature(null)}>
+                  Lihat Paket Upgrade
+                </Link>
+              ) : null}
+              <button type="button" onClick={() => setLockedFeature(null)} className="btn-secondary w-full">
+                Tutup
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }

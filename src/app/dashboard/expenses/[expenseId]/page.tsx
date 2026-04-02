@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { BackendUnavailable } from "@/components/backend-unavailable";
 import { DashboardFrame } from "@/components/dashboard-frame";
 import { ExpenseForm } from "@/components/expense-form";
-import { getExpense } from "@/lib/auth";
+import { getExpense, requireDashboardModuleAccess } from "@/lib/auth";
 import { ApiError } from "@/lib/api";
 import { formatRupiah } from "@/lib/format";
 
@@ -18,10 +18,26 @@ export default async function DashboardExpenseDetailPage({ params }: Props) {
   let data: Awaited<ReturnType<typeof getExpense>>;
 
   try {
+    await requireDashboardModuleAccess("expenses");
     data = await getExpense(expenseId);
   } catch (error) {
     if (error instanceof ApiError && error.status === 401) {
       redirect("/login");
+    }
+
+    if (error instanceof ApiError && error.status === 403) {
+      return (
+        <DashboardFrame
+          current="expenses"
+          eyebrow="Ubah biaya"
+          title="Detail pengeluaran tidak bisa dibuka."
+          description="Hanya owner atau admin yang dapat melihat dan memperbarui pengeluaran outlet."
+        >
+          <section className="section-block p-5 sm:p-6">
+            <p className="text-sm leading-7 text-muted">Gunakan akun yang memiliki akses keuangan untuk membuka halaman ini.</p>
+          </section>
+        </DashboardFrame>
+      );
     }
 
     if (error instanceof ApiError && error.status === 503) {
@@ -36,7 +52,7 @@ export default async function DashboardExpenseDetailPage({ params }: Props) {
       current="expenses"
       eyebrow="Ubah biaya"
       title={data.expense.category}
-      description={`Nominal saat ini ${formatRupiah(data.expense.amount)}. Perbarui kategori, tanggal, dan catatan agar jurnal biaya outlet tetap akurat.`}
+      description={`Nominal saat ini ${formatRupiah(data.expense.amount)}. Perbarui kategori, tanggal, dan catatan agar jurnal biaya cabang tetap akurat.`}
     >
       <div className="mx-auto max-w-4xl">
         <Link

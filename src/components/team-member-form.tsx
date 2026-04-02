@@ -69,7 +69,7 @@ export function TeamMemberForm({ mode, outlets, roles, initialValues }: Props) {
 
       if (!response.ok) {
         const firstError = payload.errors ? Object.values(payload.errors)[0]?.[0] : null;
-        setError(firstError ?? payload.message ?? "User team gagal disimpan.");
+        setError(firstError ?? payload.message ?? "Anggota tim gagal disimpan.");
         return;
       }
 
@@ -81,7 +81,7 @@ export function TeamMemberForm({ mode, outlets, roles, initialValues }: Props) {
       router.push("/dashboard/team");
       router.refresh();
     } catch {
-      setError("Terjadi kendala saat menyimpan user team.");
+      setError("Terjadi kendala saat menyimpan anggota tim.");
     } finally {
       setIsSubmitting(false);
     }
@@ -92,7 +92,7 @@ export function TeamMemberForm({ mode, outlets, roles, initialValues }: Props) {
       <div className="grid gap-9 sm:gap-10">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Personel outlet</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">Tim outlet</p>
             <h2 className="mt-3 text-2xl font-[var(--font-display-sans)] font-extrabold tracking-[-0.03em] text-brand">
               {mode === "create" ? "Tambah anggota tim baru" : "Rapikan profil anggota tim"}
             </h2>
@@ -113,7 +113,7 @@ export function TeamMemberForm({ mode, outlets, roles, initialValues }: Props) {
             <div className="grid gap-5 sm:grid-cols-2">
               <div className="space-y-3 sm:col-span-2">
                 <label htmlFor="team-name" className="text-[10px] font-black uppercase tracking-widest text-brand/40">Nama</label>
-                <input id="team-name" required value={name} onChange={(event) => setName(event.target.value)} placeholder="Nama user team" className="field-soft" />
+                <input id="team-name" required value={name} onChange={(event) => setName(event.target.value)} placeholder="Nama anggota tim" className="field-soft" />
               </div>
 
               <div className="space-y-3">
@@ -141,7 +141,7 @@ export function TeamMemberForm({ mode, outlets, roles, initialValues }: Props) {
               <p className="text-[10px] font-black uppercase tracking-[0.2em] text-brand/35">Hak akses dan penugasan</p>
               <div className="mt-5 grid gap-5 sm:grid-cols-2">
                 <div className="space-y-3">
-                  <label htmlFor="team-role" className="text-[10px] font-black uppercase tracking-widest text-brand/40">Role</label>
+                  <label htmlFor="team-role" className="text-[10px] font-black uppercase tracking-widest text-brand/40">Peran</label>
                   <select id="team-role" value={role} onChange={(event) => setRole(event.target.value)} className="field-soft">
                     {roles.map((item) => (
                       <option key={item.id} value={item.slug}>{item.name}</option>
@@ -150,7 +150,7 @@ export function TeamMemberForm({ mode, outlets, roles, initialValues }: Props) {
                 </div>
 
                 <div className="space-y-3">
-                  <label htmlFor="team-outlet" className="text-[10px] font-black uppercase tracking-widest text-brand/40">Outlet</label>
+                  <label htmlFor="team-outlet" className="text-[10px] font-black uppercase tracking-widest text-brand/40">Cabang</label>
                   <select id="team-outlet" value={outletId} onChange={(event) => setOutletId(event.target.value)} className="field-soft">
                     {outlets.map((outlet) => (
                       <option key={outlet.id} value={outlet.id}>{outlet.name}</option>
@@ -164,8 +164,8 @@ export function TeamMemberForm({ mode, outlets, roles, initialValues }: Props) {
           <aside className="section-dark rounded-[1.75rem] p-6 sm:p-7 text-white">
             <p className="text-[10px] font-black uppercase tracking-[0.22em] text-white/55">Panduan manajemen tim</p>
             <div className="mt-5 space-y-4 text-sm leading-7 text-white/78">
-              <p>Gunakan role sesuai kebutuhan operasional agar akses sensitif seperti promosi dan laporan tetap terkendali.</p>
-              <p>Hubungkan anggota tim ke outlet yang tepat untuk menjaga scope data dan tindakan mereka di dashboard.</p>
+              <p>Gunakan peran sesuai kebutuhan agar akses sensitif seperti promosi dan laporan tetap terkendali.</p>
+              <p>Hubungkan anggota tim ke cabang yang tepat agar data yang mereka lihat tetap sesuai tanggung jawabnya.</p>
               <p>Untuk akun edit, kosongkan password jika tidak ingin mengubah kredensial login anggota tim tersebut.</p>
             </div>
           </aside>

@@ -47,7 +47,7 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
     if (error instanceof ApiError && error.status === 503) {
       return (
         <BackendUnavailable
-          title="Daftar order belum terhubung"
+          title="Daftar pesanan belum terhubung"
           message={error.message}
         />
       );
@@ -63,9 +63,9 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
   return (
     <DashboardFrame
       current="orders"
-      eyebrow="Pusat Operasi"
-      title="Pesanan dan pelanggan dalam satu alur kerja."
-      description="Menyesuaikan struktur Stitch untuk workspace operasional, sambil tetap memakai data order aktif dari backend sekarang."
+      eyebrow="Pusat Pesanan"
+      title="Pesanan dan pelanggan dalam satu alur kerja"
+      description="Pantau antrean pesanan, pelanggan, dan pembayaran dari satu halaman yang rapi dan mudah dipakai tim."
     >
       <section className="mb-8 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
         <div className="space-y-2">
@@ -73,7 +73,7 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
             Konsol pesanan
           </h2>
           <p className="max-w-xl text-sm leading-7 text-muted">
-            Pantau antrean order, customer, dan pembayaran dari satu panel yang lebih dekat ke desain Stitch.
+            Pantau antrean pesanan, pelanggan, dan pembayaran dari satu panel yang mudah dipakai setiap hari.
           </p>
         </div>
 
@@ -85,7 +85,7 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
             href="/dashboard/customers"
             className="rounded-[0.8rem] px-5 py-2 text-sm font-medium text-muted transition hover:text-brand"
           >
-            Database pelanggan
+            Data pelanggan
           </Link>
         </div>
       </section>
@@ -128,7 +128,7 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
             Laporan
           </Link>
           <Link href="/dashboard/orders/create" className="btn-accent px-4 py-3">
-            Quick create
+            Pesanan baru
           </Link>
         </div>
       </section>
@@ -152,7 +152,7 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
               <div className="grid gap-3 sm:grid-cols-3">
                 <div className="rounded-[1.25rem] bg-surface-soft px-4 py-4">
                   <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted">
-                    Revenue halaman ini
+                    Nilai halaman ini
                   </p>
                   <p className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-brand">
                     {formatRupiah(totalRevenue)}
@@ -168,7 +168,7 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
                 </div>
                 <div className="rounded-[1.25rem] bg-surface-soft px-4 py-4">
                   <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted">
-                    Siap / selesai cuci
+                    Siap / selesai
                   </p>
                   <p className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-brand">
                     {readyCount}
@@ -189,7 +189,7 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
                       <p className="font-mono text-sm font-bold text-brand">
                         {order.invoice_number}
                       </p>
-                      <p className="mt-1 text-xs text-muted">ID #{order.id}</p>
+                      <p className="mt-1 text-xs text-muted">Pesanan #{order.id}</p>
                     </div>
                     <span className="inline-flex rounded-[0.9rem] bg-white px-3 py-2 text-xs font-semibold text-brand shadow-sm transition">
                       Detail
@@ -202,7 +202,7 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
                         Pelanggan
                       </p>
                       <p className="mt-2 text-sm font-semibold text-foreground">
-                        {order.customer?.name ?? "Customer umum"}
+                        {order.customer?.name ?? "Pelanggan umum"}
                       </p>
                       <p className="mt-1 text-xs text-muted">
                         {order.customer?.phone ?? "Tanpa nomor"}
@@ -214,7 +214,7 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
                         Outlet
                       </p>
                       <p className="mt-2 text-sm font-semibold text-foreground">
-                        {order.outlet?.name ?? "Outlet"}
+                        {order.outlet?.name ?? "Cabang"}
                       </p>
                     </div>
 
@@ -291,13 +291,13 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
                         {order.invoice_number}
                       </p>
                       <p className="mt-1 text-xs text-muted">
-                        ID #{order.id}
+                        Pesanan #{order.id}
                       </p>
                     </div>
 
                     <div>
                       <p className="text-sm font-semibold text-foreground">
-                        {order.customer?.name ?? "Customer umum"}
+                      {order.customer?.name ?? "Pelanggan umum"}
                       </p>
                       <p className="mt-1 text-xs text-muted">
                         {order.customer?.phone ?? "Tanpa nomor"}
@@ -305,7 +305,7 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
                     </div>
 
                     <p className="text-sm font-medium text-foreground">
-                      {order.outlet?.name ?? "Outlet"}
+                      {order.outlet?.name ?? "Cabang"}
                     </p>
 
                     <div className="flex items-start">
@@ -354,7 +354,7 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
 
             {data.data.length === 0 ? (
               <div className="mt-6 rounded-[1.4rem] bg-surface-soft p-5 text-sm text-muted">
-                Belum ada order yang cocok dengan filter ini.
+                Belum ada pesanan yang cocok dengan filter ini.
               </div>
             ) : null}
 
@@ -426,7 +426,7 @@ export default async function DashboardOrdersPage({ searchParams }: Props) {
             </div>
             <div>
               <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted">
-                Completion signal
+                Tingkat penyelesaian
               </p>
               <p className="mt-2 text-3xl font-black text-brand">
                 {data.data.length ? Math.round(((readyCount + data.data.filter((order) => order.status === "completed").length) / data.data.length) * 100) : 0}

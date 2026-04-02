@@ -19,6 +19,14 @@ type OrderSuccessPageProps = {
   }>;
 };
 
+function createMapsUrl(latitude?: number | null, longitude?: number | null) {
+  if (latitude == null || longitude == null) {
+    return null;
+  }
+
+  return `https://www.google.com/maps?q=${latitude},${longitude}`;
+}
+
 function CheckBadge() {
   return (
     <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[rgba(129,242,235,0.18)] text-accent-soft">
@@ -59,6 +67,10 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
     );
   }
 
+  const outletMapsUrl = createMapsUrl(data.outlet.latitude, data.outlet.longitude);
+  const pickupMapsUrl = createMapsUrl(data.order.pickup_latitude, data.order.pickup_longitude);
+  const deliveryMapsUrl = createMapsUrl(data.order.delivery_latitude, data.order.delivery_longitude);
+
   return (
     <>
       <PublicTopNav current="track" authenticated={session?.authenticated} />
@@ -74,10 +86,10 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                 </span>
               </div>
               <h1 className="mt-5 text-[2.2rem] font-semibold tracking-[-0.05em] sm:text-[3.8rem] sm:leading-[1.02]">
-                Order berhasil masuk ke outlet.
+                Pesanan Anda sudah berhasil dikirim.
               </h1>
               <p className="mt-4 max-w-2xl text-sm leading-7 text-white/78 sm:text-base">
-                Simpan nomor invoice ini. Customer bisa memakai invoice yang sama untuk tracking progres dari smartphone kapan saja.
+                Simpan nomor invoice ini agar Anda bisa melacak status pesanan kapan saja dari ponsel.
               </p>
             </div>
 
@@ -89,7 +101,7 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                 {data.order.invoice_number}
               </p>
               <p className="mt-3 text-sm text-white/72">
-                Simpan atau screenshot bagian ini untuk kebutuhan tracking.
+                Simpan atau screenshot nomor ini untuk memudahkan pelacakan nanti.
               </p>
             </div>
           </div>
@@ -104,6 +116,16 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                 <p className="mt-2 text-sm leading-6 text-muted">
                   {data.outlet.address || "Alamat outlet belum tersedia."}
                 </p>
+                {outletMapsUrl ? (
+                  <a
+                    href={outletMapsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-4 inline-flex text-sm font-semibold text-accent underline underline-offset-4"
+                  >
+                    Buka lokasi cabang
+                  </a>
+                ) : null}
               </div>
 
               <div className="rounded-[1.35rem] bg-surface-soft p-4">
@@ -122,7 +144,7 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                 <h2 className="text-xl font-semibold tracking-[-0.03em] text-brand">
                   Ringkasan layanan
                 </h2>
-                <span className="status-chip-soft">{data.order.items.length} item</span>
+                <span className="status-chip-soft">{data.order.items.length} layanan</span>
               </div>
               <div className="mt-4 grid gap-3">
                 {data.order.items.map((item, index) => (
@@ -148,20 +170,58 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                 ))}
               </div>
             </div>
+
+            {data.order.pickup_address || data.order.delivery_address ? (
+              <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                {data.order.pickup_address ? (
+                  <div className="rounded-[1.35rem] bg-surface-soft p-4">
+                    <p className="section-label">Titik jemput</p>
+                    <p className="mt-2 text-sm leading-7 text-muted">{data.order.pickup_address}</p>
+                    {pickupMapsUrl ? (
+                      <a
+                        href={pickupMapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-4 inline-flex text-sm font-semibold text-accent underline underline-offset-4"
+                      >
+                        Buka titik jemput
+                      </a>
+                    ) : null}
+                  </div>
+                ) : null}
+
+                {data.order.delivery_address ? (
+                  <div className="rounded-[1.35rem] bg-surface-soft p-4">
+                    <p className="section-label">Titik antar</p>
+                    <p className="mt-2 text-sm leading-7 text-muted">{data.order.delivery_address}</p>
+                    {deliveryMapsUrl ? (
+                      <a
+                        href={deliveryMapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="mt-4 inline-flex text-sm font-semibold text-accent underline underline-offset-4"
+                      >
+                        Buka titik antar
+                      </a>
+                    ) : null}
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
           </section>
 
           <aside className="space-y-5 xl:sticky xl:top-24 xl:self-start">
             <section className="tablet-balance-card motion-enter-fast motion-delay-1 bg-white shadow-[0_18px_38px_rgba(25,28,30,0.05)]">
-              <p className="section-label">Langkah berikutnya</p>
+                <p className="section-label">Langkah berikutnya</p>
               <div className="mt-4 grid gap-3">
                 <div className="rounded-[1.25rem] bg-surface-soft px-4 py-4 text-sm text-foreground">
-                  Simpan invoice untuk tracking
+                  Simpan nomor invoice Anda
                 </div>
                 <div className="rounded-[1.25rem] bg-surface-soft px-4 py-4 text-sm text-foreground">
-                  Hubungi outlet jika perlu konfirmasi tambahan
+                  Hubungi outlet jika Anda ingin bertanya soal pesanan
                 </div>
                 <div className="rounded-[1.25rem] bg-surface-soft px-4 py-4 text-sm text-foreground">
-                  Cek status pembayaran dan progres dari halaman tracking
+                  Cek perkembangan pesanan dari halaman pelacakan
                 </div>
               </div>
             </section>
@@ -171,7 +231,7 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
               <section className="tablet-balance-card motion-enter-fast motion-delay-2 bg-white shadow-[0_18px_38px_rgba(25,28,30,0.05)]">
                 <p className="section-label">QRIS outlet</p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-brand">
-                  Selesaikan pembayaran lebih cepat
+                  Lanjutkan pembayaran dengan QRIS
                 </h2>
                 <div className="mt-5 overflow-hidden rounded-[1.5rem] bg-surface-soft p-3">
                   <Image
@@ -184,7 +244,7 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                   />
                 </div>
                 <p className="mt-4 text-sm leading-7 text-muted">
-                  {data.outlet.qris_notes || "Scan QRIS ini sesuai total invoice."}
+                  {data.outlet.qris_notes || "Silakan scan QRIS ini sesuai total tagihan Anda."}
                 </p>
               </section>
             ) : null}
@@ -196,7 +256,7 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
             <div>
               <p className="section-label">Aksi cepat</p>
               <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-brand">
-                Lanjutkan dari sini
+                Apa yang ingin Anda lakukan selanjutnya?
               </h2>
             </div>
             <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
@@ -204,13 +264,13 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
                 href={`/track?invoice=${encodeURIComponent(data.order.invoice_number)}`}
                 className="btn-primary w-full sm:w-auto"
               >
-                Lacak progress
+                Lacak pesanan
               </Link>
               <Link
                 href={`/order/${data.outlet.slug}?skipBranch=1`}
                 className="btn-secondary w-full sm:w-auto"
               >
-                Buat order baru
+                Pesan lagi
               </Link>
             </div>
           </div>

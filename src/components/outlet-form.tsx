@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { LeafletLocationPicker } from "@/components/leaflet-location-picker";
 import { setDashboardFlash } from "@/lib/dashboard-flash";
 
 type RegionOption = {
@@ -27,6 +28,8 @@ type Props = {
     city_name?: string | null;
     district_id?: string | null;
     district_name?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
     qris_image_url?: string | null;
     qris_image_original_name?: string | null;
     qris_notes?: string | null;
@@ -54,6 +57,8 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
   const [cityName, setCityName] = useState(initialValues?.city_name ?? "");
   const [districtId, setDistrictId] = useState(initialValues?.district_id ?? "");
   const [districtName, setDistrictName] = useState(initialValues?.district_name ?? "");
+  const [latitude, setLatitude] = useState<number | null>(initialValues?.latitude ?? null);
+  const [longitude, setLongitude] = useState<number | null>(initialValues?.longitude ?? null);
   const [error, setError] = useState("");
   const [isLoadingRegions, setIsLoadingRegions] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -201,6 +206,8 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
       formData.set("city_name", cityName);
       formData.set("district_id", districtId);
       formData.set("district_name", districtName);
+      formData.set("latitude", latitude === null ? "" : String(latitude));
+      formData.set("longitude", longitude === null ? "" : String(longitude));
       formData.set("remove_qris", removeQris ? "1" : "0");
 
       if (qrisFile) {
@@ -244,7 +251,7 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
       <div className="grid gap-8">
         <div>
           <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent">
-            Registri outlet
+            Data cabang
           </p>
           <h2 className="mt-3 text-2xl font-[var(--font-display-sans)] font-extrabold tracking-[-0.03em] text-brand">
             {mode === "create" ? "Identitas outlet baru" : "Perbarui data cabang"}
@@ -254,7 +261,7 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
         <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-3">
           <label htmlFor="outlet-name" className="text-[10px] font-black uppercase tracking-widest text-brand/40">
-            Identitas outlet *
+            Nama cabang *
           </label>
           <input
             id="outlet-name"
@@ -268,7 +275,7 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
 
         <div className="space-y-3">
           <label htmlFor="outlet-slug" className="text-[10px] font-black uppercase tracking-widest text-brand/40">
-            Slug outlet
+            Alamat singkat cabang
           </label>
           <input
             id="outlet-slug"
@@ -284,7 +291,7 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
 
         <div className="space-y-3">
           <label htmlFor="outlet-phone" className="text-[10px] font-black uppercase tracking-widest text-brand/40">
-            Protokol kontak
+            Nomor kontak
           </label>
           <input
             id="outlet-phone"
@@ -316,7 +323,7 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
 
         <div className="space-y-3">
           <label htmlFor="pickup-fee" className="text-[10px] font-black uppercase tracking-widest text-brand/40">
-            Ongkos penjemputan
+            Biaya penjemputan
           </label>
           <div className="relative">
             <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-brand/25">
@@ -336,7 +343,7 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
 
         <div className="space-y-3">
           <label htmlFor="delivery-fee" className="text-[10px] font-black uppercase tracking-widest text-brand/40">
-            Ongkos pengiriman
+            Biaya pengantaran
           </label>
           <div className="relative">
             <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-brand/25">
@@ -356,14 +363,14 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
 
         <div className="space-y-3 sm:col-span-2">
           <label htmlFor="outlet-address" className="text-[10px] font-black uppercase tracking-widest text-brand/40">
-            Koordinat geografis
+            Alamat lengkap
           </label>
           <textarea
             id="outlet-address"
             required
             value={address}
             onChange={(event) => setAddress(event.target.value)}
-            placeholder="Alamat fisik lengkap untuk registri outlet..."
+            placeholder="Alamat lengkap cabang untuk memudahkan pelanggan dan tim Anda."
             className="field-soft min-h-[120px]"
           />
         </div>
@@ -430,9 +437,23 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
           </select>
         </div>
 
+        <div className="sm:col-span-2">
+          <LeafletLocationPicker
+            title="Titik lokasi cabang"
+            description="Letakkan pin tepat di posisi outlet agar driver dan pelanggan lebih mudah menemukan cabang ini."
+            value={latitude !== null && longitude !== null ? { lat: latitude, lng: longitude } : null}
+            onChange={(position) => {
+              setLatitude(position?.lat ?? null);
+              setLongitude(position?.lng ?? null);
+            }}
+            editableLabel="Lokasi outlet"
+            clearLabel="Hapus titik cabang"
+          />
+        </div>
+
         <div className="space-y-3 sm:col-span-2">
           <label htmlFor="qris-image" className="text-[10px] font-black uppercase tracking-widest text-brand/40">
-            QRIS outlet
+            QRIS cabang
           </label>
           <input
             id="qris-image"
@@ -442,7 +463,7 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
             className="field-soft"
           />
           <p className="text-[9px] font-black uppercase tracking-widest text-brand/30">
-            Opsional. QRIS ini akan tampil di halaman sukses order outlet.
+            Opsional. QRIS ini akan tampil di halaman selesai pesan untuk pelanggan.
           </p>
           {initialValues?.qris_image_url && !removeQris ? (
             <div className="soft-panel p-4">
@@ -459,14 +480,14 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
                 </div>
                 <div className="min-w-0">
                   <p className="font-semibold text-foreground">
-                    {initialValues.qris_image_original_name ?? "QRIS saat ini"}
+                    {initialValues.qris_image_original_name ?? "QRIS yang sedang dipakai"}
                   </p>
                   <button
                     type="button"
                     onClick={() => setRemoveQris(true)}
                     className="mt-2 text-sm font-semibold text-[#9a3b2b]"
                   >
-                    Hapus QRIS saat ini
+                    Hapus QRIS ini
                   </button>
                 </div>
               </div>
@@ -474,7 +495,7 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
           ) : null}
           {removeQris ? (
             <div className="soft-panel p-4 text-sm text-muted">
-              QRIS akan dihapus saat outlet disimpan.
+              QRIS akan dihapus saat cabang disimpan.
               <button
                 type="button"
                 onClick={() => setRemoveQris(false)}
@@ -488,13 +509,13 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
 
         <div className="space-y-3 sm:col-span-2">
           <label htmlFor="qris-notes" className="text-[10px] font-black uppercase tracking-widest text-brand/40">
-            Catatan QRIS
+            Catatan pembayaran QRIS
           </label>
           <textarea
             id="qris-notes"
             value={qrisNotes}
             onChange={(event) => setQrisNotes(event.target.value)}
-            placeholder="Instruksi transfer atau catatan untuk customer"
+            placeholder="Instruksi pembayaran atau catatan singkat untuk pelanggan"
             className="field-soft min-h-[120px]"
           />
         </div>
@@ -519,7 +540,7 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
           {isSubmitting
             ? "Menyimpan..."
             : mode === "create"
-              ? "Selesaikan registri"
+              ? "Simpan cabang"
               : "Simpan perubahan"}
         </button>
       </div>

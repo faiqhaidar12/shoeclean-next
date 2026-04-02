@@ -38,7 +38,7 @@ export default async function RegisterPage() {
               Harga
             </Link>
             <Link href="/track" className="text-sm font-medium text-slate-600 transition-colors hover:text-brand">
-              Tracking
+              Lacak
             </Link>
             <Link href="/login" className="rounded-full bg-brand px-6 py-2 text-sm font-semibold text-white transition-all hover:opacity-90">
               Masuk
@@ -63,13 +63,13 @@ export default async function RegisterPage() {
 
           <div className="relative z-10 space-y-6">
             <span className="motion-enter-fast inline-block rounded-full bg-accent-soft px-4 py-1 text-xs font-bold uppercase tracking-widest text-accent-ink">
-              Artisan klinis
+              Mulai lebih rapi
             </span>
             <h1 className="motion-enter-fast font-[var(--font-display-sans)] text-5xl font-extrabold leading-tight tracking-[-0.05em] text-white" style={{ animationDelay: "0.08s" }}>
-              Kelola bisnis cuci sepatu dengan pengalaman produk yang lebih premium.
+              Buat outlet Anda lebih siap menerima pesanan online.
             </h1>
             <p className="motion-enter-fast max-w-md text-lg font-light leading-relaxed text-[#adc7f7]" style={{ animationDelay: "0.16s" }}>
-              Daftarkan bisnis Anda ke ShoeClean untuk menggabungkan storefront, tracking invoice, dan dashboard operasional dalam satu sistem.
+              Daftarkan bisnis Anda ke ShoeClean untuk memudahkan pelanggan memesan, melacak pesanan, dan membantu tim Anda bekerja lebih teratur.
             </p>
           </div>
 
@@ -80,10 +80,10 @@ export default async function RegisterPage() {
           <div className="motion-enter relative z-10 w-full max-w-md space-y-10">
             <div className="space-y-2">
               <h2 className="font-[var(--font-display-sans)] text-3xl font-bold tracking-tight text-foreground">
-                Pendaftaran Admin
+                Buat akun baru
               </h2>
               <p className="font-medium text-muted">
-                Buat akun manajemen profesional dan outlet pertama Anda.
+                Mulai dengan satu akun dan outlet pertama Anda.
               </p>
             </div>
 
@@ -108,7 +108,7 @@ export default async function RegisterPage() {
                 </svg>
               </span>
               <p className="text-sm leading-relaxed text-muted">
-                Setelah akun dibuat, role owner dan outlet pertama akan disiapkan otomatis agar Anda bisa langsung masuk ke dashboard.
+                Setelah akun dibuat, outlet pertama Anda akan disiapkan otomatis agar Anda bisa langsung mulai menggunakan dashboard.
               </p>
             </div>
           </div>
@@ -118,17 +118,17 @@ export default async function RegisterPage() {
       <footer className="w-full border-t border-slate-200 bg-slate-50 py-12">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-8 md:flex-row">
           <p className="text-sm text-slate-500">
-            © 2026 ShoeClean. Dibuat dengan teliti.
+            © 2026 ShoeClean. Dibuat untuk membantu bisnis Anda tumbuh lebih rapi.
           </p>
           <div className="flex gap-6">
             <Link href="/pricing" className="text-sm text-slate-500 transition-all duration-200 hover:text-brand">
-              Ketentuan Layanan
+              Harga
             </Link>
             <Link href="/pricing" className="text-sm text-slate-500 transition-all duration-200 hover:text-brand">
-              Kebijakan Privasi
+              Paket
             </Link>
             <Link href="/login" className="text-sm text-slate-500 transition-all duration-200 hover:text-brand">
-              Keamanan
+              Masuk
             </Link>
             <Link href="/" className="text-sm text-slate-500 transition-all duration-200 hover:text-brand">
               Beranda

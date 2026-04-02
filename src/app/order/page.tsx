@@ -113,25 +113,25 @@ export default async function OrderListPage({ searchParams }: OrderListPageProps
       <main className="public-main-shell">
         <section className="public-hero-intro tablet-balance-grid motion-enter lg:grid-cols-[1.08fr_0.92fr] lg:items-end">
           <div className="motion-enter motion-delay-1 max-w-4xl">
-            <p className="eyebrow">Storefront outlet</p>
+            <p className="eyebrow">Pilih outlet</p>
             <h1 className="mt-6 text-[2.5rem] font-semibold tracking-[-0.05em] text-brand sm:text-[4rem] sm:leading-[1.02]">
-              Pilih outlet yang paling nyaman untuk <span className="text-accent">customer mobile</span>
+              Pilih outlet yang paling nyaman untuk <span className="text-accent">menitipkan sepatu Anda</span>
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-8 text-muted sm:text-lg">
-              Halaman ini dibuat sebagai pintu masuk order customer: cari cabang, cek layanan aktif, lalu lanjutkan pemesanan dari smartphone tanpa langkah yang ribet.
+              Cari outlet terdekat, lihat layanan yang tersedia, lalu lanjutkan pemesanan dengan cepat langsung dari ponsel Anda.
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
               <span className="highlight-chip">Cari cabang lebih cepat</span>
               <span className="highlight-chip">Filter wilayah</span>
-              <span className="highlight-chip">Lanjut order dalam beberapa tap</span>
+              <span className="highlight-chip">Lanjut pesan dalam beberapa langkah</span>
             </div>
           </div>
 
           <aside className="tablet-balance-card motion-enter motion-delay-2 bg-brand text-white shadow-[0_24px_54px_rgba(0,32,69,0.18)]">
-            <p className="section-label-dark">Ringkas untuk customer</p>
+            <p className="section-label-dark">Cara pesan</p>
             <h2 className="mt-3 text-2xl font-semibold tracking-[-0.04em]">
-              Alur dimulai dari pilih outlet, lalu langsung lanjut ke form order.
+              Mulai dari memilih outlet, lalu lanjut isi pesanan dalam beberapa langkah singkat.
             </h2>
             <div className="mt-6 grid gap-3">
               <div className="rounded-[1.25rem] bg-white/10 px-4 py-4 text-sm text-white/86">
@@ -141,13 +141,13 @@ export default async function OrderListPage({ searchParams }: OrderListPageProps
                 2. Lihat layanan dan biaya
               </div>
               <div className="rounded-[1.25rem] bg-white/10 px-4 py-4 text-sm text-white/86">
-                3. Kirim order ke outlet pilihan
+                3. Kirim pesanan ke outlet pilihan
               </div>
             </div>
 
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href="/track" className="btn-accent">
-                Lacak invoice
+                Lacak pesanan
               </Link>
               <Link href="/" className="btn-secondary bg-white/12 text-white hover:bg-white/18">
                 Kembali
@@ -161,10 +161,10 @@ export default async function OrderListPage({ searchParams }: OrderListPageProps
             <div>
               <p className="section-label">Cari outlet</p>
               <h2 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-brand">
-                Temukan cabang yang paling pas untuk customer.
+                Temukan outlet yang paling sesuai untuk Anda.
               </h2>
             </div>
-            <span className="status-chip-brand w-fit">Mulai order</span>
+            <span className="status-chip-brand w-fit">Siap pesan</span>
           </div>
 
           <form action="/order" className="grid gap-3 md:grid-cols-2 xl:grid-cols-[1fr_220px_220px_auto]">
@@ -226,7 +226,7 @@ export default async function OrderListPage({ searchParams }: OrderListPageProps
                   <StoreIcon />
                 </div>
                 <div className="flex flex-wrap justify-end gap-2">
-                  <span className="status-chip-mint">Aktif</span>
+                <span className="status-chip-mint">Buka</span>
                   {outlet.has_qris ? <span className="status-chip-brand">QRIS</span> : null}
                 </div>
               </div>
@@ -250,7 +250,7 @@ export default async function OrderListPage({ searchParams }: OrderListPageProps
                 </span>
                 {outlet.pickup_fee > 0 ? (
                   <span className="rounded-full bg-surface-soft px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
-                    Pickup tersedia
+                    Jemput tersedia
                   </span>
                 ) : null}
                 {outlet.has_qris ? (
@@ -263,9 +263,9 @@ export default async function OrderListPage({ searchParams }: OrderListPageProps
 
               <div className="mt-6 border-t border-surface-muted pt-4">
                 <div className="flex items-center justify-between gap-4 text-sm font-semibold">
-                  <span className="text-muted">Buka outlet</span>
+                  <span className="text-muted">Lihat detail outlet</span>
                   <span className="inline-flex items-center gap-2 text-brand transition group-hover:text-accent">
-                    Lanjut order
+                    Pesan di sini
                     <ArrowRightIcon />
                   </span>
                 </div>
@@ -280,7 +280,7 @@ export default async function OrderListPage({ searchParams }: OrderListPageProps
               Outlet belum ditemukan
             </h2>
             <p className="mt-3 text-sm leading-7 text-muted">
-              Coba ubah kata kunci pencarian atau pilih wilayah yang berbeda.
+              Coba ganti kata kunci pencarian atau pilih wilayah yang berbeda.
             </p>
           </section>
         ) : null}

@@ -107,7 +107,7 @@ export function LoginForm() {
           <label htmlFor="password" className="text-xs font-semibold uppercase tracking-widest text-muted">
             Kata Sandi
           </label>
-          <span className="text-xs font-semibold text-brand">Lupa kata sandi?</span>
+          <span className="text-xs font-semibold text-brand">Butuh bantuan login?</span>
         </div>
         <div className="relative">
           <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-muted">
@@ -134,7 +134,7 @@ export function LoginForm() {
           className="h-4 w-4 cursor-pointer rounded border-line text-accent focus:ring-accent/20"
         />
         <span className="ml-2 text-sm font-medium text-muted">
-          Ingat saya selama 30 hari
+          Ingat saya di perangkat ini
         </span>
       </label>
 
@@ -145,7 +145,7 @@ export function LoginForm() {
         disabled={isSubmitting}
         className="group flex w-full items-center justify-center gap-2 rounded-full bg-[linear-gradient(135deg,#002045_0%,#1a365d_100%)] py-4 font-bold text-white shadow-lg shadow-brand/20 transition-all duration-300 hover:scale-[1.02] active:scale-95"
       >
-        <span>{isSubmitting ? "Memeriksa akun..." : "Masuk"}</span>
+        <span>{isSubmitting ? "Sedang masuk..." : "Masuk ke dashboard"}</span>
         <span className="transition-transform group-hover:translate-x-1" aria-hidden="true">
           <ArrowRightIcon />
         </span>

@@ -47,11 +47,11 @@ export default async function DashboardReportsPage({ searchParams }: Props) {
           current="reports"
           eyebrow="Laporan Bisnis"
           title="Ekspor laporan belum tersedia."
-          description="Fitur report dan export mengikuti paket langganan owner. Upgrade ke Pro atau Business untuk mengakses laporan dari dashboard Next."
+          description="Fitur laporan dan unduhan file mengikuti paket langganan pemilik usaha. Upgrade ke Pro atau Bisnis untuk mengakses halaman ini."
         >
           <section className="section-block p-5 sm:p-6">
             <p className="text-sm leading-7 text-muted">
-              Backend saat ini memang mengunci export untuk akun tanpa fitur exports, jadi halaman ini akan aktif otomatis begitu plan sudah sesuai.
+              Halaman ini akan aktif otomatis setelah paket Anda sudah mendukung laporan dan unduhan file.
             </p>
           </section>
         </DashboardFrame>
@@ -59,7 +59,7 @@ export default async function DashboardReportsPage({ searchParams }: Props) {
     }
 
     if (error instanceof ApiError && error.status === 503) {
-      return <BackendUnavailable title="Report belum terhubung" message={error.message} />;
+      return <BackendUnavailable title="Laporan belum terhubung" message={error.message} />;
     }
 
     throw error;
@@ -77,7 +77,7 @@ export default async function DashboardReportsPage({ searchParams }: Props) {
       label: "Nilai order kotor",
       value: formatRupiah(data.metrics.gross_order_value),
       tone: "text-brand",
-      hint: "Total nilai order pada periode terpilih.",
+      hint: "Total nilai pesanan pada periode terpilih.",
     },
     {
       label: "Pembayaran sukses",
@@ -95,7 +95,7 @@ export default async function DashboardReportsPage({ searchParams }: Props) {
       label: "Arus kas bersih",
       value: formatRupiah(data.metrics.net_cashflow),
       tone: data.metrics.net_cashflow >= 0 ? "text-accent" : "text-danger",
-      hint: "Selisih pembayaran sukses dan total expense.",
+      hint: "Selisih pembayaran sukses dan total pengeluaran.",
     },
   ];
 
@@ -103,21 +103,21 @@ export default async function DashboardReportsPage({ searchParams }: Props) {
     <DashboardFrame
       current="reports"
       eyebrow="Laporan Bisnis"
-      title="Ringkasan performa dan export."
-      description={`Scope laporan saat ini: ${data.scope.label}. Pilih periode lalu unduh PDF atau Excel langsung dari dashboard baru.`}
+      title="Ringkasan performa dan unduhan laporan"
+      description={`Laporan ini menampilkan data untuk ${data.scope.label}. Pilih periode lalu unduh PDF atau Excel langsung dari halaman ini.`}
       actions={
         <>
           <a href={`/api/reports/orders/export?format=excel&${exportQuery}`} className="btn-accent w-full sm:w-auto">
-            Orders Excel
+            Pesanan Excel
           </a>
           <a href={`/api/reports/orders/export?format=pdf&${exportQuery}`} className="btn-secondary w-full sm:w-auto">
-            Orders PDF
+            Pesanan PDF
           </a>
           <a href={`/api/reports/expenses/export?format=excel&${exportQuery}`} className="btn-accent w-full sm:w-auto">
-            Expenses Excel
+            Pengeluaran Excel
           </a>
           <a href={`/api/reports/expenses/export?format=pdf&${exportQuery}`} className="btn-secondary w-full sm:w-auto">
-            Expenses PDF
+            Pengeluaran PDF
           </a>
         </>
       }
@@ -131,10 +131,10 @@ export default async function DashboardReportsPage({ searchParams }: Props) {
                 {monthOptions.find((month) => month.value === currentMonth)?.label ?? "Bulan"} {currentYear}
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-white/74">
-                Gunakan ringkasan ini untuk membaca ritme order, pembayaran, dan biaya operasional outlet di satu periode.
+                Gunakan ringkasan ini untuk membaca ritme pesanan, pembayaran, dan biaya operasional cabang di satu periode.
               </p>
             </div>
-            <span className="highlight-chip-dark">{data.scope.outlets.length} outlet dalam scope</span>
+            <span className="highlight-chip-dark">{data.scope.outlets.length} cabang dalam cakupan</span>
           </div>
         </section>
 
@@ -170,12 +170,12 @@ export default async function DashboardReportsPage({ searchParams }: Props) {
         <section className="section-block p-5 sm:p-6">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">Top outlets</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">Cabang teratas</p>
               <h2 className="mt-2 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-brand">
                 Cabang paling aktif di periode ini
               </h2>
             </div>
-            <span className="highlight-chip">{data.scope.outlets.length} outlet</span>
+            <span className="highlight-chip">{data.scope.outlets.length} cabang</span>
           </div>
 
           <div className="dashboard-panel-stack mt-6">
@@ -184,21 +184,21 @@ export default async function DashboardReportsPage({ searchParams }: Props) {
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
                     <p className="font-semibold text-foreground">{outlet.name}</p>
-                    <p className="mt-1 text-sm text-muted">{outlet.orders_count} order</p>
+                    <p className="mt-1 text-sm text-muted">{outlet.orders_count} pesanan</p>
                   </div>
                   <div className="shrink-0 text-right">
                     <p className="font-semibold text-accent">{formatRupiah(outlet.order_value)}</p>
-                    <p className="mt-1 text-xs uppercase tracking-[0.18em] text-muted">Expense {formatRupiah(outlet.expense_total)}</p>
+                    <p className="mt-1 text-xs uppercase tracking-[0.18em] text-muted">Biaya {formatRupiah(outlet.expense_total)}</p>
                   </div>
                 </div>
               </article>
             ))}
-            {data.top_outlets.length === 0 ? <div className="soft-panel p-5 text-sm text-muted">Belum ada data outlet untuk periode ini.</div> : null}
+            {data.top_outlets.length === 0 ? <div className="soft-panel p-5 text-sm text-muted">Belum ada data cabang untuk periode ini.</div> : null}
           </div>
         </section>
 
         <section className="section-block p-5 sm:p-6">
-          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">Kategori expense</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">Kategori pengeluaran</p>
           <h2 className="mt-2 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-brand">
             Pos biaya yang paling dominan
           </h2>
@@ -215,16 +215,16 @@ export default async function DashboardReportsPage({ searchParams }: Props) {
                 </div>
               </article>
             ))}
-            {data.expense_categories.length === 0 ? <div className="soft-panel p-5 text-sm text-muted">Belum ada expense tercatat di periode ini.</div> : null}
+            {data.expense_categories.length === 0 ? <div className="soft-panel p-5 text-sm text-muted">Belum ada pengeluaran tercatat di periode ini.</div> : null}
           </div>
         </section>
       </div>
 
       <div className="grid gap-5 lg:grid-cols-2">
         <section className="section-block p-5 sm:p-6">
-          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">Order terbaru</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">Pesanan terbaru</p>
           <h2 className="mt-2 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-brand">
-            Sampel order untuk audit cepat
+            Sampel pesanan untuk pemeriksaan cepat
           </h2>
 
           <div className="dashboard-panel-stack mt-6">
@@ -233,20 +233,20 @@ export default async function DashboardReportsPage({ searchParams }: Props) {
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
                     <p className="font-semibold text-foreground">{order.invoice_number}</p>
-                    <p className="mt-1 text-sm text-muted">{order.customer?.name ?? "Customer"} · {order.outlet?.name ?? "Outlet"}</p>
+                    <p className="mt-1 text-sm text-muted">{order.customer?.name ?? "Pelanggan umum"} · {order.outlet?.name ?? "Cabang"}</p>
                   </div>
                   <p className="shrink-0 font-semibold text-accent">{formatRupiah(order.total_price)}</p>
                 </div>
               </Link>
             ))}
             {data.recent_orders.length === 0 ? (
-              <div className="soft-panel p-5 text-sm text-muted">Belum ada order pada periode ini untuk ditampilkan.</div>
+              <div className="soft-panel p-5 text-sm text-muted">Belum ada pesanan pada periode ini untuk ditampilkan.</div>
             ) : null}
           </div>
         </section>
 
         <section className="section-block p-5 sm:p-6">
-          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">Expense terbaru</p>
+          <p className="text-[10px] font-black uppercase tracking-[0.22em] text-accent">Pengeluaran terbaru</p>
           <h2 className="mt-2 font-[var(--font-display-sans)] text-3xl font-extrabold tracking-tight text-brand">
             Sampel pengeluaran untuk review cepat
           </h2>
@@ -257,7 +257,7 @@ export default async function DashboardReportsPage({ searchParams }: Props) {
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0">
                     <p className="font-semibold text-foreground">{expense.category}</p>
-                    <p className="mt-1 text-sm text-muted">{expense.outlet?.name ?? "Outlet"} · {expense.user?.name ?? "Tim outlet"}</p>
+                    <p className="mt-1 text-sm text-muted">{expense.outlet?.name ?? "Cabang"} · {expense.user?.name ?? "Tim outlet"}</p>
                   </div>
                   <p className="shrink-0 font-semibold text-danger">{formatRupiah(expense.amount)}</p>
                 </div>

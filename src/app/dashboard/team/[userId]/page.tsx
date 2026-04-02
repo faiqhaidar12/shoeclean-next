@@ -21,6 +21,23 @@ export default async function DashboardTeamMemberDetailPage({ params }: Props) {
   } catch (error) {
     if (error instanceof ApiError && error.status === 401) redirect("/login");
 
+    if (error instanceof ApiError && error.status === 403) {
+      return (
+        <DashboardFrame
+          current="team"
+          eyebrow="Ubah personel"
+          title="Kelola tim tersedia mulai paket Pro."
+          description="Akun ini belum memiliki akses ke pengelolaan admin dan staf dari halaman ini."
+        >
+          <section className="section-block p-5 sm:p-6">
+            <p className="text-sm leading-7 text-muted">
+              Jika Anda baru mendaftar, ini normal untuk paket gratis. Setelah upgrade ke Pro atau Bisnis, detail tim akan langsung bisa dibuka.
+            </p>
+          </section>
+        </DashboardFrame>
+      );
+    }
+
     if (error instanceof ApiError && error.status === 503) {
       return <BackendUnavailable title="Detail team belum terhubung" message={error.message} />;
     }
@@ -33,7 +50,7 @@ export default async function DashboardTeamMemberDetailPage({ params }: Props) {
       current="team"
       eyebrow="Ubah personel"
       title={data.user.name}
-      description="Perbarui data team member tanpa perlu kembali ke dashboard Laravel lama."
+      description="Perbarui data anggota tim dari halaman ini tanpa perlu pindah ke tempat lain."
     >
       <div className="mx-auto max-w-4xl">
         <Link
@@ -41,7 +58,7 @@ export default async function DashboardTeamMemberDetailPage({ params }: Props) {
           className="mb-6 inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-brand/40 transition hover:text-accent"
         >
           <span aria-hidden>{"<-"}</span>
-          Kembali ke personel
+          Kembali ke tim
         </Link>
         <TeamMemberForm
           mode="edit"
