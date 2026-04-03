@@ -283,9 +283,21 @@ async function request<T>(path: string): Promise<T> {
       cache: "no-store",
     });
   } catch (error) {
+    const errorInfo =
+      error instanceof Error
+        ? {
+            message: error.message,
+            stack: error.stack,
+            cause:
+              error.cause instanceof Error
+                ? { message: error.cause.message, stack: error.cause.stack }
+                : error.cause,
+          }
+        : { message: String(error) };
+
     console.error("[ShoeClean API] Public request failed", {
       targetUrl,
-      error: error instanceof Error ? error.message : String(error),
+      error: errorInfo,
     });
 
     throw new ApiError(
