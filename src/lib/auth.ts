@@ -967,6 +967,7 @@ export type TeamMemberDetailResponse = {
 async function protectedRequest<T>(path: string): Promise<T> {
   const cookieStore = await cookies();
   const cookieHeader = cookieStore.toString();
+  const targetUrl = `${API_BASE_URL}${path}`;
 
   if (!cookieHeader) {
     throw new ApiError("Sesi login belum tersedia.", 401);
@@ -975,14 +976,19 @@ async function protectedRequest<T>(path: string): Promise<T> {
   let response: Response;
 
   try {
-    response = await fetch(`${API_BASE_URL}${path}`, {
+    response = await fetch(targetUrl, {
       headers: {
         Accept: "application/json",
         Cookie: cookieHeader,
       },
       cache: "no-store",
     });
-  } catch {
+  } catch (error) {
+    console.error("[ShoeClean API] Protected request failed", {
+      targetUrl,
+      error: error instanceof Error ? error.message : String(error),
+    });
+
     throw new ApiError(
       `Tidak bisa terhubung ke backend Laravel di ${API_BASE_URL}. Pastikan server Laravel sedang berjalan.`,
       503,
@@ -1014,6 +1020,7 @@ async function protectedMutate<T>(
 ): Promise<T> {
   const cookieStore = await cookies();
   const cookieHeader = cookieStore.toString();
+  const targetUrl = `${API_BASE_URL}${path}`;
 
   if (!cookieHeader) {
     throw new ApiError("Sesi login belum tersedia.", 401);
@@ -1022,7 +1029,7 @@ async function protectedMutate<T>(
   let response: Response;
 
   try {
-    response = await fetch(`${API_BASE_URL}${path}`, {
+    response = await fetch(targetUrl, {
       method: init?.method ?? "POST",
       headers: {
         Accept: "application/json",
@@ -1032,7 +1039,12 @@ async function protectedMutate<T>(
       body: init?.body ? JSON.stringify(init.body) : undefined,
       cache: "no-store",
     });
-  } catch {
+  } catch (error) {
+    console.error("[ShoeClean API] Protected mutation failed", {
+      targetUrl,
+      error: error instanceof Error ? error.message : String(error),
+    });
+
     throw new ApiError(
       `Tidak bisa terhubung ke backend Laravel di ${API_BASE_URL}. Pastikan server Laravel sedang berjalan.`,
       503,

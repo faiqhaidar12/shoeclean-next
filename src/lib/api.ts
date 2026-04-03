@@ -276,12 +276,18 @@ export class ApiError extends Error {
 
 async function request<T>(path: string): Promise<T> {
   let response: Response;
+  const targetUrl = `${API_BASE_URL}${path}`;
 
-    try {
-      response = await fetch(`${API_BASE_URL}${path}`, {
-        cache: "no-store",
-      });
-    } catch {
+  try {
+    response = await fetch(targetUrl, {
+      cache: "no-store",
+    });
+  } catch (error) {
+    console.error("[ShoeClean API] Public request failed", {
+      targetUrl,
+      error: error instanceof Error ? error.message : String(error),
+    });
+
     throw new ApiError(
       `Tidak bisa terhubung ke backend Laravel di ${API_BASE_URL}. Pastikan server Laravel sedang berjalan.`,
       503,
