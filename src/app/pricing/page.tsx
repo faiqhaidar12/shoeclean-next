@@ -128,7 +128,11 @@ export default async function PricingPage() {
 
   return (
     <>
-      <PublicTopNav current="pricing" authenticated={session?.authenticated} />
+      <PublicTopNav
+        current="pricing"
+        authenticated={session?.authenticated}
+        dashboardHref={session?.user.is_superadmin ? "/superadmin" : "/dashboard"}
+      />
 
       <main className="public-main-shell">
         <section className="public-hero-intro motion-enter text-center sm:mb-20">

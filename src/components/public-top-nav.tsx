@@ -7,6 +7,7 @@ import { LogoutConfirmation } from "@/components/logout-confirmation";
 type Props = {
   current?: "home" | "pricing" | "track" | "order";
   authenticated?: boolean;
+  dashboardHref?: string;
 };
 
 const navItems = [
@@ -38,7 +39,11 @@ function CloseIcon() {
   );
 }
 
-export function PublicTopNav({ current = "home", authenticated = false }: Props) {
+export function PublicTopNav({
+  current = "home",
+  authenticated = false,
+  dashboardHref = "/dashboard",
+}: Props) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -68,7 +73,7 @@ export function PublicTopNav({ current = "home", authenticated = false }: Props)
           <div className="hidden items-center gap-3 lg:flex">
             {authenticated ? (
               <>
-                <Link href="/dashboard" className="btn-secondary px-4 py-2.5 text-sm">
+                <Link href={dashboardHref} className="btn-secondary px-4 py-2.5 text-sm">
                   Dasbor
                 </Link>
                 <LogoutConfirmation label="Keluar" className="btn-primary px-5 py-2.5 text-sm" />
@@ -144,7 +149,7 @@ export function PublicTopNav({ current = "home", authenticated = false }: Props)
               {authenticated ? (
                 <>
                   <Link
-                    href="/dashboard"
+                    href={dashboardHref}
                     onClick={() => setIsOpen(false)}
                     className="btn-primary w-full justify-center"
                   >

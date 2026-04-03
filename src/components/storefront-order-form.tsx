@@ -57,8 +57,14 @@ export function StorefrontOrderForm({ data }: Props) {
     return total + (service ? service.price * quantity : 0);
   }, 0);
 
-  const pickupFee = orderType === "pickup" ? data.outlet.pickup_fee : 0;
-  const deliveryFee = orderType === "delivery" ? data.outlet.delivery_fee : 0;
+  const pickupFee =
+    orderType === "pickup"
+      ? Number(data.outlet.pickup_pricing?.final_fee ?? data.outlet.pickup_fee ?? 0)
+      : 0;
+  const deliveryFee =
+    orderType === "delivery"
+      ? Number(data.outlet.delivery_pricing?.final_fee ?? data.outlet.delivery_fee ?? 0)
+      : 0;
   const discountAmount = promo?.discount_amount ?? 0;
   const total = Math.max(0, subtotal + pickupFee + deliveryFee - discountAmount);
 
@@ -350,8 +356,8 @@ export function StorefrontOrderForm({ data }: Props) {
             className="field-soft"
           >
             <option value="regular">Datang langsung ke outlet</option>
-            <option value="pickup">Jemput ke alamat Anda</option>
-            <option value="delivery">Kirim kembali ke alamat Anda</option>
+            {data.outlet.pickup_enabled ? <option value="pickup">Jemput ke alamat Anda</option> : null}
+            {data.outlet.delivery_enabled ? <option value="delivery">Kirim kembali ke alamat Anda</option> : null}
           </select>
 
           <select
@@ -366,6 +372,10 @@ export function StorefrontOrderForm({ data }: Props) {
 
         {orderType === "pickup" ? (
           <div className="mt-4 space-y-4">
+            <div className="soft-panel p-4 text-sm text-muted">
+              Biaya jemput mulai dari {formatRupiah(pickupFee)} untuk{" "}
+              {data.outlet.pickup_pricing?.base_distance_km ?? 0} km pertama.
+            </div>
             <textarea
               required
               rows={3}
@@ -393,6 +403,10 @@ export function StorefrontOrderForm({ data }: Props) {
 
         {orderType === "delivery" ? (
           <div className="mt-4 space-y-4">
+            <div className="soft-panel p-4 text-sm text-muted">
+              Biaya antar mulai dari {formatRupiah(deliveryFee)} untuk{" "}
+              {data.outlet.delivery_pricing?.base_distance_km ?? 0} km pertama.
+            </div>
             <textarea
               required
               rows={3}

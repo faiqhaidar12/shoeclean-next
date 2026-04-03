@@ -20,8 +20,16 @@ type Props = {
     address?: string;
     phone?: string;
     status?: string;
+    pickup_enabled?: boolean;
+    delivery_enabled?: boolean;
     pickup_fee?: number;
     delivery_fee?: number;
+    pickup_base_distance_km?: number;
+    pickup_base_fee?: number;
+    pickup_extra_fee_per_km?: number;
+    delivery_base_distance_km?: number;
+    delivery_base_fee?: number;
+    delivery_extra_fee_per_km?: number;
     province_id?: string | null;
     province_name?: string | null;
     city_id?: string | null;
@@ -43,8 +51,16 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
   const [address, setAddress] = useState(initialValues?.address ?? "");
   const [phone, setPhone] = useState(initialValues?.phone ?? "");
   const [status, setStatus] = useState(initialValues?.status ?? "active");
-  const [pickupFee, setPickupFee] = useState(String(initialValues?.pickup_fee ?? 10000));
-  const [deliveryFee, setDeliveryFee] = useState(String(initialValues?.delivery_fee ?? 10000));
+  const [pickupEnabled, setPickupEnabled] = useState(Boolean(initialValues?.pickup_enabled));
+  const [deliveryEnabled, setDeliveryEnabled] = useState(Boolean(initialValues?.delivery_enabled));
+  const [pickupFee, setPickupFee] = useState(String(initialValues?.pickup_base_fee ?? initialValues?.pickup_fee ?? 20000));
+  const [deliveryFee, setDeliveryFee] = useState(String(initialValues?.delivery_base_fee ?? initialValues?.delivery_fee ?? 20000));
+  const [pickupBaseDistance, setPickupBaseDistance] = useState(String(initialValues?.pickup_base_distance_km ?? 10));
+  const [pickupBaseFee, setPickupBaseFee] = useState(String(initialValues?.pickup_base_fee ?? initialValues?.pickup_fee ?? 20000));
+  const [pickupExtraFeePerKm, setPickupExtraFeePerKm] = useState(String(initialValues?.pickup_extra_fee_per_km ?? 2000));
+  const [deliveryBaseDistance, setDeliveryBaseDistance] = useState(String(initialValues?.delivery_base_distance_km ?? 10));
+  const [deliveryBaseFee, setDeliveryBaseFee] = useState(String(initialValues?.delivery_base_fee ?? initialValues?.delivery_fee ?? 20000));
+  const [deliveryExtraFeePerKm, setDeliveryExtraFeePerKm] = useState(String(initialValues?.delivery_extra_fee_per_km ?? 2000));
   const [qrisFile, setQrisFile] = useState<File | null>(null);
   const [qrisNotes, setQrisNotes] = useState(initialValues?.qris_notes ?? "");
   const [removeQris, setRemoveQris] = useState(false);
@@ -62,6 +78,36 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
   const [error, setError] = useState("");
   const [isLoadingRegions, setIsLoadingRegions] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    setName(initialValues?.name ?? "");
+    setSlug(initialValues?.slug ?? "");
+    setAddress(initialValues?.address ?? "");
+    setPhone(initialValues?.phone ?? "");
+    setStatus(initialValues?.status ?? "active");
+    setPickupEnabled(Boolean(initialValues?.pickup_enabled));
+    setDeliveryEnabled(Boolean(initialValues?.delivery_enabled));
+    setPickupFee(String(initialValues?.pickup_base_fee ?? initialValues?.pickup_fee ?? 20000));
+    setDeliveryFee(String(initialValues?.delivery_base_fee ?? initialValues?.delivery_fee ?? 20000));
+    setPickupBaseDistance(String(initialValues?.pickup_base_distance_km ?? 10));
+    setPickupBaseFee(String(initialValues?.pickup_base_fee ?? initialValues?.pickup_fee ?? 20000));
+    setPickupExtraFeePerKm(String(initialValues?.pickup_extra_fee_per_km ?? 2000));
+    setDeliveryBaseDistance(String(initialValues?.delivery_base_distance_km ?? 10));
+    setDeliveryBaseFee(String(initialValues?.delivery_base_fee ?? initialValues?.delivery_fee ?? 20000));
+    setDeliveryExtraFeePerKm(String(initialValues?.delivery_extra_fee_per_km ?? 2000));
+    setQrisFile(null);
+    setQrisNotes(initialValues?.qris_notes ?? "");
+    setRemoveQris(false);
+    setProvinceId(initialValues?.province_id ?? "");
+    setProvinceName(initialValues?.province_name ?? "");
+    setCityId(initialValues?.city_id ?? "");
+    setCityName(initialValues?.city_name ?? "");
+    setDistrictId(initialValues?.district_id ?? "");
+    setDistrictName(initialValues?.district_name ?? "");
+    setLatitude(initialValues?.latitude ?? null);
+    setLongitude(initialValues?.longitude ?? null);
+    setError("");
+  }, [initialValues]);
 
   useEffect(() => {
     let active = true;
@@ -197,8 +243,16 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
       formData.set("address", address);
       formData.set("phone", phone);
       formData.set("status", status);
-      formData.set("pickup_fee", pickupFee);
-      formData.set("delivery_fee", deliveryFee);
+      formData.set("pickup_enabled", pickupEnabled ? "1" : "0");
+      formData.set("delivery_enabled", deliveryEnabled ? "1" : "0");
+      formData.set("pickup_fee", pickupBaseFee);
+      formData.set("delivery_fee", deliveryBaseFee);
+      formData.set("pickup_base_distance_km", pickupBaseDistance);
+      formData.set("pickup_base_fee", pickupBaseFee);
+      formData.set("pickup_extra_fee_per_km", pickupExtraFeePerKm);
+      formData.set("delivery_base_distance_km", deliveryBaseDistance);
+      formData.set("delivery_base_fee", deliveryBaseFee);
+      formData.set("delivery_extra_fee_per_km", deliveryExtraFeePerKm);
       formData.set("qris_notes", qrisNotes);
       formData.set("province_id", provinceId);
       formData.set("province_name", provinceName);
@@ -358,6 +412,36 @@ export function OutletForm({ mode, statuses, initialValues }: Props) {
               onChange={(event) => setDeliveryFee(event.target.value)}
               className="field-soft !pl-10"
             />
+          </div>
+        </div>
+
+        <div className="soft-panel space-y-4 p-4 sm:col-span-2">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-brand">Layanan jemput</p>
+              <p className="mt-2 text-sm text-muted">Aktifkan jika cabang ini melayani penjemputan ke alamat pelanggan.</p>
+            </div>
+            <input type="checkbox" checked={pickupEnabled} onChange={(event) => setPickupEnabled(event.target.checked)} className="mt-1 h-5 w-5" />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <input type="number" min={0} step="0.1" value={pickupBaseDistance} onChange={(event) => setPickupBaseDistance(event.target.value)} className="field-soft" placeholder="Jarak dasar (km)" disabled={!pickupEnabled} />
+            <input type="number" min={0} value={pickupBaseFee} onChange={(event) => setPickupBaseFee(event.target.value)} className="field-soft" placeholder="Biaya dasar" disabled={!pickupEnabled} />
+            <input type="number" min={0} value={pickupExtraFeePerKm} onChange={(event) => setPickupExtraFeePerKm(event.target.value)} className="field-soft" placeholder="Tambah / km" disabled={!pickupEnabled} />
+          </div>
+        </div>
+
+        <div className="soft-panel space-y-4 p-4 sm:col-span-2">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-widest text-brand">Layanan antar</p>
+              <p className="mt-2 text-sm text-muted">Aktifkan jika cabang ini melayani pengantaran kembali ke alamat pelanggan.</p>
+            </div>
+            <input type="checkbox" checked={deliveryEnabled} onChange={(event) => setDeliveryEnabled(event.target.checked)} className="mt-1 h-5 w-5" />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            <input type="number" min={0} step="0.1" value={deliveryBaseDistance} onChange={(event) => setDeliveryBaseDistance(event.target.value)} className="field-soft" placeholder="Jarak dasar (km)" disabled={!deliveryEnabled} />
+            <input type="number" min={0} value={deliveryBaseFee} onChange={(event) => setDeliveryBaseFee(event.target.value)} className="field-soft" placeholder="Biaya dasar" disabled={!deliveryEnabled} />
+            <input type="number" min={0} value={deliveryExtraFeePerKm} onChange={(event) => setDeliveryExtraFeePerKm(event.target.value)} className="field-soft" placeholder="Tambah / km" disabled={!deliveryEnabled} />
           </div>
         </div>
 

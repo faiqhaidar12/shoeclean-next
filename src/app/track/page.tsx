@@ -144,7 +144,11 @@ export default async function TrackPage({ searchParams }: TrackPageProps) {
 
   return (
     <>
-      <PublicTopNav current="track" authenticated={session?.authenticated} />
+      <PublicTopNav
+        current="track"
+        authenticated={session?.authenticated}
+        dashboardHref={session?.user.is_superadmin ? "/superadmin" : "/dashboard"}
+      />
 
       <main className="public-main-shell">
         <section className="public-hero-intro motion-enter max-w-3xl text-center md:text-left">

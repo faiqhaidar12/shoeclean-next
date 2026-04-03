@@ -107,8 +107,14 @@ export function InternalOrderCreateForm({ data }: Props) {
     return total + (service ? service.price * item.quantity : 0);
   }, 0);
 
-  const pickupFee = orderType === "pickup" ? Number(currentOutlet?.pickup_fee ?? 0) : 0;
-  const deliveryFee = orderType === "delivery" ? Number(currentOutlet?.delivery_fee ?? 0) : 0;
+  const pickupFee =
+    orderType === "pickup"
+      ? Number(currentOutlet?.pickup_pricing?.final_fee ?? currentOutlet?.pickup_fee ?? 0)
+      : 0;
+  const deliveryFee =
+    orderType === "delivery"
+      ? Number(currentOutlet?.delivery_pricing?.final_fee ?? currentOutlet?.delivery_fee ?? 0)
+      : 0;
   const discountAmount = promo?.discount_amount ?? 0;
   const total = Math.max(0, subtotal + pickupFee + deliveryFee - discountAmount);
 
@@ -634,6 +640,10 @@ export function InternalOrderCreateForm({ data }: Props) {
             <div className="mt-5 grid gap-4">
               {orderType === "pickup" ? (
                 <div className="space-y-4">
+                  <div className="soft-panel p-4 text-sm text-muted">
+                    Biaya jemput mulai dari {formatRupiah(pickupFee)} untuk{" "}
+                    {currentOutlet?.pickup_pricing?.base_distance_km ?? 0} km pertama.
+                  </div>
                   <FieldShell label="Alamat pickup">
                     <textarea
                       rows={4}
@@ -658,6 +668,10 @@ export function InternalOrderCreateForm({ data }: Props) {
 
               {orderType === "delivery" ? (
                 <div className="space-y-4">
+                  <div className="soft-panel p-4 text-sm text-muted">
+                    Biaya antar mulai dari {formatRupiah(deliveryFee)} untuk{" "}
+                    {currentOutlet?.delivery_pricing?.base_distance_km ?? 0} km pertama.
+                  </div>
                   <FieldShell label="Alamat delivery">
                     <textarea
                       rows={4}
@@ -711,13 +725,19 @@ export function InternalOrderCreateForm({ data }: Props) {
               {orderTypeCards.map((option) => {
                 const isActive = orderType === option.value;
                 const Icon = option.icon;
+                const isDisabled =
+                  (option.value === "pickup" && !currentOutlet?.pickup_enabled) ||
+                  (option.value === "delivery" && !currentOutlet?.delivery_enabled);
 
                 return (
                   <button
                     key={option.value}
                     type="button"
+                    disabled={isDisabled}
                     onClick={() => setOrderType(option.value)}
                     className={`rounded-[1.5rem] border-2 px-4 py-4 text-left transition duration-200 ${
+                      isDisabled ? "cursor-not-allowed opacity-50" : ""
+                    } ${
                       isActive
                         ? "border-[var(--accent-line)] bg-[var(--accent-soft)] shadow-[0_12px_30px_rgba(129,242,235,0.18)]"
                         : "border-transparent bg-[var(--surface-subtle)] hover:border-[color:var(--border-subtle)] hover:bg-white"
@@ -737,7 +757,7 @@ export function InternalOrderCreateForm({ data }: Props) {
                             {option.title}
                           </p>
                           <p className="mt-1 text-sm leading-5 text-[var(--text-muted)]">
-                            {option.description}
+                            {isDisabled ? "Sedang dinonaktifkan untuk cabang ini." : option.description}
                           </p>
                         </div>
                       </div>

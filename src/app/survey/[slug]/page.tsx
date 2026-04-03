@@ -39,7 +39,10 @@ export default async function PublicSurveyPage({ params }: Props) {
     <main className="app-shell">
       <section className="page-frame px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
         <div className="relative z-10 space-y-4">
-          <PublicTopNav authenticated={session?.authenticated} />
+          <PublicTopNav
+            authenticated={session?.authenticated}
+            dashboardHref={session?.user.is_superadmin ? "/superadmin" : "/dashboard"}
+          />
 
           <header className="hero-grid">
             <div className="section-block hero-card p-5 sm:p-7">

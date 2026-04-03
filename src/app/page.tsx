@@ -104,7 +104,11 @@ export default async function Home() {
 
   return (
     <main className="public-home-shell">
-      <PublicTopNav current="home" authenticated={session?.authenticated} />
+      <PublicTopNav
+        current="home"
+        authenticated={session?.authenticated}
+        dashboardHref={session?.user.is_superadmin ? "/superadmin" : "/dashboard"}
+      />
 
       <div className="public-content-offset">
         <section className="public-hero-intro motion-enter relative overflow-hidden py-16 sm:py-20 md:py-24">

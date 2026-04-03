@@ -62,7 +62,7 @@ export function DashboardFrame({
   children,
 }: Props) {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
-  const [flash, setFlash] = useState<DashboardFlash | null>(() => takeDashboardFlash());
+  const [flash, setFlash] = useState<DashboardFlash | null>(null);
   const [flashVisible, setFlashVisible] = useState(false);
   const [user, setUser] = useState<DashboardUser | null>(() => cachedDashboardUser);
   const [lockedFeature, setLockedFeature] = useState<{
@@ -70,6 +70,16 @@ export function DashboardFrame({
     description: string;
     minPlanBadge?: string;
   } | null>(null);
+
+  useEffect(() => {
+    const flashTimer = window.setTimeout(() => {
+      setFlash(takeDashboardFlash());
+    }, 0);
+
+    return () => {
+      window.clearTimeout(flashTimer);
+    };
+  }, []);
 
   useEffect(() => {
     let isMounted = true;

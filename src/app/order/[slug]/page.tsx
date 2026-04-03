@@ -50,7 +50,11 @@ export default async function OrderDetailPage({
 
   return (
     <>
-      <PublicTopNav current="order" authenticated={session?.authenticated} />
+      <PublicTopNav
+        current="order"
+        authenticated={session?.authenticated}
+        dashboardHref={session?.user.is_superadmin ? "/superadmin" : "/dashboard"}
+      />
 
       <main className="public-main-shell">
         <section className="public-hero-intro tablet-balance-grid motion-enter lg:grid-cols-[1.04fr_0.96fr] lg:items-stretch">
@@ -90,19 +94,33 @@ export default async function OrderDetailPage({
                 className="motion-enter-fast rounded-[1.35rem] bg-surface-soft px-4 py-4"
                 style={{ animationDelay: "0.16s" }}
               >
-                <p className="section-label">Pickup fee</p>
+                <p className="section-label">Jemput</p>
                 <p className="mt-2 text-base font-semibold text-brand">
-                  {data.outlet.pickup_fee > 0 ? formatRupiah(data.outlet.pickup_fee) : "Tidak ada"}
+                  {data.outlet.pickup_enabled
+                    ? `Mulai ${formatRupiah(data.outlet.pickup_pricing?.base_fee ?? data.outlet.pickup_fee)}`
+                    : "Sedang off"}
                 </p>
+                {data.outlet.pickup_enabled ? (
+                  <p className="mt-1 text-xs text-muted">
+                    {data.outlet.pickup_pricing?.base_distance_km ?? 0} km pertama
+                  </p>
+                ) : null}
               </article>
               <article
                 className="motion-enter-fast rounded-[1.35rem] bg-surface-soft px-4 py-4"
                 style={{ animationDelay: "0.22s" }}
               >
-                <p className="section-label">QRIS</p>
+                <p className="section-label">Antar</p>
                 <p className="mt-2 text-base font-semibold text-brand">
-                  {data.outlet.has_qris ? "Tersedia" : "Belum ada"}
+                  {data.outlet.delivery_enabled
+                    ? `Mulai ${formatRupiah(data.outlet.delivery_pricing?.base_fee ?? data.outlet.delivery_fee)}`
+                    : "Sedang off"}
                 </p>
+                {data.outlet.delivery_enabled ? (
+                  <p className="mt-1 text-xs text-muted">
+                    {data.outlet.delivery_pricing?.base_distance_km ?? 0} km pertama
+                  </p>
+                ) : null}
               </article>
             </div>
           </div>

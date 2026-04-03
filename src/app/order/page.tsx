@@ -108,7 +108,11 @@ export default async function OrderListPage({ searchParams }: OrderListPageProps
 
   return (
     <>
-      <PublicTopNav current="order" authenticated={session?.authenticated} />
+      <PublicTopNav
+        current="order"
+        authenticated={session?.authenticated}
+        dashboardHref={session?.user.is_superadmin ? "/superadmin" : "/dashboard"}
+      />
 
       <main className="public-main-shell">
         <section className="public-hero-intro tablet-balance-grid motion-enter lg:grid-cols-[1.08fr_0.92fr] lg:items-end">

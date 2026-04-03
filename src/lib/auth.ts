@@ -254,8 +254,24 @@ export type InternalOrderCreateMetaResponse = {
     id: number;
     name: string;
     slug: string;
+    pickup_enabled?: boolean;
+    delivery_enabled?: boolean;
     pickup_fee: number;
     delivery_fee: number;
+    pickup_pricing?: {
+      enabled: boolean;
+      base_distance_km: number;
+      base_fee: number;
+      extra_fee_per_km: number;
+      final_fee: number;
+    };
+    delivery_pricing?: {
+      enabled: boolean;
+      base_distance_km: number;
+      base_fee: number;
+      extra_fee_per_km: number;
+      final_fee: number;
+    };
     latitude: number | null;
     longitude: number | null;
   }>;
@@ -540,8 +556,16 @@ export type OutletDetailResponse = {
     address: string;
     phone: string;
     status: string;
+    pickup_enabled?: boolean;
+    delivery_enabled?: boolean;
     pickup_fee: number;
     delivery_fee: number;
+    pickup_base_distance_km?: number;
+    pickup_base_fee?: number;
+    pickup_extra_fee_per_km?: number;
+    delivery_base_distance_km?: number;
+    delivery_base_fee?: number;
+    delivery_extra_fee_per_km?: number;
     province_id: string | null;
     province_name: string | null;
     city_id: string | null;
@@ -1052,6 +1076,16 @@ export async function requireDashboardModuleAccess(
   if (!canAccessDashboardModule(session.user, module, options)) {
     const error = new ApiError("Akses ke halaman ini tidak tersedia untuk akun Anda.", 403);
     throw error;
+  }
+
+  return session;
+}
+
+export async function requireSuperAdminSession() {
+  const session = await getAuthSession();
+
+  if (!session.user.is_superadmin) {
+    throw new ApiError("Akses superadmin tidak tersedia untuk akun Anda.", 403);
   }
 
   return session;

@@ -16,8 +16,30 @@ export type PublicOutlet = {
   phone: string | null;
   latitude: number | null;
   longitude: number | null;
+  pickup_enabled?: boolean;
+  delivery_enabled?: boolean;
   pickup_fee: number;
   delivery_fee: number;
+  pickup_pricing?: {
+    enabled: boolean;
+    distance_km: number | null;
+    base_distance_km: number;
+    base_fee: number;
+    extra_distance_km: number;
+    extra_fee_per_km: number;
+    extra_fee_total: number;
+    final_fee: number;
+  };
+  delivery_pricing?: {
+    enabled: boolean;
+    distance_km: number | null;
+    base_distance_km: number;
+    base_fee: number;
+    extra_distance_km: number;
+    extra_fee_per_km: number;
+    extra_fee_total: number;
+    final_fee: number;
+  };
   has_qris: boolean;
   services_count: number;
 };
@@ -110,9 +132,11 @@ export type TrackResponse = {
     pickup_address: string | null;
     pickup_latitude: number | null;
     pickup_longitude: number | null;
+    pickup_distance_km?: number | null;
     delivery_address: string | null;
     delivery_latitude: number | null;
     delivery_longitude: number | null;
+    delivery_distance_km?: number | null;
     customer: {
       name: string;
       phone: string;
@@ -201,9 +225,11 @@ export type StorefrontSuccessResponse = {
     pickup_address?: string | null;
     pickup_latitude?: number | null;
     pickup_longitude?: number | null;
+    pickup_distance_km?: number | null;
     delivery_address?: string | null;
     delivery_latitude?: number | null;
     delivery_longitude?: number | null;
+    delivery_distance_km?: number | null;
     items: Array<{
       id: number;
       service_name: string | null;
@@ -251,11 +277,11 @@ export class ApiError extends Error {
 async function request<T>(path: string): Promise<T> {
   let response: Response;
 
-  try {
-    response = await fetch(`${API_BASE_URL}${path}`, {
-      next: { revalidate: 60 },
-    });
-  } catch {
+    try {
+      response = await fetch(`${API_BASE_URL}${path}`, {
+        cache: "no-store",
+      });
+    } catch {
     throw new ApiError(
       `Tidak bisa terhubung ke backend Laravel di ${API_BASE_URL}. Pastikan server Laravel sedang berjalan.`,
       503,

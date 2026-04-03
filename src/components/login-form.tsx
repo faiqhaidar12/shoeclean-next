@@ -59,6 +59,9 @@ export function LoginForm() {
       const payload = (await response.json()) as {
         message?: string;
         errors?: Record<string, string[]>;
+        user?: {
+          is_superadmin?: boolean;
+        };
       };
 
       if (!response.ok) {
@@ -70,7 +73,7 @@ export function LoginForm() {
         return;
       }
 
-      router.push("/dashboard");
+      router.push(payload.user?.is_superadmin ? "/superadmin" : "/dashboard");
       router.refresh();
     } catch {
       setError("Tidak bisa terhubung ke layanan login.");

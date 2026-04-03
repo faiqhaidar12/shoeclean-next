@@ -73,7 +73,11 @@ export default async function OrderSuccessPage({ params }: OrderSuccessPageProps
 
   return (
     <>
-      <PublicTopNav current="track" authenticated={session?.authenticated} />
+      <PublicTopNav
+        current="track"
+        authenticated={session?.authenticated}
+        dashboardHref={session?.user.is_superadmin ? "/superadmin" : "/dashboard"}
+      />
 
       <main className="public-main-shell">
         <section className="tablet-balance-card motion-enter bg-brand text-white shadow-[0_24px_54px_rgba(0,32,69,0.18)]">
